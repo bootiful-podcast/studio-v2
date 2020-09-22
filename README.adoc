@@ -6,7 +6,20 @@ First, I want to use as few third-party bits as possible for layout. No need for
 
 Second, I want to use as few third-party bits as possible for CSS in general. I'm not sure if my CSS-fu is strong enough to get me through a modern, responsive form without Bootstrap, however.
 
-Third, I want to support a more dynamic UI that lets me edit / update all the existing podcasts, and to see what was published and when. So this won't just be the Podcast inception as was done in the JavaFX `desktop` project. 
+Third, I want to support a more dynamic UI that lets me edit / update all the existing podcasts, and to see what was published and when. So this won't just be the Podcast inception as was done in the JavaFX `desktop` project.  
+
+Fourth, it'd be nice to use Vue.js for this. I found that it provides a nice experience for building data-driven, form-driven user interfaces. But, then again, I haven't done anything particularly complicated with it so who knows? 
+
+Fifth, I've got a mock-api that i'm using to mock out the actual podcast publication API. I might check that into this repository for a while as well. The goal is to prototype out a few scenarios: 
+
+* uploading a new podcast with the complete data required. 
+* uploading a new file 
+
+Sixth, will I need a custom domain or could I deploy this as an Electron.js application? It'd be easier, basically, to use https://www.electronjs.org/docs/tutorial/first-app#trying-this-example[Electron.js]. 
+
+Once the mock design is working, it'll be time to integrate it with the API.
+
+
 
 .Here's the old JavaFX design for reference 
 
