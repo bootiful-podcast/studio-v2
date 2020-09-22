@@ -23,9 +23,6 @@
 
         }
 
-        .upload-form {
-
-        }
 
         body {
             background-color: lightsteelblue;
@@ -75,6 +72,12 @@
             height: 90px;
 
         }
+
+        .drop-zone {
+            border: 1px solid red;
+            width: 400px;
+            height: 400px;
+        }
     </style>
 </head>
 <body>
@@ -86,9 +89,13 @@
     </div>
     <div class="sidebar">Sidebar</div>
     <div class="content">
-        <div class="upload-form">
 
+
+        <!--        -->
+        <div class="drop-zone">
+            <p>Drag one or more files to this Drop Zone ...</p>
         </div>
+        <!--        -->
     </div>
     <div class="footer">Footer</div>
 </div>
@@ -104,6 +111,50 @@
         crossorigin="anonymous"></script>
 
 <script>
+  function dragOverHandler(ev) {
+    console.log('File(s) in drop zone');
+    ev.preventDefault();
+  }
+
+  function handleFile (file   ) {
+
+  }
+
+  function dropHandler(ev) {
+    console.log('File(s) dropped');
+    ev.preventDefault();
+
+    if (ev.dataTransfer.items) {
+      /// this is used in firefox, chrome and safari
+      // Use DataTransferItemList interface to access the file(s)
+      for (var i = 0; i < ev.dataTransfer.items.length; i++) {
+        // If dropped items aren't files, reject them
+        if (ev.dataTransfer.items[i].kind === 'file') {
+          let file = ev.dataTransfer.items[i].getAsFile();
+          console.debug('if: ... file[' + i + '].name = ' + file.name);
+          console.debug(file)
+          handleFile( file)
+        }
+      }
+    } else {
+      // Use DataTransfer interface to access the file(s)
+      for (var i = 0; i < ev.dataTransfer.files.length; i++) {
+        let file  = ev.dataTransfer.files[i];
+        console.debug ('else: ... file[' + i + '].name = ' + file.name);
+        console.debug(  file)
+      }
+    }
+  }
+
+  window.addEventListener('load', () => {
+
+    const dropZone = document.getElementsByClassName('drop-zone')[0]
+
+    dropZone.addEventListener('drop', dropHandler)
+    dropZone.addEventListener('dragover', dragOverHandler)
+
+
+  })
 
 </script>
 </body>
