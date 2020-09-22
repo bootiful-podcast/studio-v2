@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BootifulPodcast.fm</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+    <style>
+
+        .wrapper {
+            height: 100vh;
+            bottom: 0;
+            display: grid;
+            grid-gap: 1rem;
+            grid-template-areas:
+                  "header header header header header header"
+                  ". content content content content ."
+                  "footer footer footer footer footer footer";
+            grid-template-rows: 100px auto 100px;
+            grid-template-columns:  20% 200px auto auto   200px 20%;
+
+        }
+
+        .upload-form {
+
+        }
+
+        body {
+            background-color: lightsteelblue;
+        }
+
+        *. *::after, *::before {
+            box-sizing: border-box;
+        }
+
+        .header {
+            grid-area: header;
+            background-color: black;
+        }
+
+        .footer {
+            background-color: #6b83a2;
+            grid-area: footer;
+        }
+
+        .content {
+            grid-area: content;
+            padding-top: 2rem;
+        }
+
+        .sidebar {
+            grid-area: sidebar;
+            display: none;
+        }
+
+        html {
+            height: 100%;
+        }
+
+        body {
+            min-height: 100%;
+        }
+
+        .btn-primary {
+            background-color: black;
+            color: white;
+        }
+
+        .header > .logo-nw {
+            background: url("bootiful-podcast-fm-logo.png");
+            background-size: cover;
+            width: 300px;
+            height: 90px;
+
+        }
+    </style>
+</head>
+<body>
+
+
+<div class="wrapper">
+    <div class="header">
+        <div class="logo-nw" src="bootiful-podcast-fm-logo.png"></div>
+    </div>
+    <div class="sidebar">Sidebar</div>
+    <div class="content">
+        <div class="upload-form">
+
+        </div>
+    </div>
+    <div class="footer">Footer</div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+        crossorigin="anonymous"></script>
+
+<script>
+
+</script>
+</body>
+</html>
