@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="b6e4bf5b-2e25-4873-8ae1-08fbb2aa6df2" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -8,9 +11,10 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="ProjectId" id="1hrFRklTOtRZkH5YfGaVf29Zqb9" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -18,6 +22,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -31,10 +36,17 @@
       <workItem from="1600761298511" duration="169000" />
       <workItem from="1600761538589" duration="9000" />
       <workItem from="1600762425885" duration="506000" />
+      <workItem from="1600769053196" duration="431000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="1585" y="393" width="670" height="676" key="search.everywhere.popup" timestamp="1600769316769">
+      <screen x="0" y="23" width="3840" height="1597" />
+    </state>
+    <state x="1585" y="393" width="670" height="676" key="search.everywhere.popup/0.23.3840.1597@0.23.3840.1597" timestamp="1600769316769" />
   </component>
 </project>

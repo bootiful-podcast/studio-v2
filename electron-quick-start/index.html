@@ -1,8 +1,209 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BootifulPodcast.fm</title>
+
+
+<!--    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">-->
+<!--    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">-->
+
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+    <style>
+
+        .wrapper {
+            height: 100vh;
+            bottom: 0;
+            display: grid;
+            grid-gap: 1rem;
+            grid-template-areas:
+                  "header header header header header header"
+                  ". content content content content ."
+                  "footer footer footer footer footer footer";
+            grid-template-rows: 100px auto 100px;
+            grid-template-columns:  20% 200px auto auto   200px 20%;
+
+        }
+
+        .upload-form {
+
+        }
+
+        body {
+            background-color: lightsteelblue;
+        }
+
+        *. *::after, *::before {
+            box-sizing: border-box;
+        }
+
+        .header {
+            grid-area: header;
+            background-color: black;
+        }
+
+        .footer {
+            background-color: #6b83a2;
+            grid-area: footer;
+        }
+
+        .content {
+            grid-area: content;
+            padding-top: 2rem;
+        }
+
+        .sidebar {
+            grid-area: sidebar;
+            display: none;
+        }
+
+        html {
+            height: 100%;
+        }
+
+        body {
+            min-height: 100%;
+        }
+
+        .btn-primary {
+            background-color: black;
+            color: white;
+        }
+
+        .header > .logo-nw {
+            background: url("bootiful-podcast-fm-logo.png");
+            background-size: cover;
+            width: 300px;
+            height: 90px;
+
+        }
+    </style>
+</head>
+<body>
+
+
+<div class="wrapper">
+
+
+    <div class="header">
+
+
+        <div class="logo-nw" src="bootiful-podcast-fm-logo.png"></div>
+
+    </div>
+    <div class="sidebar">Sidebar</div>
+    <div class="content">
+        <div class="upload-form">
+
+            <form>
+
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"> Describe the Episode
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <!--                      -->
+                        <div class="form-group row">
+                            <label for="inputTitle" class="col-sm-3 col-form-label text-right">Title</label>
+                            <div class="col-sm-9">
+                                <input type="email" class="form-control" id="inputTitle" placeholder="Title">
+                            </div>
+                        </div>
+
+                        <div class="form-group row ">
+                            <label for="descriptionTextArea" class="col-sm-3 col-form-label text-right">
+                                Description</label>
+                            <div class="col-sm-9 "><textarea class="form-control" id="descriptionTextArea"
+                                                             rows="3"></textarea>
+                            </div>
+                        </div>
+                        <!--     -->
+
+
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"> Upload Assets </h3>
+                    </div>
+                    <div class="panel-body">
+
+
+                        <div class="form-group row">
+                            <label for="introductionMp3" class="col-sm-3 col-form-label text-right">
+                                Introduction (<code>.mp3</code>)
+                            </label>
+                            <div class="col-sm-9">
+                                <input type="file" class="form-control-file" id="introductionMp3">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="interviewMp3" class="col-sm-3 col-form-label text-right">
+                                Interview (<code>.mp3</code>)
+                            </label>
+                            <div class="col-sm-9">
+                                <input type="file" class="form-control-file" id="interviewMp3">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="photo" class="col-sm-3 col-form-label text-right">
+                                Profile Photo (<code>.jpg</code>)
+                            </label>
+                            <div class="col-sm-9">
+                                <input type="file" class="form-control-file" id="photo">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-sm-12">
+                                <button type="submit" class="float-right  btn btn-primary">Create Podcast</button>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+            </form>
+        </div>
+
+
+    </div>
+    <div class="footer">Footer</div>
+
+
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+        crossorigin="anonymous"></script>
+
+<script>
+
+</script>
+</body>
+</html>
+<!--
+
+<!DOCTYPE html>
 <html>
   <head>
     <meta charset="UTF-8">
-    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    &lt;!&ndash; https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP &ndash;&gt;
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
     <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
     <title>Hello World!</title>
@@ -13,7 +214,8 @@
     Chromium <span id="chrome-version"></span>,
     and Electron <span id="electron-version"></span>.
 
-    <!-- You can also require other files to run in this process -->
+    &lt;!&ndash; You can also require other files to run in this process &ndash;&gt;
     <script src="./renderer.js"></script>
   </body>
 </html>
+-->
