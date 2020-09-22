@@ -8,4 +8,8 @@ Second, I want to use as few third-party bits as possible for CSS in general. I'
 
 Third, I want to support a more dynamic UI that lets me edit / update all the existing podcasts, and to see what was published and when. So this won't just be the Podcast inception as was done in the JavaFX `desktop` project. 
 
-<img src = "old-design-for-reference.png" />
+.Here's the old JavaFX design for reference 
+
+image::old-design-for-reference.png[The old design from the JavaFX-powered Desktop v1 application]
+
+ 
