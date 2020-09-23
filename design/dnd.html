@@ -75,7 +75,7 @@
 
         .drop-zone {
             border: 1px solid red;
-            width: 400px;
+            width: 100%;
             height: 400px;
         }
     </style>
@@ -95,6 +95,8 @@
         <div class="drop-zone">
             <p>Drag one or more files to this Drop Zone ...</p>
         </div>
+        <button type="submit" class="float-right  btn btn-primary">Create Podcast</button>
+
         <!--        -->
     </div>
     <div class="footer">Footer</div>
@@ -112,54 +114,80 @@
 
 <script>
 
-  /// https://css-tricks.com/drag-and-drop-file-uploading/
 
+  /**
+   * Builds a file-uploading drop target with some sensible defaults.
+   * @param dropZone the element that should act as the drop target. This is expectd to be a resolved DOM Node, not a string ID.
+   */
+  function buildFileUploadingDropZone(dropZone) {
 
-  function dragOverHandler(ev) {
-    console.log('File(s) in drop zone');
-    ev.preventDefault();
-  }
+    const context = {files: []}
 
-  function handleFile (file   ) {
+    /// todo hoist this all into vue.js once its working in raw JS + HTML5
+    /// https://css-tricks.com/drag-and-drop-file-uploading/
 
-  }
+    const isAdvancedUpload = function () {
+      const div = document.createElement('div');
+      return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div))
+        && 'FormData' in window && 'FileReader' in window
+    }();
 
-  function dropHandler(ev) {
-    console.log('File(s) dropped');
-    ev.preventDefault();
-
-    if (ev.dataTransfer.items) {
-      /// this is used in firefox, chrome and safari
-      // Use DataTransferItemList interface to access the file(s)
-      for (var i = 0; i < ev.dataTransfer.items.length; i++) {
-        // If dropped items aren't files, reject them
-        if (ev.dataTransfer.items[i].kind === 'file') {
-          let file = ev.dataTransfer.items[i].getAsFile();
-          console.debug('if: ... file[' + i + '].name = ' + file.name);
-          console.debug(file)
-          handleFile( file)
-        }
-      }
-    } else {
-      // Use DataTransfer interface to access the file(s)
-      for (var i = 0; i < ev.dataTransfer.files.length; i++) {
-        let file  = ev.dataTransfer.files[i];
-        console.debug ('else: ... file[' + i + '].name = ' + file.name);
-        console.debug(  file)
-      }
+    function dragOverHandler(ev) {
+      console.log('File(s) in drop zone');
+      ev.preventDefault();
     }
-  }
 
-  window.addEventListener('load', () => {
+    function handleFile(file) {
+      context.files.push(file)
+      console.log('adding ' + file.name);
+      // todo use the javascript FormData to create a new file upload and then publish it
+      // https://css-tricks.com/drag-and-drop-file-uploading/
+      // https://www.taniarascia.com/how-to-upload-files-to-a-server-with-plain-javascript-and-php/
+      // https://javascript.info/formdata
+    }
 
-    const dropZone = document.getElementsByClassName('drop-zone')[0]
+    function dropHandler(ev) {
+      // console.debug('File(s) dropped');
+      ev.preventDefault();
+      ev.stopPropagation();
+      Array.from(ev.dataTransfer.items)
+        .filter(fileItem => fileItem.kind === 'file')
+        .forEach(fileItem => handleFile(fileItem.getAsFile()))
+    }
 
     dropZone.addEventListener('drop', dropHandler)
     dropZone.addEventListener('dragover', dragOverHandler)
 
+    function uploadFileDataToServer() {
+      const formData = new FormData()
+      const files = context.files
+      console.log('files.length=' + files.length)
+      for (let i = 0; i < files.length; i++) {
+        let file = files[i]
+        formData.append('files[]', file)
+      }
+      console.log(formData)
+    }
+
+    return uploadFileDataToServer;
+  }
+
+  window.addEventListener('load', () => {
+    const functionToPostTheData = buildFileUploadingDropZone(
+      document.getElementsByClassName('drop-zone')[0]);
+
+    const button = document.querySelector('[type=submit]');
+
+    button.addEventListener('click', (event) => {
+      event.preventDefault()
+      event.stopPropagation()
+      functionToPostTheData();
+    })
 
   })
 
 </script>
+
+
 </body>
 </html>
