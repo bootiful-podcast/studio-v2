@@ -70,13 +70,12 @@
             background-size: cover;
             width: 300px;
             height: 90px;
-
         }
 
         .drop-zone {
             border: 1px solid red;
             width: 100%;
-            height: 400px;
+            height: 200px;
         }
     </style>
 </head>
@@ -89,28 +88,16 @@
     </div>
     <div class="sidebar">Sidebar</div>
     <div class="content">
-
-
-        <div class="drop-zone">
-            <p>Drag one or more files to this Drop Zone ...</p>
+        <div id="introDZ" class="drop-zone">
+            <p>Drag an intro file to this Drop Zone ...</p>
         </div>
-        <form id="mform" name="mform" method="post"
-              action="http://localhost:8080/podcasts/124232">
-            <!--    <input type="file" name="file"/>-->
-            <button type="submit" class="float-right  btn btn-primary">Create Podcast</button>
-        </form>
-
-
-        <!--  <form method="POST"
-                target="_blank"
-                enctype="multipart/form-data"
-                action="http://localhost:8080/podcasts/124232"
-          >
-              <input type="text" name="name" value="Josh"/>
-              <input type="file" name="f"/>
-              <input type="submit"/>
-          </form>
-  -->
+        <div id="interviewDZ" class="drop-zone">
+            <p>Drag an interview file to this Drop Zone ...</p>
+        </div>
+        <div id="profileDZ" class="drop-zone">
+            <p>Drag a profile file to this Drop Zone ...</p>
+        </div>
+        <button type="submit" class="float-right btn btn-primary">Create Podcast</button>
     </div>
     <div class="footer">Footer</div>
 </div>
@@ -127,47 +114,26 @@
 
 <script>
 
+  const context = {
+    profileFile: null,
+    interviewFile: null,
+    introFile: null
+  };
 
   /**
    * Builds a file-uploading drop target with some sensible defaults.
-   * @param dropZone the element that should act as the drop target. This is expectd to be a resolved DOM Node, not a string ID.
+   * @param dropZoneElement the element that should act as the drop target. This is expected to be a resolved DOM Node, not a string ID.
+   * @param handleFile a function to invoke once a File has been dropped. Use this to note the file.
    */
-  function buildFileUploadingDropZone(dropZone) {
-
-    const context = {files: []}
-
-    /// todo hoist this all into vue.js once its working in raw JS + HTML5
-    /// https://css-tricks.com/drag-and-drop-file-uploading/
-
-    const isAdvancedUpload = function () {
-      const div = document.createElement('div');
-      return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div))
-        && 'FormData' in window && 'FileReader' in window
-    }();
+  function buildFileUploadingDropZone(dropZoneElement, handleFile) {
 
     function dragOverHandler(ev) {
-      console.log('File(s) in drop zone');
       ev.preventDefault();
-    }
-
-    function handleFile(file) {
-      context.files.push(file)
-      console.log('adding ' + file.name);
-      // todo use the javascript FormData to create a new file upload and then publish it
-      // https://css-tricks.com/drag-and-drop-file-uploading/
-      // https://www.taniarascia.com/how-to-upload-files-to-a-server-with-plain-javascript-and-php/
-      // https://javascript.info/formdata
-    }
-
-    function uuidv4() {
-      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-        const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
-        return v.toString(16);
-      });
+      ev.stopPropagation();
+      console.debug('File(s) in drop zone');
     }
 
     function dropHandler(ev) {
-      // console.debug('File(s) dropped');
       ev.preventDefault();
       ev.stopPropagation();
       Array
@@ -176,46 +142,51 @@
         .forEach(fileItem => handleFile(fileItem.getAsFile()))
     }
 
-    dropZone.addEventListener('drop', dropHandler)
-    dropZone.addEventListener('dragover', dragOverHandler)
+    dropZoneElement.addEventListener('drop', dropHandler)
+    dropZoneElement.addEventListener('dragover', dragOverHandler)
+  }
 
-    function uploadFileDataToServer() {
-      const formData = new FormData()
-      const files = context.files
-      console.log('files.length=' + files.length)
-      for (let i = 0; i < files.length; i++) {
-        let file = files[i]
-        formData.append('file', file)
-        console.log(' adding file ' + file)
-        // formData.append('file[]', file)
-      }
-      console.log(formData.toString());
-      fetch('http://localhost:8080/podcasts/' + uuidv4(), {
-        method: 'POST',
-        body: formData,
+  function uuidv4() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+  }
+
+  function uploadFileDataToServer() {
+    const formData = new FormData()
+    formData.append('intro', context.introFile)
+    formData.append('profile', context.profileFile)
+    formData.append('interview', context.interviewFile)
+    console.log(formData.toString());
+    fetch('http://localhost:8080/podcasts/' + uuidv4(), {
+      method: 'POST',
+      body: formData
+    })
+      .then((response) => {
+        console.log(response)
       })
-        .then((response) => {
-          console.log(response)
-        })
-
-      console.log('finished upload...')
-    }
-
-    return uploadFileDataToServer
+    console.log('finished upload...')
   }
 
   window.addEventListener('load', () => {
-
-    const functionToPostTheData = buildFileUploadingDropZone(document.getElementsByClassName('drop-zone')[0]);
-
-    const button = document.querySelector('[type=submit]');
-
-    button.addEventListener('click', (event) => {
+    buildFileUploadingDropZone(document.getElementById('profileDZ'), (file) => {
+      context.profileFile = file
+      console.log('profileFile!')
+    })
+    buildFileUploadingDropZone(document.getElementById('introDZ'), (file) => {
+      context.introFile = file
+      console.log('introFile!')
+    })
+    buildFileUploadingDropZone(document.getElementById('interviewDZ'), (file) => {
+      context.interviewFile = file
+      console.log('interviewFile!')
+    })
+    document.querySelector('[type=submit]').addEventListener('click', (event) => {
       event.preventDefault()
       event.stopPropagation()
-      functionToPostTheData()
+      uploadFileDataToServer()
     })
-
   })
 
 </script>

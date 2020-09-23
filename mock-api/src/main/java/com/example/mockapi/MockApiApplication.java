@@ -44,30 +44,48 @@ class ApiHttpController {
 
     @PostMapping("/podcasts/{uid}")
     ResponseEntity<?> beginProduction(
-            @RequestParam("file") MultipartFile file,
+            @RequestParam("interview") MultipartFile interview,
+            @RequestParam("intro") MultipartFile intro,
+            @RequestParam("profile") MultipartFile profile,
             @PathVariable("uid") String uid
     ) throws Exception {
-        var newFile = new File(this.file, uid);
+        var rootFolderForUidUploads = new File(this.file, uid);
+        Assert.state(rootFolderForUidUploads.exists() || rootFolderForUidUploads.mkdirs(), () ->
+                "the root directory for the uploads from the client " +
+                        rootFolderForUidUploads.getAbsolutePath() + " could not be created. " +
+                        "Upload has failed.");
+        var interviewFile = new File(rootFolderForUidUploads, "interview.mp3");
+        var introFile = new File(rootFolderForUidUploads, "intro.mp3");
+        var lastIndexOf = profile.getOriginalFilename().lastIndexOf(".");
+        Assert.state(lastIndexOf > -1, "the profile photo must have a valid extension");
+        var extForProfilePhoto = profile
+                .getOriginalFilename()
+                .substring(lastIndexOf);
+        var profileFile = new File(rootFolderForUidUploads, "profile." + extForProfilePhoto);
+        interview.transferTo(interviewFile);
+        intro.transferTo(introFile);
+        profile.transferTo(profileFile);
+
+        for (var f : new File[]{interviewFile, introFile, profileFile})
+            Assert.isTrue(f.exists(), () -> "the file " + f.getAbsolutePath() + " does not exist which means it couldn't " +
+                    "be sourced and transferred from the request");
 
 
-        Assert.state(newFile.getParentFile().exists() || newFile.getParentFile().isDirectory() && newFile.getParentFile().mkdirs(),
-                () -> "the upload directory for the new file, " + newFile.getParentFile().getAbsolutePath() + ", must exist");
 
-        file.transferTo(newFile);
-        Assert.isTrue(newFile.exists(), () -> "the file " + newFile.getAbsolutePath() + " does not exist");
-        log.info("the newly POST'd file lives at " + newFile.getAbsolutePath() + '.');
-        Assert.isTrue(this.launchProcessorPipeline(uid, newFile), "the pipeline says no.");
+        log.info("the newly POST'd file lives at " + rootFolderForUidUploads.getAbsolutePath() + '.');
+        Assert.isTrue(this.launchProcessorPipeline(uid, interviewFile, introFile, profileFile), "the pipeline says no.");
         var location = URI.create("/podcasts/" + uid + "/status");
         log.info("sending status location as : '" + location + "'");
 //        String corsHeader = buildCorsHeader();
 //        log.info("CORS response: " + corsHeader);
         return ResponseEntity
                 .accepted()
-              //  .header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, corsHeader)
+                //  .header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, corsHeader)
                 .location(location).build();
     }
 
-    private boolean launchProcessorPipeline(String uid, File newFile) {
+    private boolean launchProcessorPipeline(String uid, File interview, File intro, File profile) {
+
         return true;
     }
 
