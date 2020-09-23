@@ -77,6 +77,11 @@
             width: 100%;
             height: 200px;
         }
+
+        .drop-zone:hover, .drop-zone-drag {
+            background-color: yellow;
+        }
+
     </style>
 </head>
 <body>
@@ -123,14 +128,22 @@
   /**
    * Builds a file-uploading drop target with some sensible defaults.
    * @param dropZoneElement the element that should act as the drop target. This is expected to be a resolved DOM Node, not a string ID.
-   * @param handleFile a function to invoke once a File has been dropped. Use this to note the file.
+   * @param handleFileCallback a function to invoke once a File has been dropped. Use this to note the file.
+   * @param dragOverCallback a function to invoke once a File has been dragged over a dropZone.
+   * @param dragLeaveHandler a function to invoke once a File is no longer being dragged over a dropZone
    */
-  function buildFileUploadingDropZone(dropZoneElement, handleFile) {
+  function buildFileUploadingDropZone(dropZoneElement, dragOverCallback, dragLeaveCallback, handleFileCallback) {
 
     function dragOverHandler(ev) {
       ev.preventDefault();
       ev.stopPropagation();
-      console.debug('File(s) in drop zone');
+      dragOverCallback(dropZoneElement, ev)
+    }
+
+    function dragLeaveHandler(ev) {
+      ev.preventDefault();
+      ev.stopPropagation();
+      dragLeaveCallback(dropZoneElement, ev)
     }
 
     function dropHandler(ev) {
@@ -139,11 +152,12 @@
       Array
         .from(ev.dataTransfer.items)
         .filter(fileItem => fileItem.kind === 'file')
-        .forEach(fileItem => handleFile(fileItem.getAsFile()))
+        .forEach(fileItem => handleFileCallback(dropZoneElement, fileItem.getAsFile()))
     }
 
     dropZoneElement.addEventListener('drop', dropHandler)
     dropZoneElement.addEventListener('dragover', dragOverHandler)
+    dropZoneElement.addEventListener('dragleave', dragLeaveHandler)
   }
 
   function uuidv4() {
@@ -155,11 +169,12 @@
 
   function uploadFileDataToServer() {
     const formData = new FormData()
+    const uid = uuidv4()
     formData.append('intro', context.introFile)
     formData.append('profile', context.profileFile)
     formData.append('interview', context.interviewFile)
-    console.log(formData.toString());
-    fetch('http://localhost:8080/podcasts/' + uuidv4(), {
+    console.log(formData)
+    fetch('http://localhost:8080/podcasts/' + uid, {
       method: 'POST',
       body: formData
     })
@@ -170,18 +185,32 @@
   }
 
   window.addEventListener('load', () => {
-    buildFileUploadingDropZone(document.getElementById('profileDZ'), (file) => {
-      context.profileFile = file
-      console.log('profileFile!')
-    })
-    buildFileUploadingDropZone(document.getElementById('introDZ'), (file) => {
-      context.introFile = file
-      console.log('introFile!')
-    })
-    buildFileUploadingDropZone(document.getElementById('interviewDZ'), (file) => {
-      context.interviewFile = file
-      console.log('interviewFile!')
-    })
+
+    function colorizeDropZoneOnDragOver(dz) {
+      dz.classList.add('drop-zone-drag')
+    }
+
+    function restoreDropZoneOnDragLeave(dz) {
+      if (dz.classList.contains('drop-zone-drag'))
+        dz.classList.remove('drop-zone-drag')
+    }
+
+    buildFileUploadingDropZone(document.getElementById('profileDZ'), colorizeDropZoneOnDragOver,
+      restoreDropZoneOnDragLeave,
+      (dz, file) => {
+        context.profileFile = file
+        console.log('profileFile!')
+      })
+    buildFileUploadingDropZone(document.getElementById('introDZ'), colorizeDropZoneOnDragOver,
+      restoreDropZoneOnDragLeave, (dz, file) => {
+        context.introFile = file
+        console.log('introFile!')
+      })
+    buildFileUploadingDropZone(document.getElementById('interviewDZ'), colorizeDropZoneOnDragOver,
+      restoreDropZoneOnDragLeave, (dz, file) => {
+        context.interviewFile = file
+        console.log('interviewFile!')
+      })
     document.querySelector('[type=submit]').addEventListener('click', (event) => {
       event.preventDefault()
       event.stopPropagation()
