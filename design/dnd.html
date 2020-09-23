@@ -91,27 +91,26 @@
     <div class="content">
 
 
-        <!--
-         <div class="drop-zone">
-             <p>Drag one or more files to this Drop Zone ...</p>
-         </div>
+        <div class="drop-zone">
+            <p>Drag one or more files to this Drop Zone ...</p>
+        </div>
         <form id="mform" name="mform" method="post"
-               action="http://localhost:8080/podcasts/124232">
-             <input type="file" name="file"/>
-             <button type="submit" class="float-right  btn btn-primary">Create Podcast</button>
-         </form>-->
-
-
-        <form method="POST"
-              target="_blank"
-              enctype="multipart/form-data"
-              action="http://localhost:8080/podcasts/124232"
-        >
-            <input type="text" name="name" value="Josh"/>
-            <input type="file" name="f"/>
-            <input type="submit"/>
+              action="http://localhost:8080/podcasts/124232">
+            <!--    <input type="file" name="file"/>-->
+            <button type="submit" class="float-right  btn btn-primary">Create Podcast</button>
         </form>
 
+
+        <!--  <form method="POST"
+                target="_blank"
+                enctype="multipart/form-data"
+                action="http://localhost:8080/podcasts/124232"
+          >
+              <input type="text" name="name" value="Josh"/>
+              <input type="file" name="f"/>
+              <input type="submit"/>
+          </form>
+  -->
     </div>
     <div class="footer">Footer</div>
 </div>
@@ -181,12 +180,12 @@
     dropZone.addEventListener('dragover', dragOverHandler)
 
     function uploadFileDataToServer() {
-      const formData = new FormData(document.getElementById('mform'))
+      const formData = new FormData()
       const files = context.files
       console.log('files.length=' + files.length)
       for (let i = 0; i < files.length; i++) {
         let file = files[i]
-        //  formData.append('file', file)
+        formData.append('file', file)
         console.log(' adding file ' + file)
         // formData.append('file[]', file)
       }
@@ -198,6 +197,8 @@
         .then((response) => {
           console.log(response)
         })
+
+      console.log('finished upload...')
     }
 
     return uploadFileDataToServer
@@ -205,15 +206,15 @@
 
   window.addEventListener('load', () => {
 
-    //const functionToPostTheData = buildFileUploadingDropZone(   document.getElementsByClassName('drop-zone')[0]);
+    const functionToPostTheData = buildFileUploadingDropZone(document.getElementsByClassName('drop-zone')[0]);
 
     const button = document.querySelector('[type=submit]');
-    if (false)
-      button.addEventListener('click', (event) => {
-        event.preventDefault()
-        event.stopPropagation()
-        functionToPostTheData()
-      })
+
+    button.addEventListener('click', (event) => {
+      event.preventDefault()
+      event.stopPropagation()
+      functionToPostTheData()
+    })
 
   })
 

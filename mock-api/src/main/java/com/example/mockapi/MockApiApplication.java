@@ -44,10 +44,8 @@ class ApiHttpController {
 
     @PostMapping("/podcasts/{uid}")
     ResponseEntity<?> beginProduction(
-            @RequestParam("f") MultipartFile file,
-            @RequestParam("name") String name,
+            @RequestParam("file") MultipartFile file,
             @PathVariable("uid") String uid
-//            RequestEntity<?> re
     ) throws Exception {
         var newFile = new File(this.file, uid);
 
@@ -61,11 +59,11 @@ class ApiHttpController {
         Assert.isTrue(this.launchProcessorPipeline(uid, newFile), "the pipeline says no.");
         var location = URI.create("/podcasts/" + uid + "/status");
         log.info("sending status location as : '" + location + "'");
-        String corsHeader = buildCorsHeader();
-        log.info("CORS response: " + corsHeader);
+//        String corsHeader = buildCorsHeader();
+//        log.info("CORS response: " + corsHeader);
         return ResponseEntity
                 .accepted()
-                .header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, corsHeader)
+              //  .header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, corsHeader)
                 .location(location).build();
     }
 
