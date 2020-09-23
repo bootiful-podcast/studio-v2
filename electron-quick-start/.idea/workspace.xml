@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b6e4bf5b-2e25-4873-8ae1-08fbb2aa6df2" name="Default Changelist" comment="" />
+    <list default="true" id="b6e4bf5b-2e25-4873-8ae1-08fbb2aa6df2" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../design/dnd.html" beforeDir="false" afterPath="$PROJECT_DIR$/../design/dnd.html" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
