@@ -166,13 +166,23 @@
         let file = files[i]
         formData.append('files[]', file)
       }
-      console.log(formData)
+      console.log(formData);
+
+
+
+      fetch( 'http://localhost:8080/', {
+        method: 'POST',
+        body: formData,
+      }).then((response) => {
+        console.log(response)
+      })
     }
 
-    return uploadFileDataToServer;
+    return uploadFileDataToServer
   }
 
   window.addEventListener('load', () => {
+
     const functionToPostTheData = buildFileUploadingDropZone(
       document.getElementsByClassName('drop-zone')[0]);
 
@@ -181,7 +191,7 @@
     button.addEventListener('click', (event) => {
       event.preventDefault()
       event.stopPropagation()
-      functionToPostTheData();
+      functionToPostTheData()
     })
 
   })
