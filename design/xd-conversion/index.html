@@ -3,12 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>BootifulPodcast.fm</title>
-    <!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">-->
     <style>
         @import url("https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css");
         @import url('https://fonts.googleapis.com/css2?family=Titillium+Web:wght@200;300;400;700;900&display=swap');
 
-        /*:root {  --font-size: 20px}.test {  font-size: var(--font-size)}*/
         :root {
             --clr-green: #76B420;
             --clr-gray: #E8E8E8;
@@ -17,6 +15,16 @@
             --clr-green-darkest: #426414;
             --panel__margin: 2rem;
         }
+
+        a {
+            color: black;
+
+        }
+
+        a:hover {
+            color: var(--clr-blue);
+        }
+
 
         *. *::after, *::before {
             box-sizing: border-box;
@@ -53,6 +61,28 @@
             min-height: 100%;
             padding: 0;
             margin: 0;
+        }
+
+        .buttons {
+            right: 0;
+            justify-content: flex-end;
+            text-align: right;
+        }
+
+
+        .buttons * {
+            padding-left: 1em;
+            font-size: larger;
+        }
+
+
+        .main-action {
+            font-weight: 900;
+        }
+
+
+        .alternative-action {
+            font-weight: 500;
         }
 
         .logo {
@@ -105,8 +135,6 @@
             padding-top: calc(.8 * var(--panel__margin));
             font-weight: 700;
             line-height: .8em;
-
-            /*alignment-baseline: bottom;*/
         }
 
         .panel__prompt {
@@ -123,7 +151,6 @@
         .menu {
             background-color: var(--clr-green-darker);
             margin-top: 4rem;
-
         }
 
         .tip {
@@ -140,7 +167,7 @@
             margin-top: calc(.5 * var(--panel__margin))
         }
 
-        /*    */
+
         .profile-photo textarea {
             height: 200px;
             width: 200px;
@@ -212,8 +239,6 @@
                                 </label>
                                 <input type="text" class="form-control" id="introduction"/>
                             </div>
-
-
                         </div>
                         <div class="profile-photo">
 
@@ -223,13 +248,13 @@
                                 </label>
                                 <textarea class="form-control" id="photo"></textarea>
                             </div>
-
                         </div>
                     </div>
-
+                    <div class="buttons">
+                        <a href="" class="alternative-action">Cancel</a>
+                        <a href="" class="main-action">Create</a>
+                    </div>
                 </form>
-
-
             </div>
         </div>
 
