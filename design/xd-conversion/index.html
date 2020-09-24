@@ -87,7 +87,8 @@
             padding-left: var(--panel__margin);
             padding-right: var(--panel__margin);
             box-shadow: -5px 5px 10px 5px rgba(0, 0, 0, 0.30);
-            padding-bottom: var(--panel__margin);;
+            padding-bottom: var(--panel__margin);
+            margin-top: 2rem;
         }
 
         .panel__title {
@@ -101,7 +102,7 @@
             padding-right: var(--panel__margin);
             bottom: 0;
             font-size: 1.5rem;
-            padding-top : calc(.8 * var(--panel__margin)) ;
+            padding-top: calc(.8 * var(--panel__margin));
             font-weight: 700;
             line-height: .8em;
 
@@ -112,6 +113,11 @@
             text-transform: uppercase;
             font-weight: 900;
             letter-spacing: .15em;
+        }
+
+        .panel__prompt .file-type {
+            font-weight: 500;
+            font-size: smaller;
         }
 
         .menu {
@@ -132,6 +138,25 @@
             font-size: 1.5rem;
             opacity: 50%;
             margin-top: calc(.5 * var(--panel__margin))
+        }
+
+        /*    */
+        .profile-photo textarea {
+            height: 200px;
+            width: 200px;
+        }
+
+        .files-form {
+            display: grid;
+            grid-template-areas: "audio photo  ";
+            grid-template-rows:  auto;
+            grid-template-columns: auto 200px;
+
+        }
+
+
+        .audio-files {
+            margin-right: var(--panel__margin);
         }
     </style>
 
@@ -154,27 +179,54 @@
         <div class="panel">
             <div class="panel__title"> Create a New Episode</div>
             <div class="panel__body">
-
-
-                <div class="panel__section">
-                    Episode Details
-                </div>
                 <form>
+                    <div class="panel__section"> Details</div>
+
                     <div class="form-group">
                         <label for="title" class="panel__prompt">
                             Title
                         </label>
                         <input type="text" class="form-control" id="title"/>
-
                     </div>
-
                     <div class="form-group">
                         <label for="description" class="panel__prompt">
                             Description
                         </label>
                         <textarea class="form-control" id="description"></textarea>
-
                     </div>
+
+                    <!-- -->
+                    <div class="panel__section">Files</div>
+
+                    <div class="files-form">
+                        <div class="audio-files">
+                            <div class="form-group">
+                                <label for="description" class="panel__prompt">
+                                    Interview Audio <span class="file-type">(.MP3)</span>
+                                </label>
+                                <input type="text" class="form-control" id="interview"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="description" class="panel__prompt">
+                                    Introduction Audio <span class="file-type">(.MP3)</span>
+                                </label>
+                                <input type="text" class="form-control" id="introduction"/>
+                            </div>
+
+
+                        </div>
+                        <div class="profile-photo">
+
+                            <div class="form-group">
+                                <label for="photo" class="panel__prompt">
+                                    Profile Photo <span class="file-type">(.JPG)</span>
+                                </label>
+                                <textarea class="form-control" id="photo"></textarea>
+                            </div>
+
+                        </div>
+                    </div>
+
                 </form>
 
 
