@@ -15,7 +15,7 @@
             --clr-blue: #4C5F76;
             --clr-green-darker: #60911C;
             --clr-green-darkest: #426414;
-            --panel__margin-ew: 2rem;
+            --panel__margin: 2rem;
         }
 
         *. *::after, *::before {
@@ -42,7 +42,7 @@
                     "sidebar content . "
                     "footer footer footer  ";
             grid-template-rows: 140px auto 200px;
-            grid-template-columns:   200px   50vw    auto;
+            grid-template-columns: 200px auto 200px;
         }
 
         html {
@@ -84,25 +84,26 @@
         .panel {
             display: block;
             background-color: white;
-            padding-left: var(--panel__margin-ew);
-            padding-right: var(--panel__margin-ew);
+            padding-left: var(--panel__margin);
+            padding-right: var(--panel__margin);
             box-shadow: -5px 5px 10px 5px rgba(0, 0, 0, 0.30);
-            margin-left: ;
+            padding-bottom: var(--panel__margin);;
         }
 
         .panel__title {
             background-color: black;
             color: white;
             text-transform: uppercase;
-            font-weight: bold;
             letter-spacing: .1em;
-            margin-left: calc(-1 * var(--panel__margin-ew));
-            margin-right: calc(-1 * var(--panel__margin-ew));
-            padding-left: var(--panel__margin-ew);
-            padding-right: var(--panel__margin-ew);
+            margin-left: calc(-1 * var(--panel__margin));
+            margin-right: calc(-1 * var(--panel__margin));
+            padding-left: var(--panel__margin);
+            padding-right: var(--panel__margin);
             bottom: 0;
             font-size: 1.5rem;
-            padding-top: .5em;
+            padding-top : calc(.8 * var(--panel__margin)) ;
+            font-weight: 700;
+            line-height: .8em;
 
             /*alignment-baseline: bottom;*/
         }
@@ -125,6 +126,12 @@
 
         .footer {
             grid-area: footer;
+        }
+
+        .panel__section {
+            font-size: 1.5rem;
+            opacity: 50%;
+            margin-top: calc(.5 * var(--panel__margin))
         }
     </style>
 
