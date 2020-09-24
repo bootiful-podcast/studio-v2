@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BootifulPodcast.fm</title>
+    <!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">-->
+    <style>
+        @import url("https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css");
+        @import url('https://fonts.googleapis.com/css2?family=Titillium+Web:wght@200;300;400;700;900&display=swap');
+
+        /*:root {  --font-size: 20px}.test {  font-size: var(--font-size)}*/
+        :root {
+            --clr-green: #76B420;
+            --clr-gray: #E8E8E8;
+            --clr-blue: #4C5F76;
+            --clr-green-darker: #60911C;
+            --clr-green-darkest: #426414;
+            --panel__margin-ew: 2rem;
+        }
+
+        *. *::after, *::before {
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--clr-green);
+            font-family: 'Titillium Web', sans-serif;
+
+        }
+
+        .form-control {
+            background-color: var(--clr-gray);
+
+        }
+
+        .screen {
+            height: 100vh;
+            bottom: 0;
+            display: grid;
+            grid-template-areas:
+                    "header header header  "
+                    "sidebar content . "
+                    "footer footer footer  ";
+            grid-template-rows: 140px auto 200px;
+            grid-template-columns:   200px   50vw    auto;
+        }
+
+        html {
+            height: 100%;
+        }
+
+        body {
+            min-height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+        .logo {
+            background: red;
+            height: 100%;
+            width: 400px;
+            border: 0 solid black;
+            background: url("images/bootiful-podcast-logo.png");
+            background-size: cover;
+        }
+
+        .header {
+            grid-area: header;
+
+        }
+
+        .sidebar {
+            grid-area: sidebar;
+        }
+
+        .content {
+            grid-area: content;
+        }
+
+        .sidebar {
+            grid-area: sidebar;
+        }
+
+        .panel {
+            display: block;
+            background-color: white;
+            padding-left: var(--panel__margin-ew);
+            padding-right: var(--panel__margin-ew);
+            box-shadow: -5px 5px 10px 5px rgba(0, 0, 0, 0.30);
+            margin-left: ;
+        }
+
+        .panel__title {
+            background-color: black;
+            color: white;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: .1em;
+            margin-left: calc(-1 * var(--panel__margin-ew));
+            margin-right: calc(-1 * var(--panel__margin-ew));
+            padding-left: var(--panel__margin-ew);
+            padding-right: var(--panel__margin-ew);
+            bottom: 0;
+            font-size: 1.5rem;
+            padding-top: .5em;
+
+            /*alignment-baseline: bottom;*/
+        }
+
+        .panel__prompt {
+            text-transform: uppercase;
+            font-weight: 900;
+            letter-spacing: .15em;
+        }
+
+        .menu {
+            background-color: var(--clr-green-darker);
+            margin-top: 4rem;
+
+        }
+
+        .tip {
+            background-color: var(--clr-blue);
+        }
+
+        .footer {
+            grid-area: footer;
+        }
+    </style>
+
+</head>
+<body>
+<div class="screen">
+
+    <div class="header">
+        <div class="logo"></div>
+    </div>
+
+    <div class="sidebar">
+        <div class="menu"> the menu</div>
+        <div class="tip"> tip</div>
+    </div>
+
+    <div class="content">
+
+
+        <div class="panel">
+            <div class="panel__title"> Create a New Episode</div>
+            <div class="panel__body">
+
+
+                <div class="panel__section">
+                    Episode Details
+                </div>
+                <form>
+                    <div class="form-group">
+                        <label for="title" class="panel__prompt">
+                            Title
+                        </label>
+                        <input type="text" class="form-control" id="title"/>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description" class="panel__prompt">
+                            Description
+                        </label>
+                        <textarea class="form-control" id="description"></textarea>
+
+                    </div>
+                </form>
+
+
+            </div>
+        </div>
+
+    </div>
+    <div class="footer">footer</div>
+
+</div>
+
+</body>
+</html>
