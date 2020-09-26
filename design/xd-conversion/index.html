@@ -202,12 +202,21 @@
         }
 
         .upload-drop-zone {
-            background-size: 20px;
-            background: var(--clr-gray) url("images/file-upload.png") no-repeat center;
+            background-size: 35px;
+            background-position-x: center;
+            background-position-y: center;
+            background-image: url("images/file-upload.png");
+            background-repeat: no-repeat;
+            vertical-align: center;
+        }
+
+        .upload-drop-zone-dropped {
+            background-color: grey ;
         }
 
         .upload-drop-zone-audio {
-            background: var(--clr-gray) url("images/file-upload.png") no-repeat right ;
+            background-position-x: right;
+
 
         }
 
@@ -215,13 +224,21 @@
         }
 
         .upload-drop-zone:before {
-            content: 'Drag a file here';
+            content: 'drag a file here.';
             display: block;
             text-align: center;
             color: var(--clr-gray-darker)
         }
 
     </style>
+ <!--   <script>
+        window.addEventListener('load', ()=>{
+            //todo set it up when we integrate DnD that the following class is added on drop
+          setTimeout( ()=>{
+            document.getElementsByClassName('upload-drop-zone-audio').item(0).classList.add('upload-drop-zone-dropped')
+          } , 1000)
+        })
+    </script>-->
 
 </head>
 <body>
@@ -277,7 +294,7 @@
                                 <label for="description" class="panel__prompt">
                                     Interview Audio <span class="file-type">(.MP3)</span>
                                 </label>
-                                <div class="interview-upload form-control upload-drop-zone upload-drop-zone-audio" id="interview">
+                                <div class="interview-upload  form-control upload-drop-zone upload-drop-zone-audio   " id="interview">
                                 </div>
                             </div>
                         </div>
@@ -287,7 +304,7 @@
                                 <label for="photo" class="panel__prompt profile-photo-file--prompt">
                                     Profile Photo <span class="file-type">(.JPG)</span>
                                 </label>
-                                <div class="profile-photo-file--upload form-control upload-drop-zone upload-drop-zone-photo " id="photo">
+                                <div class="profile-photo-file--upload form-control upload-drop-zone upload-drop-zone-photo   " id="photo">
                                 </div>
                             </div>
                         </div>
@@ -302,7 +319,7 @@
         </div>
 
     </div>
-    <div class="footer">footer</div>
+    <div class="footer"> </div>
 
 </div>
 
