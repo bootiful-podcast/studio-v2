@@ -15,7 +15,8 @@
             --clr-green-darkest: #426414;
             --panel__margin: 2rem;
             --bold-letter-spacing: .15em;
-            --clr-gray-darker: rgba(0,0,0,.5);
+            --clr-gray-darker: rgba(0, 0, 0, .5);
+            --larger-text-line-height: .7em;
         }
 
         a {
@@ -52,7 +53,7 @@
                     "sidebar content . "
                     "footer footer footer  ";
             grid-template-rows: 140px auto 200px;
-            grid-template-columns: 200px auto 200px;
+            grid-template-columns: 250px auto 250px;
         }
 
         html {
@@ -72,19 +73,21 @@
         }
 
 
-        .buttons * {
+        .action {
             padding-left: 1em;
             font-size: larger;
             letter-spacing: var(--bold-letter-spacing);
+            text-transform: uppercase;
         }
 
-        .main-action {
+        .action__main {
             font-weight: 900;
         }
 
 
-        .alternative-action {
+        .action__alternative {
             font-weight: 500;
+            letter-spacing: calc(var(--bold-letter-spacing) / 2);
         }
 
         .logo {
@@ -136,7 +139,7 @@
             font-size: 1.5rem;
             padding-top: calc(.8 * var(--panel__margin));
             font-weight: 700;
-            line-height: .8em;
+            line-height: var(--larger-text-line-height);
         }
 
         .panel__prompt {
@@ -211,13 +214,11 @@
         }
 
         .upload-drop-zone-dropped {
-            background-color: grey ;
+            background-color: grey;
         }
 
         .upload-drop-zone-audio {
             background-position-x: right;
-
-
         }
 
         .upload-drop-zone-photo {
@@ -230,15 +231,60 @@
             color: var(--clr-gray-darker)
         }
 
+        .tip {
+            padding-left: calc(var(--panel__margin) / 2);
+            padding-top: var(--panel__margin);
+            padding-bottom: var(--panel__margin);
+            color: white;
+        }
+
+        .menu > * {
+            margin: 0;
+            color: white;
+            padding: 0 0 0 var(--panel__margin);
+        }
+
+        .menu .action {
+            font-size: 2em;
+            line-height: var(--larger-text-line-height);
+            text-transform: uppercase;
+            display: block;
+            font-weight: 700;
+        }
+
+        .menu .action:hover {
+            color: black;
+            text-decoration: none;
+        }
+
+        .menu .action:hover:before {
+            content: '';
+            display: inline;
+            float: left;
+            width: 10px;
+            padding-right: 10px;
+            margin-left: -20px;
+            height: 1rem;
+            background-color: var(--clr-green-darkest);
+        }
+
+        a:hover {
+            color: var(--clr-blue);
+        }
+
+        .sidebar h1 {
+            font-size: 1.5em;
+        }
+
     </style>
- <!--   <script>
-        window.addEventListener('load', ()=>{
-            //todo set it up when we integrate DnD that the following class is added on drop
-          setTimeout( ()=>{
-            document.getElementsByClassName('upload-drop-zone-audio').item(0).classList.add('upload-drop-zone-dropped')
-          } , 1000)
-        })
-    </script>-->
+    <!--   <script>
+           window.addEventListener('load', ()=>{
+               //todo set it up when we integrate DnD that the following class is added on drop
+             setTimeout( ()=>{
+               document.getElementsByClassName('upload-drop-zone-audio').item(0).classList.add('upload-drop-zone-dropped')
+             } , 1000)
+           })
+       </script>-->
 
 </head>
 <body>
@@ -249,8 +295,21 @@
     </div>
 
     <div class="sidebar">
-        <div class="menu"> the menu</div>
-        <div class="tip"> tip</div>
+        <nav class="menu">
+            <a class="action action__main" href="">create</a>
+            <a class="action action__main" href="">manage</a>
+        </nav>
+        <div class="tip">
+            <h1> Tips for Creating a Good Episode:</h1>
+            <UL>
+                <LI> Give it a pithy title</LI>
+                <LI> Use Markdown for the description to include links and resources
+                </LI>
+                <LI> Make sure your image
+                    is 400x400 or larger
+                </LI>
+            </UL>
+        </div>
     </div>
 
     <div class="content">
@@ -294,7 +353,8 @@
                                 <label for="description" class="panel__prompt">
                                     Interview Audio <span class="file-type">(.MP3)</span>
                                 </label>
-                                <div class="interview-upload  form-control upload-drop-zone upload-drop-zone-audio   " id="interview">
+                                <div class="interview-upload  form-control upload-drop-zone upload-drop-zone-audio   "
+                                     id="interview">
                                 </div>
                             </div>
                         </div>
@@ -304,22 +364,23 @@
                                 <label for="photo" class="panel__prompt profile-photo-file--prompt">
                                     Profile Photo <span class="file-type">(.JPG)</span>
                                 </label>
-                                <div class="profile-photo-file--upload form-control upload-drop-zone upload-drop-zone-photo   " id="photo">
+                                <div class="profile-photo-file--upload form-control upload-drop-zone upload-drop-zone-photo   "
+                                     id="photo">
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="buttons">
-                        <a href="" class="alternative-action">Cancel</a>
-                        <a href="" class="main-action">Create</a>
+                        <a href="" class="action action__alternative">Cancel</a>
+                        <a href="" class="action action__main">Create</a>
                     </div>
                 </form>
             </div>
         </div>
 
     </div>
-    <div class="footer"> </div>
+    <div class="footer"></div>
 
 </div>
 
