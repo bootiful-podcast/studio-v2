@@ -70,6 +70,7 @@
             font-weight: bold;
             color: var(--clr-gray-darker);
             text-align: right;
+            padding-top: calc( .5 * var(--panel__margin));
         }
 
         code {
@@ -82,8 +83,8 @@
             font-size: larger;
             margin-left: calc(.5 * var(--panel__margin));
             font-weight: 700;
+            padding-top: calc( .5 * var(--panel__margin));
         }
-
 
         .search__result__photo {
             grid-area: photo;
@@ -131,11 +132,18 @@
     <div class="content">
 
 
+
+
         <div class="panel">
             <h1 class="panel__title"> Manage Episodes</h1>
             <div class="panel__body">
 
+                <div class="panel__section"> Search </div>
 
+                <input type="text" class="form-control" id="search"/>
+
+
+                <div class="panel__section"> Results </div>
                 <!--                -->
                 <div class="search__result">
 
@@ -153,52 +161,13 @@
 
                     <div class="search__result__actions">
                         <a href="" class="action action__main">edit</a>
+                        <a href="" class="action action__alternative">open</a>
                         <a href="" class="action action__alternative">delete</a>
                         <a href="" class="action action__alternative">unpublish</a>
                     </div>
                 </div>
 
-                <div class="search__result">
 
-                    <div class="search__result__photo"></div>
-                    <div class="search__result__title">
-                        Mr. Reactive Rossen Stoyanchev
-                    </div>
-                    <div class="search__result__date"> 9/10/2020</div>
-                    <div class="search__result__description">
-
-                        Hi, Spring fans! In this episode Spring Developer Advocate <a href="">Josh Long
-                        (@starbuxman)</a> talks to <a href="">Rossen Stoyanchev (@rstoya85)</a>
-
-                    </div>
-
-                    <div class="search__result__actions">
-                        <a href="" class="action action__main">edit</a>
-                        <a href="" class="action action__alternative">delete</a>
-                        <a href="" class="action action__alternative">unpublish</a>
-                    </div>
-                </div>
-
-                <div class="search__result">
-
-                    <div class="search__result__photo"></div>
-                    <div class="search__result__title">
-                        Mr. Reactive Rossen Stoyanchev
-                    </div>
-                    <div class="search__result__date"> 9/10/2020</div>
-                    <div class="search__result__description">
-
-                        Hi, Spring fans! In this episode Spring Developer Advocate <a href="">Josh Long
-                        (@starbuxman)</a> talks to <a href="">Rossen Stoyanchev (@rstoya85)</a>
-
-                    </div>
-
-                    <div class="search__result__actions">
-                        <a href="" class="action action__main">edit</a>
-                        <a href="" class="action action__alternative">delete</a>
-                        <a href="" class="action action__alternative">unpublish</a>
-                    </div>
-                </div>
 
 
                 <!--                -->
