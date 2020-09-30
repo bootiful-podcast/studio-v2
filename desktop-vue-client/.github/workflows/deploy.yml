@@ -1,0 +1,30 @@
+name: Deploy
+
+# env:
+#   CF_USER: ${{ secrets.CF_USER }}
+#   CF_PASSWORD: ${{ secrets.CF_PASSWORD }}
+#   CF_SPACE: ${{ secrets.CF_SPACE }}
+#   CF_API: ${{ secrets.CF_API }}
+#   CF_ORG: ${{ secrets.CF_ORG  }}
+
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: actions/checkout@v2
+
+      # - uses: actions/setup-node@master
+      #   with:
+      #     node-version: '10.x'
+
+      # - run: npm install
+      # - run: npm run build
