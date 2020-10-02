@@ -9,11 +9,10 @@
 
     <div class="sidebar">
       <nav class="menu">
-        <a class="action action__main" href="#">create</a>
-        <a class="action action__main" href="#">manage</a>
+        <router-link class="action action__main" to="/create">create</router-link>
+        <router-link class="action action__main" to="/search"> search</router-link>
       </nav>
-
-      <slot name="sidebar"> </slot>
+      <slot name="sidebar"></slot>
     </div>
 
     <div class="content">
@@ -37,5 +36,5 @@ export default {
   }
 }
 </script>
-<style  >
+<style>
 </style>
