@@ -246,7 +246,7 @@ body {
     <Panel title-text="this is a panel">
       this is the body of a panel
     </Panel>
-    
+
     <Panel title-text="this is also a panel">
       this is the body of a panel
     </Panel>
