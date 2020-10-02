@@ -44,6 +44,7 @@
 </template>
 <script>
   export default {
+
     name: 'Editor',
     props: ['bookmark'],
     mounted() {
