@@ -4,16 +4,14 @@
   <Page>
 
     <div slot="sidebar">
-      <Tip title="This is your one-stop shop to search, edit, or delete episodes:">
-        <UL>
-          <LI>Enter a search term in the searchbox to find existing episodes
-          </LI>
-          <LI> Click EDIT to update an episode, or DELETE to delete an episode.</LI>
-        </UL>
+
+      <Tip title="Login">
+     Start here.
       </Tip>
+
     </div>
-    <Panel title="Search">
-      this is the body of a panel take 2
+    <Panel title="Login">
+      <Login v-on:authentication-attempt="myCallback"/>
     </Panel>
   </Page>
 </template>
@@ -23,19 +21,27 @@
 import Page from "@/components/Page";
 import Panel from "@/components/Panel";
 import Tip from "@/components/Tip";
+import Login from "@/components/Login";
 
 export default {
-  name: 'SearchEpisodePage',
+  name: 'LoginPage',
   mounted() {
   },
   created() {
     console.log('starting ' + this.$options.name)
   },
-  methods: {},
+  methods: {
+
+    myCallback(authAttempt) {
+      console.info('going to propagate auth attempt for auth', authAttempt)
+      this.$emit("authentication-attempt", authAttempt)
+    }
+  },
   data() {
     return {}
   },
   components: {
+    Login,
     Tip,
     Panel,
     Page

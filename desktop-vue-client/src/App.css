@@ -116,7 +116,9 @@ a:hover {
 body {
     background-color: var(--clr-green);
     font-family: 'Titillium Web', sans-serif;
-
+    min-height: 100%;
+    padding: 0;
+    margin: 0;
 }
 
 .form-control {
@@ -139,13 +141,6 @@ body {
 html {
     height: 100%;
 }
-
-body {
-    min-height: 100%;
-    padding: 0;
-    margin: 0;
-}
-
 .buttons {
     right: 0;
     justify-content: flex-end;
@@ -193,6 +188,10 @@ body {
 
 .sidebar {
     grid-area: sidebar;
+}
+
+.panel__body {
+    padding-top:   var(--panel__margin)  ;
 }
 
 .panel {

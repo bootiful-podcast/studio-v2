@@ -7,6 +7,7 @@ import VueRouter from 'vue-router'
 import CreateEpisodePage from "@/pages/CreateEpisodePage";
 import SearchPage from "@/pages/SearchEpisodePage";
 import App from "@/App";
+import LoginPage from "@/pages/LoginPage";
 
 
 
@@ -24,7 +25,7 @@ const router = new VueRouter({
   routes: [
     {path: '/create', component: CreateEpisodePage},
     {path: '/search', component: SearchPage},
-    {path: '/', component: SearchPage}
+    {path: '/', component: LoginPage}
     // { path: '/bar', component: Bar },
     // { path: '/é', component: Unicode },
     // { path: '/query/:q', component: Query }

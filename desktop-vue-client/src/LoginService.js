@@ -2,6 +2,7 @@ export default class LoginService {
 
   constructor(authUrl) {
     this.tokenUrl = authUrl;
+    console.debug('the tokenUrl is', this.tokenUrl)
   }
 
   _handleResponse(response) {
@@ -57,8 +58,7 @@ export default class LoginService {
               }
               return user
             })
-        }
-        else {
+        } else {
           return Promise.reject(`could not authenticate @  ${Date.now()}. 
                                         The status code returned is ${response.status}
                                         and the text was ${response.statusText}`)
@@ -81,4 +81,3 @@ export default class LoginService {
   }
 
 }
-

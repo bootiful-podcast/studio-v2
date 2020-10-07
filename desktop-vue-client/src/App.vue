@@ -4,18 +4,39 @@
 @import url('App.css');
 </style>
 <template>
-  <router-view>
+  <router-view @authentication-attempt="afterAuthentication">
   </router-view>
 </template>
 <script>
+import LoginService from "./LoginService"
+
+
+const rootUrl = ((u) => (u.endsWith('/')) ? u : u + '/')(process.env.VUE_APP_SERVICE_ROOT)
+const loginService = new LoginService(rootUrl + 'token')
+
+
 export default {
   name: 'App',
   mounted() {
+
   },
   created() {
     console.log('Launching BootifulPodcast.fm Desktop Client')
   },
-  methods: {},
+  methods: {
+
+
+    afterAuthentication(authentication) {
+      loginService
+          .login(authentication.username, authentication.password)
+          .then(user => {
+            this.$emit("authentication-success", user)
+          })
+          .catch((exception) => {
+            console.error(`could not login: ${exception.toString()} `)
+          })
+    }
+  },
   data() {
     return {}
   },
