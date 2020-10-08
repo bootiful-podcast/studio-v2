@@ -1,3 +1,6 @@
+
+// import requestUtils from "@/RequestUtils";
+
 export default class LoginService {
 
   constructor(authUrl) {
@@ -37,7 +40,7 @@ export default class LoginService {
     return Promise.reject('there is not existing token; you will need to authenticate.')
   }
 
-  login(username, password) {
+  async login(username, password) {
     const requestOptions = {
       method: 'POST',
       headers: {
@@ -46,7 +49,7 @@ export default class LoginService {
       }
     };
 
-    return fetch(this.tokenUrl, requestOptions)
+    return await fetch(this.tokenUrl, requestOptions)
       .then(response => {
         if (response.status === 200) {
           return response

@@ -8,38 +8,55 @@
   </router-view>
 </template>
 <script>
+
+
+
 import LoginService from "./LoginService"
+import PodcastService from "@/PodcastService";
 
-
-const rootUrl = 'http://localhost:8080/token' //((u) => (u.endsWith('/')) ? u : u + '/')(process.env.VUE_APP_SERVICE_ROOT)
-const loginService = new LoginService(rootUrl  )
-
+const rootUrl = ((u) => (u.endsWith('/')) ? u : u + '/')(process.env.VUE_APP_SERVICE_ROOT)
+const loginService = new LoginService(rootUrl + 'token')
+const podcastService = new PodcastService(rootUrl + 'podcasts', () => loginService.getUserToken())
 
 export default {
   name: 'App',
-  mounted() {
 
+  mounted() {
+    this.$on('authentication-success', (authenticatedUser) => {
+      console.info(authenticatedUser, 'has been found')
+      podcastService
+          .getPodcasts()
+          .then((podcasts) => {
+            Array.of(podcasts).forEach(podcast => console.log(podcast))
+          })
+          .catch((exception) => console.error(`could not fetch the episodes: ${exception.toString()}`))
+    })
   },
+
   created() {
     console.log('Launching BootifulPodcast.fm Desktop Client')
   },
+
   methods: {
 
-
     afterAuthentication(authentication) {
+      console.info(`authenticated: ${authentication.username}`)
       loginService
           .login(authentication.username, authentication.password)
-          .then(user => {
-            this.$emit("authentication-success", user)
+          .then(() => {
+            this.$emit("authentication-success", authentication)
           })
           .catch((exception) => {
             console.error(`could not login: ${exception.toString()} `)
           })
     }
   },
+
   data() {
     return {}
   },
+
   components: {}
+
 }
 </script>

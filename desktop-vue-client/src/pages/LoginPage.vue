@@ -24,12 +24,16 @@ import Tip from "@/components/Tip";
 import Login from "@/components/Login";
 
 export default {
+
   name: 'LoginPage',
+
   mounted() {
   },
+
   created() {
     console.log('starting ' + this.$options.name)
   },
+
   methods: {
 
     myCallback(authAttempt) {
@@ -37,9 +41,11 @@ export default {
       this.$emit("authentication-attempt", authAttempt)
     }
   },
+
   data() {
     return {}
   },
+
   components: {
     Login,
     Tip,
