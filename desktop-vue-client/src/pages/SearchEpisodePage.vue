@@ -77,7 +77,7 @@ code {
   width: 200px;
   background-size: cover;
   grid-area: photo;
-  background-image: url('http://bootifulpodcast.fm/episode-photos/d8b01a23-a4d1-479d-85f6-52d0485dc6c2.jpg');
+  /*background-image: url('http://bootifulpodcast.fm/episode-photos/d8b01a23-a4d1-479d-85f6-52d0485dc6c2.jpg');*/
   z-index: 1;
 }
 </style>
