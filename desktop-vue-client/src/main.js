@@ -57,11 +57,9 @@ function sortPodcastsByDateMostRecentFirst(results) {
   function dateIndex(dateStr) {
     return dateStr.split('T')[0]
   }
-
   results.sort((a, b) => dateIndex(a.date).localeCompare(dateIndex(b.date)))
   results.reverse()
   return results
-
 }
 
 const store = {

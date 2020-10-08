@@ -1,5 +1,5 @@
 <template>
-  <form>
+  <form @submit.prevent="loginAttempt">
     <div class="form-group">
       <label class="panel__prompt" for="emailField">Username:</label>
       <input type="email" class="form-control"
@@ -11,8 +11,7 @@
              v-model="input.password" id="passwordField"/>
     </div>
     <div class="buttons">
-      <a href="" @click.prevent="loginAttempt"
-         class="action action__main">Submit</a>
+      <a href="" @click.prevent="loginAttempt"  class="action action__main">Submit</a>
     </div>
   </form>
 </template>

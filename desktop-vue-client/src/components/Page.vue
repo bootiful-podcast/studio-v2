@@ -11,7 +11,7 @@
     </div>
 
     <div class="header">
-      <div class="logo"></div>
+      <div class="logo" @click="goHome"></div>
     </div>
 
     <div class="sidebar">
@@ -38,8 +38,13 @@ export default {
   name: 'Page',
   created() {
 
+
   },
-  methods: {},
+  methods: {
+    goHome() {
+      this.$router.push('/')
+    }
+  },
   data() {
     return {}
   }
