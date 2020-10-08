@@ -52,6 +52,18 @@ const rootUrl = ((u) => (u.endsWith('/')) ? u : u + '/')(process.env.VUE_APP_SER
 const loginService = new LoginService(rootUrl + 'token')
 const podcastService = new PodcastService(rootUrl + 'podcasts', () => loginService.getUserToken())
 
+
+function sortPodcastsByDateMostRecentFirst(results) {
+  function dateIndex(dateStr) {
+    return dateStr.split('T')[0]
+  }
+
+  results.sort((a, b) => dateIndex(a.date).localeCompare(dateIndex(b.date)))
+  results.reverse()
+  return results
+
+}
+
 const store = {
   session: {
     token: null,
@@ -63,10 +75,10 @@ const store = {
     return this.session.token
   },
   async getPodcasts() {
-    return await podcastService.getPodcasts()
+    return sortPodcastsByDateMostRecentFirst(await podcastService.getPodcasts())
   },
   async searchPodcasts(query) {
-    return await podcastService.searchPodcasts(query)
+    return sortPodcastsByDateMostRecentFirst(await podcastService.searchPodcasts(query))
   }
 }
 const router = new VueRouter({
