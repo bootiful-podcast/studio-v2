@@ -64,7 +64,7 @@ export default class LoginService {
       localStorage.setItem('user', JSON.stringify(user));
     }
     console.log( 'the user is ' , user )
-    return user
+    return user.token
   }
 
   logout() {

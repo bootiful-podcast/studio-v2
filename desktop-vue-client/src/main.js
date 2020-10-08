@@ -53,7 +53,15 @@ const loginService = new LoginService(rootUrl + 'token')
 const podcastService = new PodcastService(rootUrl + 'podcasts', () => loginService.getUserToken())
 
 const store = {
-
+  session: {
+    token: null,
+    username: null
+  },
+  async login(username, password) {
+    this.session.token = await loginService.login(username, password)
+    this.session.username = username
+    return this.session.token
+  },
   async getPodcasts() {
     return await podcastService.getPodcasts()
   },

@@ -35,10 +35,11 @@ export default {
   },
 
   methods: {
-
-    myCallback(authAttempt) {
-      console.info('going to propagate auth attempt for auth', authAttempt)
-      this.$emit("authentication-attempt", authAttempt)
+    async myCallback(authAttempt) {
+      const auth = await this.$root.$data.login(authAttempt.username, authAttempt.password)
+      console.log( this.$root.$data.session.username)
+      console.log( this.$root.$data.session.token )
+      this.$emit('authentication-success', auth)
     }
   },
 

@@ -4,10 +4,7 @@
 @import url('App.css');
 </style>
 <template>
-  <router-view
-      @authentication-attempt="afterAuthentication"
-
-  >
+  <router-view>
   </router-view>
 </template>
 <script>
@@ -16,11 +13,7 @@ export default {
   name: 'App',
 
   mounted() {
-    // eslint-disable-next-line no-unused-vars
-    this.$on('authentication-success', async (authenticatedUser) => {
-      // const podcasts =
-      // console.log(podcasts)
-    })
+
   },
 
   created() {
@@ -29,11 +22,6 @@ export default {
 
   methods: {
 
-    // eslint-disable-next-line no-unused-vars
-    async afterAuthentication(authentication) {
-      // const result = await loginService.login(authentication.username, authentication.password)
-      // this.$emit("authentication-success", result)
-    }
   },
 
   data() {

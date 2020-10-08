@@ -77,8 +77,7 @@ code {
   width: 200px;
   background-size: cover;
   grid-area: photo;
-  /*background-image: url('http://bootifulpodcast.fm/episode-photos/d8b01a23-a4d1-479d-85f6-52d0485dc6c2.jpg');*/
-  z-index: 1;
+   z-index: 1;
 }
 </style>
 <template>
@@ -103,7 +102,7 @@ code {
       </div>
 
       <!--      -->
-      <div class="panel__section"> Results</div>
+      <div v-if="podcasts.length > 0" class="panel__section"> Results</div>
       <div v-for="podcast in podcasts" v-bind:key="podcast.uid">
         <Episode v-bind:podcast="podcast"/>
       </div>
@@ -129,6 +128,7 @@ export default {
   methods: {
     async doSearch() {
       console.log('doSearch([' + this.query + '])')
+      console.log( `in theory, we're signed in as ${ this.$root.$data.session.token }`)
       if (this.query === '' || this.query === null) {
         this.podcasts = await this.$root.$data.getPodcasts()
       } //

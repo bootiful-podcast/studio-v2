@@ -1,5 +1,4 @@
 
-
 :root {
     --clr-green: #76B420;
     --clr-gray: #E8E8E8;
@@ -49,6 +48,8 @@ a:hover {
 }
 
 .menu {
+    margin-top: 4rem;
+    background-color: var(--clr-green-darker);
     z-index: -10;
 }
 
@@ -64,12 +65,6 @@ a:hover {
     text-transform: uppercase;
     display: block;
     font-weight: 700;
-}
-
-
-.menu {
-    background-color: var(--clr-green-darker);
-    margin-top: 4rem;
 }
 
 .tip {
@@ -131,7 +126,7 @@ body {
     bottom: 0;
     display: grid;
     grid-template-areas:
-                    "header header header  "
+                    "header header user  "
                     "sidebar content . "
                     "footer footer footer  ";
     grid-template-rows: 140px auto 200px;
@@ -141,6 +136,20 @@ body {
 html {
     height: 100%;
 }
+
+.user {
+    grid-area: user ;
+    text-align: right;
+    padding-right:  var(--panel__margin) ;
+    padding-top : calc( var(--panel__margin) / 2 );
+}
+
+.user .username {
+    font-size: larger;
+    font-weight: bold;
+}
+
+
 .buttons {
     right: 0;
     justify-content: flex-end;
@@ -185,13 +194,16 @@ html {
 .content {
     grid-area: content;
 }
-
-.sidebar {
-    grid-area: sidebar;
-}
+/*
+.hello-user {
+    margin-top: 4rem;
+    background-color: black;
+    color: white;
+    height :   var(--panel__margin)
+}*/
 
 .panel__body {
-    padding-top:   var(--panel__margin)  ;
+    padding-top: var(--panel__margin);
 }
 
 .panel {
