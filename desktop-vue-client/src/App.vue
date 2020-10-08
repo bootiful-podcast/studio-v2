@@ -23,9 +23,8 @@ export default {
   mounted() {
     this.$on('authentication-success', async (authenticatedUser) => {
       console.info(authenticatedUser, 'has been found')
-      const podcasts = podcastService.getPodcasts()
+      const podcasts = await podcastService.getPodcasts()
       console.log(podcasts)
-
     })
   },
 
@@ -35,16 +34,10 @@ export default {
 
   methods: {
 
-    afterAuthentication(authentication) {
-      console.info(`authenticated: ${authentication.username}`)
-      loginService
-          .login(authentication.username, authentication.password)
-          .then(() => {
-            this.$emit("authentication-success", authentication)
-          })
-          .catch((exception) => {
-            console.error(`could not login: ${exception.toString()} `)
-          })
+    async afterAuthentication(authentication) {
+      console.debug(`authenticated: ${authentication.username}`)
+      const result = await loginService.login(authentication.username, authentication.password)
+      this.$emit("authentication-success", result)
     }
   },
 

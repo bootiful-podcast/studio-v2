@@ -7,16 +7,19 @@ export default class LoginService {
     this.tokenProducer = tokenProducer
   }
 
+  async searchPodcasts(query) {
+    return await requestUtils.jsonRequest(this.podcastApiUrl + '/search?query=' + query, {
+      method: 'GET'
+    })
+  }
+
   async getPodcasts() {
-    const podcasts = await requestUtils.jsonRequest(this.podcastApiUrl, {
+    const p = await requestUtils.jsonRequest(this.podcastApiUrl, {
       method: 'GET',
       headers: {
         'Accept': 'application/json'
       }
     })
-    for (let i = 0; i < podcasts.length; i++) {
-      console.log(podcasts [i])
-    }
-    return podcasts
+    return p
   }
 }
