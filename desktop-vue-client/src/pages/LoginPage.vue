@@ -6,7 +6,7 @@
     <div slot="sidebar">
 
       <Tip title="Login">
-     Start here.
+        Start here.
       </Tip>
 
     </div>

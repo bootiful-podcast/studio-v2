@@ -10,7 +10,6 @@
 <script>
 
 
-
 import LoginService from "./LoginService"
 import PodcastService from "@/PodcastService";
 
@@ -22,14 +21,11 @@ export default {
   name: 'App',
 
   mounted() {
-    this.$on('authentication-success', (authenticatedUser) => {
+    this.$on('authentication-success', async (authenticatedUser) => {
       console.info(authenticatedUser, 'has been found')
-      podcastService
-          .getPodcasts()
-          .then((podcasts) => {
-            Array.of(podcasts).forEach(podcast => console.log(podcast))
-          })
-          .catch((exception) => console.error(`could not fetch the episodes: ${exception.toString()}`))
+      const podcasts = podcastService.getPodcasts()
+      console.log(podcasts)
+
     })
   },
 

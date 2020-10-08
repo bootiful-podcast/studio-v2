@@ -17,5 +17,6 @@ export default class LoginService {
     for (let i = 0; i < podcasts.length; i++) {
       console.log(podcasts [i])
     }
+    return podcasts
   }
 }
