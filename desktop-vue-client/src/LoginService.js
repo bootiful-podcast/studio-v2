@@ -2,7 +2,7 @@ export default class LoginService {
 
   constructor(authUrl) {
     this.tokenUrl = authUrl;
-    console.debug('the tokenUrl is', this.tokenUrl)
+    console.info ('the tokenUrl is', this.tokenUrl)
   }
 
   _handleResponse(response) {
@@ -54,7 +54,7 @@ export default class LoginService {
             .then(text => {
               const user = {token: text};
               if (user.token) {
-                localStorage.setItem('user', JSON.stringify(user));
+               localStorage.setItem('user', JSON.stringify(user));
               }
               return user
             })

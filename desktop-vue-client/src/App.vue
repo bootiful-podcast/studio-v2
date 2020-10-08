@@ -11,8 +11,8 @@
 import LoginService from "./LoginService"
 
 
-const rootUrl = ((u) => (u.endsWith('/')) ? u : u + '/')(process.env.VUE_APP_SERVICE_ROOT)
-const loginService = new LoginService(rootUrl + 'token')
+const rootUrl = 'http://localhost:8080/token' //((u) => (u.endsWith('/')) ? u : u + '/')(process.env.VUE_APP_SERVICE_ROOT)
+const loginService = new LoginService(rootUrl  )
 
 
 export default {
