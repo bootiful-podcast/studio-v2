@@ -9,6 +9,9 @@ import SearchPage from "@/pages/SearchEpisodePage";
 import App from "@/App";
 import LoginPage from "@/pages/LoginPage";
 
+// import Vuex from 'vuex'
+import LoginService from "./LoginService"
+import PodcastService from "@/PodcastService";
 
 
 Vue.config.productionTip = false
@@ -17,8 +20,47 @@ Vue.config.productionTip = false
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(VueRouter)
+// Vue.use(Vuex)
 
 
+/*
+const store = new Vuex.Store({
+  state: {
+    search: {
+      query: '',
+      podcasts: []
+    }
+  },
+  getters: {
+    searchPodcasts: (state) => async (query) => {
+      console.log('the current state is', state)
+      console.log('searching for ', query)
+      if (query == null) {
+        return await podcastService.getPodcasts(  )
+      }
+    }
+  },
+  mutations: {
+    increment(state) {
+      state.count++
+    }
+  }
+})
+*/
+
+const rootUrl = ((u) => (u.endsWith('/')) ? u : u + '/')(process.env.VUE_APP_SERVICE_ROOT)
+const loginService = new LoginService(rootUrl + 'token')
+const podcastService = new PodcastService(rootUrl + 'podcasts', () => loginService.getUserToken())
+
+const store = {
+
+  async getPodcasts() {
+    return await podcastService.getPodcasts()
+  },
+  async searchPodcasts(query) {
+    return await podcastService.searchPodcasts(query)
+  }
+}
 const router = new VueRouter({
   mode: 'history',
   base: __dirname,
@@ -35,5 +77,7 @@ const router = new VueRouter({
 
 new Vue({
   router,
-  render: h => h( App)
+  data: store,
+  // store: store,
+  render: h => h(App)
 }).$mount('#app')
