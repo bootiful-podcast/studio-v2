@@ -57,19 +57,24 @@ function sortPodcastsByDateMostRecentFirst(results) {
   function dateIndex(dateStr) {
     return dateStr.split('T')[0]
   }
+
   results.sort((a, b) => dateIndex(a.date).localeCompare(dateIndex(b.date)))
   results.reverse()
   return results
 }
 
 const store = {
+  service: {
+    url: rootUrl
+  },
   session: {
     token: null,
     username: null
   },
   async login(username, password) {
+
     this.session.token = await loginService.login(username, password)
-    this.session.username = username
+    this.session.username = username.toLowerCase()
     return this.session.token
   },
   async getPodcasts() {

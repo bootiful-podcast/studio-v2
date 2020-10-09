@@ -84,36 +84,35 @@ code {
   <Page>
 
     <div slot="sidebar">
-      <Tip title="This is your one-stop shop to search, edit, or delete episodes:">
-        <UL>
-          <LI>Enter a search term in the searchbox to find existing episodes
-          </LI>
-          <LI> You can enter arbitrary words and the description will be searched. Group words with quotation marks.
-          </LI>
-          <LI>
-            You can use the
-            <a href="https://lucene.apache.org/core/8_6_2/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#package.description">Lucene
-              Query Syntax</a>
-            to search the database. E.g: <br/>
-            <CODE>+title:"spring" AND -description:"batch"</CODE>
-            <br/> That query demonstrates matching arbitrary fields, requiring that a certain value be present in one
-            and
-            that another value <EM>not</EM> be present in another.
-          </LI>
-          <LI> Click EDIT to update an episode, or DELETE to delete an episode.</LI>
-        </UL>
+      <Tip title="Find and Replace">
+
+        <p>Enter a search term in the search box to find existing episodes.
+          You can enter arbitrary words and the description will be searched. Group words with quotation marks.
+        </p>
+        <p>
+          You can use the <a
+            href="https://lucene.apache.org/core/8_6_2/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#package.description">Lucene
+          Query Syntax</a>
+          to search the database. There are several fields available to you including <code>description</code> and
+          <code>title</code> that you can use in crafting your queries.
+        </p>
+
+
       </Tip>
     </div>
     <Panel title="Search">
 
       <!--      -->
       <div class="panel__section"> Search</div>
-      <form @submit.prevent="doSearch"><input type="text" class="form-control" v-model="query" id="search"/></form>
+
+      <form @submit.prevent="doSearch">
+        <input type="text" class="form-control" v-model="query" id="search"/>
+      </form>
+
       <div class="buttons">
         <a @click.prevent="doSearch" href="" class="action action__main">Go</a>
         <a @click.prevent="doClear" href="" class="action action__alternative">Clear</a>
       </div>
-
       <!--      -->
       <div v-if="podcasts.length > 0" class="panel__section">
         Showing {{ podcasts.length }} results

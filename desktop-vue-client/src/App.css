@@ -1,3 +1,12 @@
+.hidden-submit {
+    border: 0 none;
+    height: 0;
+    width: 0;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
 
 :root {
     --clr-green: #76B420;
@@ -36,6 +45,10 @@ a:hover {
     font-size: 1.5em;
 }
 
+.user .server {
+    text-transform: uppercase;
+    letter-spacing: .1em;
+}
 
 .tip {
     position: relative;
@@ -45,6 +58,8 @@ a:hover {
     padding-right: calc(.25 * var(--panel__margin));
     color: white;
     z-index: 10;
+    /*text-align: right;*/
+    background-color: var(--clr-blue);
 }
 
 .menu {
@@ -60,6 +75,7 @@ a:hover {
 }
 
 .menu .action {
+    padding-top: calc(var(--panel__margin) / 4);
     font-size: 2em;
     line-height: var(--larger-text-line-height);
     text-transform: uppercase;
@@ -67,14 +83,45 @@ a:hover {
     font-weight: 700;
 }
 
-.tip {
-    background-color: var(--clr-blue);
+
+.tip code {
+    color: lightblue;
+}
+
+.tip a {
+    color: lightblue;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.tip a:hover {
+    color: white;
 }
 
 .footer {
     grid-area: footer;
+    display: flex;
+    justify-content: center;
 }
 
+
+.footer .server {
+    vertical-align: baseline;
+    text-align: center;
+    height: auto;
+    /*border: 1px solid black;*/
+    width: auto;
+    horiz-align: center;
+    bottom: calc(var(--panel__margin) / 2);
+    position: relative;
+    text-transform: uppercase;
+    color: var(--clr-green-darkest);
+    right: 0;
+    left: 0;
+    display: inline-block;
+    align-self: flex-end;
+    alignment: center;
+}
 
 .panel__prompt {
     text-transform: uppercase;
@@ -96,6 +143,10 @@ a:hover {
 
 a {
     color: black;
+
+}
+
+code {
 
 }
 
@@ -130,7 +181,7 @@ body {
                     "sidebar content . "
                     "footer footer footer  ";
     grid-template-rows: 140px auto 200px;
-    grid-template-columns: 250px auto 250px;
+    grid-template-columns: 20vw auto 20vw;
 }
 
 html {
@@ -138,10 +189,10 @@ html {
 }
 
 .user {
-    grid-area: user ;
+    grid-area: user;
     text-align: right;
-    padding-right:  var(--panel__margin) ;
-    padding-top : calc( var(--panel__margin) / 2 );
+    padding-right: var(--panel__margin);
+    padding-top: calc(var(--panel__margin) / 2);
 }
 
 .user .username {
@@ -180,6 +231,7 @@ html {
     border: 0 solid black;
     background: url("assets/bootiful-podcast-logo.png");
     background-size: cover;
+    cursor: pointer;
 }
 
 .header {
@@ -194,13 +246,7 @@ html {
 .content {
     grid-area: content;
 }
-/*
-.hello-user {
-    margin-top: 4rem;
-    background-color: black;
-    color: white;
-    height :   var(--panel__margin)
-}*/
+
 
 .panel__body {
     padding-top: var(--panel__margin);

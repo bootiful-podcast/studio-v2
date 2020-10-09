@@ -36,7 +36,7 @@
   background-size: 35px;
   background-position-x: center;
   background-position-y: center;
-  background-image:  url("../assets/file-upload.png");
+  background-image: url("../assets/file-upload.png");
   background-repeat: no-repeat;
   vertical-align: center;
 }
@@ -65,8 +65,9 @@
 
     <div slot="sidebar">
       <Tip title="Every Journey...">
-        This is the beginning of the line - you can
-        create new episodes on this very page.
+        <P> This is the beginning of the line - you can
+          create new episodes on this very page.
+        </P>
       </Tip>
     </div>
 

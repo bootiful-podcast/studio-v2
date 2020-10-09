@@ -37,9 +37,12 @@ export default {
   methods: {
     async myCallback(authAttempt) {
       const auth = await this.$root.$data.login(authAttempt.username, authAttempt.password)
-      console.log( this.$root.$data.session.username)
-      console.log( this.$root.$data.session.token )
+
+      console.debug(this.$root.$data.session.username)
+      console.debug(this.$root.$data.session.token)
       this.$emit('authentication-success', auth)
+
+      await this.$router.push('/search')
     }
   },
 

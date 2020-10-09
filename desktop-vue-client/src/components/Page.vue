@@ -2,12 +2,17 @@
 
 
   <div class="screen">
+
     <div class="user">
-      <span v-if="$root.$data.session.username">hello,
+
+      <span v-if="$root.$data.session.username">
+        hello,
         <span class="username">
           {{ $root.$data.session.username }}
         </span>
       </span>
+
+
     </div>
 
     <div class="header">
@@ -27,7 +32,14 @@
     <div class="content">
       <slot></slot>
     </div>
-    <div class="footer"></div>
+    <div class="footer">
+
+
+      <div class="server">
+        <span class="server--url"> {{ buildPresentableUrl($root.$data.service.url) }}  </span>
+      </div>
+
+    </div>
 
   </div>
 
@@ -41,6 +53,23 @@ export default {
 
   },
   methods: {
+    buildPresentableUrl(url) {
+      function stripPrefix(urlToStrip) {
+        const prefixes = ['http://', 'https://']
+        for (let index in prefixes) {
+          const prefix = prefixes [index];
+          if (urlToStrip.startsWith(prefix.toLowerCase())) {
+            return urlToStrip.substring(prefix.length)
+          }
+        }
+      }
+      const lowerCase = url.toString().toLowerCase();
+      const stripped = stripPrefix(lowerCase)
+      if (stripped.endsWith('/')) {
+        return stripped.substring(0, stripped.length - 1)
+      }
+      return stripped
+    },
     goHome() {
       this.$router.push('/')
     }
