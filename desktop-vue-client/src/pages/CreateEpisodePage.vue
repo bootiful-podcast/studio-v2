@@ -19,46 +19,7 @@
   display: grid;
 }
 
-.profile-photo-file--prompt {
-}
 
-.profile-photo-file--upload {
-  min-height: 80%;
-}
-
-.introduction-upload {
-}
-
-
-.interview-upload {
-}
-
-.upload-drop-zone {
-  background-size: 35px;
-  background-position-x: center;
-  background-position-y: center;
-  background-image: url("../assets/file-upload.png");
-  background-repeat: no-repeat;
-  vertical-align: center;
-}
-
-.upload-drop-zone-dropped {
-  background-color: grey;
-}
-
-.upload-drop-zone-audio {
-  background-position-x: right;
-}
-
-.upload-drop-zone-photo {
-}
-
-.upload-drop-zone:before {
-  /*content: 'drag a file here.';*/
-  display: block;
-  text-align: center;
-  color: var(--clr-gray-darker)
-}
 
 .profile-photo-file--upload-preview {
   margin-top: calc(var(--panel__margin)  / 2 );
@@ -68,11 +29,10 @@
   z-index: 1;
   background-size: cover;
   background-position-x: center;
-  /*border: 1px solid var( --clr-green-darkest);*/
   background-repeat: no-repeat;
   background-color: var(  --clr-gray );
   background-image: url("../assets/missing-image.png");
-  /*background-size: 300px 100px;*/
+
 
 }
 
