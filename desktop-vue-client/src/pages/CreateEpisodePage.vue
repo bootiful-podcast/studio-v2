@@ -3,7 +3,7 @@
 
 .files-form {
   display: grid;
-  grid-template-areas: "audio photo  ";
+  grid-template-areas: "audio photo";
   grid-template-rows:  auto;
   grid-template-columns: auto 200px;
 }
@@ -65,9 +65,7 @@
 
     <div slot="sidebar">
       <Tip title="Every Journey...">
-        <P> This is the beginning of the line - you can
-          create new episodes on this very page.
-        </P>
+        <P>This is the beginning of the line - you can create new episodes on this very page.</P>
       </Tip>
     </div>
 
@@ -80,13 +78,19 @@
           <label for="title" class="panel__prompt">
             Title
           </label>
-          <input type="text" class="form-control" id="title"/>
+          <b-form-input class="form-control" id="title" v-model="title"
+                        placeholder="Enter the title for the new episode"></b-form-input>
         </div>
         <div class="form-group">
           <label for="description" class="panel__prompt">
             Description
           </label>
-          <textarea class="form-control" id="description"></textarea>
+          <b-form-textarea
+              v-model="description"
+              placeholder="Describe the episode. Feel free to use Markdown."
+              class="form-control" id="description"
+          ></b-form-textarea>
+
         </div>
 
 
@@ -96,21 +100,27 @@
           <div class="audio-files">
 
             <div class="form-group">
-              <label for="description" class="panel__prompt">
+              <label for="introduction" class="panel__prompt">
                 Introduction Audio <span class="file-type">(.MP3)</span>
               </label>
-              <div type="text"
-                   class="form-control upload-drop-zone upload-drop-zone upload-drop-zone-audio introduction-upload"
-                   id="introduction"></div>
+
+
+              <b-form-file class="introduction-upload upload-drop-zone-audio"
+                           id="introduction"
+                           accept=".jpg, .png, .gif">
+              </b-form-file>
+
             </div>
 
             <div class="form-group">
-              <label for="description" class="panel__prompt">
+              <label for="interview" class="panel__prompt">
                 Interview Audio <span class="file-type">(.MP3)</span>
               </label>
-              <div class="interview-upload  form-control upload-drop-zone upload-drop-zone-audio   "
-                   id="interview">
-              </div>
+              <b-form-file class="introduction-upload upload-drop-zone-audio"
+                           id="interview"
+                           accept=".jpg, .png, .gif"></b-form-file>
+
+
             </div>
           </div>
 
@@ -119,18 +129,22 @@
               <label for="photo" class="panel__prompt profile-photo-file--prompt">
                 Profile Photo <span class="file-type">(.JPG)</span>
               </label>
-              <div class="profile-photo-file--upload form-control upload-drop-zone upload-drop-zone-photo   "
-                   id="photo">
-              </div>
+              <!--   <FileUploadDropZone @files-dropped="handleUpload" id="photo" class="profile-photo-file&#45;&#45;upload"/>-->
+
+              <b-form-file class="introduction-upload profile-photo-file--upload "
+                           id="introduction"
+                           accept=".jpg, .png, .gif">
+              </b-form-file>
             </div>
           </div>
         </div>
 
         <div class="buttons">
           <a href="" class="action action__alternative">Cancel</a>
-          <a href="" class="action action__main">Create</a>
+          <a href="" @click.prevent="createEpisode" class="action action__main">Create</a>
         </div>
       </form>
+
 
     </Panel>
 
@@ -143,6 +157,8 @@
 import Page from "@/components/Page";
 import Panel from "@/components/Panel";
 import Tip from "@/components/Tip";
+import JSZip from "jszip";
+import {saveAs} from 'file-saver';
 
 export default {
   name: 'CreateEpisodePage',
@@ -150,15 +166,63 @@ export default {
   },
   created() {
     console.log('starting ' + this.$options.name)
+
   },
-  methods: {},
+  methods: {
+
+    async createEpisode() {
+      console.log('creating episode...')
+
+      const zip = new JSZip();
+      zip.file("Hello.txt", "Hello world\n");
+      const blob = await zip.generateAsync({type: "blob"})
+      // .then(function (blob) {
+      saveAs(blob, "hello.zip");
+      // });
+
+
+    },
+
+
+    uuidv4() {
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+    }
+    ,
+
+    async uploadFileDataToServer(mapOfFileKeysToFiles) {
+      const formData = new FormData()
+      const uid = this.uuidv4()
+      console.log('the UUID is', uid)
+      for (let fileFieldNameForUpload in mapOfFileKeysToFiles) {
+        formData.append(fileFieldNameForUpload, mapOfFileKeysToFiles [fileFieldNameForUpload])
+      }
+
+      console.log(formData)
+      const response = await fetch('http://localhost:8080/test-upload/' + uid, {
+        method: 'POST',
+        body: formData
+      })
+      console.log(response)
+      console.log('finished upload...')
+
+
+    }
+    ,
+
+
+  }
+  ,
   data() {
     return {
-      count: 0,
-      showSearch: true,
-      account: {}
+
+      title: '',
+      description: ''
     }
-  },
+  }
+  ,
   components: {
     Tip,
     Panel,
