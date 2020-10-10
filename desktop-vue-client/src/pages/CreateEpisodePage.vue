@@ -20,17 +20,16 @@
 }
 
 
-
 .profile-photo-file--upload-preview {
-  margin-top: calc(var(--panel__margin)  / 2 );
+  margin-top: calc(var(--panel__margin) / 2);
   width: 200px;
   height: auto;
-  min-height: 200px ;
+  min-height: 200px;
   z-index: 1;
   background-size: cover;
   background-position-x: center;
   background-repeat: no-repeat;
-  background-color: var(  --clr-gray );
+  background-color: var(--clr-gray);
   background-image: url("../assets/missing-image.png");
 
 
@@ -85,7 +84,7 @@
               <b-form-file class="  introduction-upload upload-drop-zone-audio"
                            id="introduction"
                            v-model="files.introduction"
-                              accept=".jpg, .png, .gif">
+                           accept=".jpg, .png, .gif">
               </b-form-file>
 
             </div>
@@ -134,12 +133,11 @@
   </Page>
 </template>
 <script>
-
-
 import Page from "@/components/Page";
 import Panel from "@/components/Panel";
 import Tip from "@/components/Tip";
 import JSZip from "jszip";
+
 
 export default {
   name: 'CreateEpisodePage',
@@ -151,70 +149,47 @@ export default {
   },
   methods: {
 
-    async createEpisode() {
+
+    async readUploadedFileAsText(inputFile) {
+      const fr = new FileReader();
+      return new Promise((resolve, reject) => {
+        fr.onerror = () => {
+          fr.abort();
+          reject(new DOMException("Problem parsing input file."));
+        };
+        fr.onload = () => {
+          resolve(fr.result);
+        };
+        fr.readAsArrayBuffer(inputFile);
+      });
+    },
+
+
+    async buildZipFile() {
 
 
       /*
-
-      var reader = new FileReader();
-
-      // Closure to capture the file information.
-      reader.onload = (function(theFile) {
-        return function(e) {
-          // Render thumbnail.
-          var span = document.createElement('span');
-          span.innerHTML = ['<img class="thumb" src="', e.target.result,
-                            '" title="', escape(theFile.name), '"/>'].join('');
-          document.getElementById('list').insertBefore(span, null);
-        };
-      })(f);
-
-      // Read in the image file as a data URL.
-      reader.readAsDataURL(f);
-
-      * */
-
-      console.log('create new episode....')
-
-      const zip = new JSZip();
-      console.log(zip)
-      // zip.file("Hello.txt", this.files.introduction.getA);
-      // zip.file("Hello.txt", "Hello world\n");
-      //const blob = await zip.generateAsync({type: "blob"})
-      // saveAs(blob, "to-upload.zip");
-
-
-    },
-    previewProfilePhoto(event) {
-      // todo make this a little more elegant right now its hideous!
-      console.log('the profile photo property is ', this.files.photo)
-      console.log('trying to compute url ', event)
-
-      const reader = new FileReader();
-      reader.addEventListener('load', (theFile) => {
-        /*const span = document.createElement('span');
-        span.innerHTML = ` <img src="${theFile.target.result}" title = "${escape(theFile.name)}" />         `
-        this.$refs['photoPreview'].appendChild(span)*/
-        this.backgroundImageUrl = `background-image: url("${theFile.target.result}")`
-
-      })
-
-      reader.readAsDataURL(this.files.photo);
-
-    },
-    uuidv4() {
-      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-        const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
-        return v.toString(16);
-      });
-    },
-    async uploadFileDataToServer(mapOfFileKeysToFiles) {
-      const formData = new FormData()
-      const uid = this.uuidv4()
-      console.log('the UUID is', uid)
-      for (let fileFieldNameForUpload in mapOfFileKeysToFiles) {
-        formData.append(fileFieldNameForUpload, mapOfFileKeysToFiles [fileFieldNameForUpload])
+      const mapOfFileNamesToFiles = {
+        'interview.mp3' : this.files.interview ,
+        'introduction.mp3' : this.files.introduction,
+        'profile.jpg' : this.files.photo
       }
+      */
+      const imageData = await this.readUploadedFileAsText(this.files.photo)
+      const zip = new JSZip();
+      zip.file("hello.txt", "Hello World\n");
+      zip.file("cat.jpg", imageData, {base64: true});
+      return await zip.generateAsync({type: 'blob'})
+
+    },
+    async createEpisode() {
+
+
+      const zipFile = await this.buildZipFile()
+      const formData = new FormData()
+      const uid = this.uuidV4()
+      console.log('the UUID is', uid)
+      formData.append('file', zipFile)
       console.log(formData)
       const response = await fetch('http://localhost:8080/test-upload/' + uid, {
         method: 'POST',
@@ -222,6 +197,19 @@ export default {
       })
       console.log(response)
       console.log('finished upload...')
+    },
+    async previewProfilePhoto() {
+      const reader = new FileReader()
+      reader.addEventListener('load', (theFile) => {
+        this.backgroundImageUrl = `background-image: url("${theFile.target.result}")`
+      })
+      reader.readAsDataURL(this.files.photo)
+    },
+    uuidV4() {
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
     },
   },
   data() {
