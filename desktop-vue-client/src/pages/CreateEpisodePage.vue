@@ -54,7 +54,7 @@
 }
 
 .upload-drop-zone:before {
-  content: 'drag a file here.';
+  /*content: 'drag a file here.';*/
   display: block;
   text-align: center;
   color: var(--clr-gray-darker)
@@ -68,8 +68,10 @@
   z-index: 1;
   background-size: cover;
   background-position-x: center;
-  border: 1px solid black;
+  /*border: 1px solid var( --clr-green-darkest);*/
   background-repeat: no-repeat;
+  background-color: var(  --clr-gray );
+  background-image: url("../assets/missing-image.png");
   /*background-size: 300px 100px;*/
 
 }
@@ -120,10 +122,10 @@
               </label>
 
 
-              <b-form-file class="introduction-upload upload-drop-zone-audio"
+              <b-form-file class="  introduction-upload upload-drop-zone-audio"
                            id="introduction"
                            v-model="files.introduction"
-                           accept=".jpg, .png, .gif">
+                              accept=".jpg, .png, .gif">
               </b-form-file>
 
             </div>
@@ -149,11 +151,12 @@
               <b-form-file
                   class="introduction-upload "
                   id="photo"
+
                   v-model="files.photo"
                   @input="previewProfilePhoto"
                   accept=".jpg, .png, .gif"
               />
-              <div class="profile-photo-file--upload-preview" v-bind:style="backgroundImageUrl"></div>
+              <div class="profile-photo-file--upload-preview upload-drop-zone" v-bind:style="backgroundImageUrl"></div>
             </div>
           </div>
         </div>
