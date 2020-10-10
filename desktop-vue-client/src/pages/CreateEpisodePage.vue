@@ -29,6 +29,7 @@
 .introduction-upload {
 }
 
+
 .interview-upload {
 }
 
@@ -57,6 +58,20 @@
   display: block;
   text-align: center;
   color: var(--clr-gray-darker)
+}
+
+.profile-photo-file--upload-preview {
+  margin-top: calc(var(--panel__margin)  / 2 );
+  width: 200px;
+  height: auto;
+  min-height: 200px ;
+  z-index: 1;
+  background-size: cover;
+  background-position-x: center;
+  border: 1px solid black;
+  background-repeat: no-repeat;
+  /*background-size: 300px 100px;*/
+
 }
 
 </style>
@@ -107,6 +122,7 @@
 
               <b-form-file class="introduction-upload upload-drop-zone-audio"
                            id="introduction"
+                           v-model="files.introduction"
                            accept=".jpg, .png, .gif">
               </b-form-file>
 
@@ -118,6 +134,7 @@
               </label>
               <b-form-file class="introduction-upload upload-drop-zone-audio"
                            id="interview"
+                           v-model="files.interview"
                            accept=".jpg, .png, .gif"></b-form-file>
 
 
@@ -129,12 +146,14 @@
               <label for="photo" class="panel__prompt profile-photo-file--prompt">
                 Profile Photo <span class="file-type">(.JPG)</span>
               </label>
-              <!--   <FileUploadDropZone @files-dropped="handleUpload" id="photo" class="profile-photo-file&#45;&#45;upload"/>-->
-
-              <b-form-file class="introduction-upload profile-photo-file--upload "
-                           id="introduction"
-                           accept=".jpg, .png, .gif">
-              </b-form-file>
+              <b-form-file
+                  class="introduction-upload "
+                  id="photo"
+                  v-model="files.photo"
+                  @input="previewProfilePhoto"
+                  accept=".jpg, .png, .gif"
+              />
+              <div class="profile-photo-file--upload-preview" v-bind:style="backgroundImageUrl"></div>
             </div>
           </div>
         </div>
@@ -158,7 +177,6 @@ import Page from "@/components/Page";
 import Panel from "@/components/Panel";
 import Tip from "@/components/Tip";
 import JSZip from "jszip";
-import {saveAs} from 'file-saver';
 
 export default {
   name: 'CreateEpisodePage',
@@ -171,27 +189,62 @@ export default {
   methods: {
 
     async createEpisode() {
-      console.log('creating episode...')
+
+
+      /*
+
+      var reader = new FileReader();
+
+      // Closure to capture the file information.
+      reader.onload = (function(theFile) {
+        return function(e) {
+          // Render thumbnail.
+          var span = document.createElement('span');
+          span.innerHTML = ['<img class="thumb" src="', e.target.result,
+                            '" title="', escape(theFile.name), '"/>'].join('');
+          document.getElementById('list').insertBefore(span, null);
+        };
+      })(f);
+
+      // Read in the image file as a data URL.
+      reader.readAsDataURL(f);
+
+      * */
+
+      console.log('create new episode....')
 
       const zip = new JSZip();
-      zip.file("Hello.txt", "Hello world\n");
-      const blob = await zip.generateAsync({type: "blob"})
-      // .then(function (blob) {
-      saveAs(blob, "hello.zip");
-      // });
+      console.log(zip)
+      // zip.file("Hello.txt", this.files.introduction.getA);
+      // zip.file("Hello.txt", "Hello world\n");
+      //const blob = await zip.generateAsync({type: "blob"})
+      // saveAs(blob, "to-upload.zip");
 
 
     },
+    previewProfilePhoto(event) {
+      // todo make this a little more elegant right now its hideous!
+      console.log('the profile photo property is ', this.files.photo)
+      console.log('trying to compute url ', event)
 
+      const reader = new FileReader();
+      reader.addEventListener('load', (theFile) => {
+        /*const span = document.createElement('span');
+        span.innerHTML = ` <img src="${theFile.target.result}" title = "${escape(theFile.name)}" />         `
+        this.$refs['photoPreview'].appendChild(span)*/
+        this.backgroundImageUrl = `background-image: url("${theFile.target.result}")`
 
+      })
+
+      reader.readAsDataURL(this.files.photo);
+
+    },
     uuidv4() {
       return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
         const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
         return v.toString(16);
       });
-    }
-    ,
-
+    },
     async uploadFileDataToServer(mapOfFileKeysToFiles) {
       const formData = new FormData()
       const uid = this.uuidv4()
@@ -199,7 +252,6 @@ export default {
       for (let fileFieldNameForUpload in mapOfFileKeysToFiles) {
         formData.append(fileFieldNameForUpload, mapOfFileKeysToFiles [fileFieldNameForUpload])
       }
-
       console.log(formData)
       const response = await fetch('http://localhost:8080/test-upload/' + uid, {
         method: 'POST',
@@ -207,22 +259,22 @@ export default {
       })
       console.log(response)
       console.log('finished upload...')
-
-
-    }
-    ,
-
-
-  }
-  ,
+    },
+  },
   data() {
     return {
 
+      files: {
+        interview: null,
+        introduction: null,
+        photo: null
+      },
+
+      backgroundImageUrl: '',
       title: '',
       description: ''
     }
-  }
-  ,
+  },
   components: {
     Tip,
     Panel,
