@@ -7,31 +7,12 @@ export default class LoginService {
     console.info('the tokenUrl is', this.tokenUrl)
   }
 
-  _handleResponse(response) {
-    return response
-      .text()
-      .then(text => {
-        const data = text && JSON.parse(text);
-        if (!response.ok) {
-          if (response.status === 401) {
-            // auto logout if 401 response returned from api
-            this.logout();
-            location.reload();
-          }
-
-          const error = (data && data.message) || response.statusText;
-          return Promise.reject(error);
-        }
-
-        return data;
-      });
-  }
 
   getUserToken() {
     return localStorage.getItem('user');
   }
 
-  async attemptLogin() {
+  async ensureToken() {
     const token = this.getUserToken();
     if (token && token.length > 0) {
       return Promise.resolve(JSON.parse(token))

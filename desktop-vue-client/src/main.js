@@ -13,40 +13,11 @@ import LoginPage from "@/pages/LoginPage";
 import LoginService from "./LoginService"
 import PodcastService from "@/PodcastService";
 
-
 Vue.config.productionTip = false
-
-
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(VueRouter)
-// Vue.use(Vuex)
 
-
-/*
-const store = new Vuex.Store({
-  state: {
-    search: {
-      query: '',
-      podcasts: []
-    }
-  },
-  getters: {
-    searchPodcasts: (state) => async (query) => {
-      console.log('the current state is', state)
-      console.log('searching for ', query)
-      if (query == null) {
-        return await podcastService.getPodcasts(  )
-      }
-    }
-  },
-  mutations: {
-    increment(state) {
-      state.count++
-    }
-  }
-})
-*/
 
 const rootUrl = ((u) => (u.endsWith('/')) ? u : u + '/')(process.env.VUE_APP_SERVICE_ROOT)
 const loginService = new LoginService(rootUrl + 'token')
@@ -64,43 +35,62 @@ function sortPodcastsByDateMostRecentFirst(results) {
 }
 
 const store = {
+
   service: {
     url: rootUrl
   },
+
   session: {
     token: null,
     username: null
   },
-  async login(username, password) {
 
+  async login(username, password) {
     this.session.token = await loginService.login(username, password)
     this.session.username = username.toLowerCase()
     return this.session.token
   },
+
   async getPodcasts() {
     return sortPodcastsByDateMostRecentFirst(await podcastService.getPodcasts())
   },
+
   async searchPodcasts(query) {
     return sortPodcastsByDateMostRecentFirst(await podcastService.searchPodcasts(query))
   }
+
 }
+
 const router = new VueRouter({
   mode: 'history',
   base: __dirname,
   routes: [
-    {path: '/create', component: CreateEpisodePage},
-    {path: '/search', component: SearchPage},
-    {path: '/', component: LoginPage}
-    // { path: '/bar', component: Bar },
-    // { path: '/é', component: Unicode },
-    // { path: '/query/:q', component: Query }
+    {path: '/create', component: CreateEpisodePage, meta: {authenticated: true}},
+    {path: '/search', component: SearchPage, meta: {authenticated: true}},
+    {path: '/login', component: LoginPage, meta: {authenticated: false}},
+    {path: '/', component: LoginPage, meta: {authenticated: false}}
   ]
 })
 
 
-new Vue({
-  router,
-  data: store,
-  // store: store,
-  render: h => h(App)
-}).$mount('#app')
+router.beforeEach((to, from, next) => {
+  next ()
+  if (to.matched.some(record => record.meta.authenticated && record.meta.authenticated === true)) {
+    if (loginService.getUserToken() == null) {
+      console.log('need to login!')
+      console.log( next, ';', to, ';', from )
+      next({
+        path: '/login',
+        query: {nextUrl: to.fullPath}
+      })
+
+    } //
+    else {
+      console.log('next...')
+      next()
+    }
+  }
+});
+
+
+new Vue({router, data: store, render: h => h(App)}).$mount('#app')
