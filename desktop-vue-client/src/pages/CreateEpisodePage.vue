@@ -167,18 +167,23 @@ export default {
 
     async buildZipFile() {
 
+      // todo we need to generate a manifest, i think?
+      // todo go check the protocol/spec for the archive from the javafx code...
 
-      /*
       const mapOfFileNamesToFiles = {
-        'interview.mp3' : this.files.interview ,
-        'introduction.mp3' : this.files.introduction,
-        'profile.jpg' : this.files.photo
+        'interview.mp3': this.files.interview,
+        'introduction.mp3': this.files.introduction,
+        'profile.jpg': this.files.photo
       }
-      */
-      const imageData = await this.readUploadedFileAsText(this.files.photo)
       const zip = new JSZip();
-      zip.file("hello.txt", "Hello World\n");
-      zip.file("cat.jpg", imageData, {base64: true});
+      for (let fileKey in mapOfFileNamesToFiles) {
+        let uploadedFile = mapOfFileNamesToFiles[fileKey];
+        if (uploadedFile != null) {
+          console.log('the user provided ', fileKey, 'so were uploading that one')
+          const data = await this.readUploadedFileAsText(uploadedFile);
+          zip.file(fileKey, data, {base64: true})
+        }
+      }
       return await zip.generateAsync({type: 'blob'})
 
     },
