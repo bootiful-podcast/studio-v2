@@ -108,21 +108,33 @@
 
 
             </div>
+
+
+<!--            -->
+
+
+            <div class="profile-photo-file">
+              <div class="form-group">
+                <label class="panel__prompt profile-photo-file--prompt" for="photo">
+                  Profile Photo <span class="file-type">(.JPG)</span>
+                </label>
+                <b-form-file
+                    id="photo"
+                    v-model="files.photo"
+                    accept=".jpg"
+                    class="introduction-upload "
+                    @input="previewProfilePhoto"
+                    :state="!isEmptyFile ( this.files.photo)"
+                />
+
+              </div>
+            </div>
+
           </div>
 
           <div class="profile-photo-file">
             <div class="form-group">
-              <label class="panel__prompt profile-photo-file--prompt" for="photo">
-                Profile Photo <span class="file-type">(.JPG)</span>
-              </label>
-              <b-form-file
-                  id="photo"
-                  v-model="files.photo"
-                  accept=".jpg"
-                  class="introduction-upload "
-                  @input="previewProfilePhoto"
-                  :state="!isEmptyFile ( this.files.photo)"
-              />
+
               <div class="profile-photo-file--upload-preview upload-drop-zone" v-bind:style="backgroundImageUrl"></div>
             </div>
           </div>
