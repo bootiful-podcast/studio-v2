@@ -36,7 +36,7 @@ export default {
 
   methods: {
     async myCallback(authAttempt) {
-      const auth = await this.$root.$data.login(authAttempt.username, authAttempt.password)
+      const auth = await this.$root.$data.authenticate(authAttempt.username, authAttempt.password)
       this.$emit('authentication-success', auth)
       const q = this.$route.query
       console.log('params:', q, 'nextUrl:', q.nextUrl)

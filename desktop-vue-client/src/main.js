@@ -45,7 +45,13 @@ const store = {
     username: null
   },
 
-  async login(username, password) {
+  async restoreSession(token, username) {
+    this.session.token = token
+    this.session.username = username
+    return this.session.token
+  },
+
+  async authenticate(username, password) {
     this.session.token = await loginService.login(username, password)
     this.session.username = username.toLowerCase()
     return this.session.token
@@ -67,29 +73,31 @@ const router = new VueRouter({
   routes: [
     {path: '/create', component: CreateEpisodePage, meta: {authenticated: true}},
     {path: '/search', component: SearchPage, meta: {authenticated: true}},
-    {path: '/login', component: LoginPage, meta: {authenticated: false}},
-    {path: '/', component: LoginPage, meta: {authenticated: false}}
+    {path: '/', component: LoginPage, meta: {authenticated: false}},
   ]
 })
 
 
-router.beforeEach((to, from, next) => {
-  next ()
-  if (to.matched.some(record => record.meta.authenticated && record.meta.authenticated === true)) {
-    if (loginService.getUserToken() == null) {
-      console.log('need to login!')
-      console.log( next, ';', to, ';', from )
-      next({
-        path: '/login',
-        query: {nextUrl: to.fullPath}
-      })
+router.beforeEach(async (to, from, next) => {
 
-    } //
-    else {
-      console.log('next...')
-      next()
-    }
+  const token = loginService.getUserToken();
+  if (token == null) {
+    if (to.matched.some(record => record.meta.authenticated && record.meta.authenticated === true)) {
+
+      console.info('login required:', next, ' ', to, ' ', from)
+
+      next({
+        path: '/',
+        query: {nextUrl: to.fullPath}
+      });
+
+    }//
+  }//
+  else {
+    console.log('installing token', token)
+    await store.restoreSession(token.token, token.username)
   }
+  next()
 });
 
 

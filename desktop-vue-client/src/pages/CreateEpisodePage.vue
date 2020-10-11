@@ -189,25 +189,22 @@ export default {
     },
     async createEpisode() {
 
-
-
       const zipFile = await this.buildZipFile()
       const formData = new FormData()
       const uid = this.uuidV4()
       console.log('the UUID is', uid)
       formData.append('file', zipFile)
       console.log(formData)
-      console.log( 'TOKEN' , this.$root.$data.session.token )
+      console.log('TOKEN', this.$root.$data.session.token)
       const response = await fetch('http://localhost:8080/test-upload/' + uid, {
         method: 'POST',
         body: formData,
         headers: {
           'Accept': 'application/json',
-          'Authorization': 'Bearer ' +     this.$root.$data.session.token
+          'Authorization': 'Bearer ' + this.$root.$data.session.token
         }
       })
-      console.log(response)
-      console.log('finished upload...')
+      console.info(response, 'finished upload...')
     },
     async previewProfilePhoto() {
       const reader = new FileReader()

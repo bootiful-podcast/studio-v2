@@ -7,18 +7,19 @@ export default class LoginService {
     console.info('the tokenUrl is', this.tokenUrl)
   }
 
-
   getUserToken() {
-    return localStorage.getItem('user');
+    return JSON.parse(localStorage.getItem('user'));
   }
 
-  async ensureToken() {
-    const token = this.getUserToken();
-    if (token && token.length > 0) {
-      return Promise.resolve(JSON.parse(token))
+  /*
+    async ensureToken() {
+      const token = this.getUserToken();
+      if (token && token.length > 0) {
+        return Promise.resolve(JSON.parse(token))
+      }
+      return Promise.reject('there is not existing token; you will need to authenticate.')
     }
-    return Promise.reject('there is not existing token; you will need to authenticate.')
-  }
+  */
 
   async login(username, password) {
     const requestOptions = {
@@ -33,18 +34,17 @@ export default class LoginService {
       .then(response => {
         if (response.status === 200) {
           return response.text()
-        }
-        else {
+        } else {
           return Promise.reject(`could not authenticate @  ${Date.now()}. 
               The status code returned is ${response.status} and the text was ${response.statusText}`)
         }
       })
 
-    const user = {token: result};
+    const user = {token: result, username: username};
     if (user.token) {
       localStorage.setItem('user', JSON.stringify(user));
     }
-    console.log( 'the user is ' , user )
+    console.log('the user is ', user)
     return user.token
   }
 
