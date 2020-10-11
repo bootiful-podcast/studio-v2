@@ -8,8 +8,6 @@ import CreateEpisodePage from "@/pages/CreateEpisodePage";
 import SearchPage from "@/pages/SearchEpisodePage";
 import App from "@/App";
 import LoginPage from "@/pages/LoginPage";
-
-// import Vuex from 'vuex'
 import LoginService from "./LoginService"
 import PodcastService from "@/PodcastService";
 

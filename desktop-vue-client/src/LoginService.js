@@ -1,5 +1,3 @@
-// import requestUtils from "@/RequestUtils";
-
 export default class LoginService {
 
   constructor(authUrl) {
@@ -9,16 +7,6 @@ export default class LoginService {
   getUserToken() {
     return JSON.parse(localStorage.getItem('user'));
   }
-
-  /*
-    async ensureToken() {
-      const token = this.getUserToken();
-      if (token && token.length > 0) {
-        return Promise.resolve(JSON.parse(token))
-      }
-      return Promise.reject('there is not existing token; you will need to authenticate.')
-    }
-  */
 
   async login(username, password) {
     const requestOptions = {
@@ -46,16 +34,8 @@ export default class LoginService {
     return user.token
   }
 
-  logout() {
-    return new Promise((resolve, reject) => {
-        localStorage.removeItem('user');
-        try {
-          resolve();
-        } catch (e) {
-          reject(e);
-        }
-      }
-    );
+  async logout() {
+    localStorage.removeItem('user');
   }
 
 }
