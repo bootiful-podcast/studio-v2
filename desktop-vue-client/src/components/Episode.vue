@@ -8,14 +8,14 @@
     </div>
     <div class="search__result__date"> {{ buildPresentableDate(podcast.date) }}</div>
     <div class="search__result__description">
-      <div v-html="podcast.htmlDescription"> </div>
+      <div v-html="podcast.htmlDescription"></div>
     </div>
 
     <div class="search__result__actions">
-      <a href="" class="action action__main">edit</a>
-      <a href="" class="action action__alternative">open</a>
-      <a href="" class="action action__alternative">delete</a>
-      <a href="" class="action action__alternative">unpublish</a>
+      <a class="action action__main" href="">edit</a>
+      <a class="action action__alternative" href="">open</a>
+      <a class="action action__alternative" href="">delete</a>
+      <a class="action action__alternative" href="">unpublish</a>
     </div>
   </div>
 

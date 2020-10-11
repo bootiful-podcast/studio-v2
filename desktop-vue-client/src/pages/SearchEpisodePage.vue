@@ -106,12 +106,12 @@ code {
       <div class="panel__section"> Search</div>
 
       <form @submit.prevent="doSearch">
-        <input type="text" class="form-control" v-model="query" id="search"/>
+        <input id="search" v-model="query" class="form-control" type="text"/>
       </form>
 
       <div class="buttons">
-        <a @click.prevent="doSearch" href="" class="action action__main">Go</a>
-        <a @click.prevent="doClear" href="" class="action action__alternative">Clear</a>
+        <a class="action action__main" href="" @click.prevent="doSearch">Go</a>
+        <a class="action action__alternative" href="" @click.prevent="doClear">Clear</a>
       </div>
       <!--      -->
       <div v-if="podcasts.length > 0" class="panel__section">
@@ -137,7 +137,6 @@ export default {
   mounted() {
   },
   async created() {
-    console.log('starting ' + this.$options.name)
     await this.doSearch()
   },
   methods: {
@@ -146,15 +145,18 @@ export default {
       await this.doSearch()
     },
     async doSearch() {
-      console.log('doSearch([' + this.query + '])')
-      console.log(`in theory, we're signed in as ${this.$root.$data.session.token}`)
+
+      console.debug(`
+        doSearch([ ${this.query}]).
+        in theory, we're signed in as ${this.$root.$data.session.token}
+        There are ${this.podcasts.length} podcasts.
+      `)
       if (this.query === '' || this.query === null) {
         this.podcasts = await this.$root.$data.getPodcasts()
       } //
       else {
         this.podcasts = await this.$root.$data.searchPodcasts(this.query)
       }
-      console.log('there are ', this.podcasts.length, 'podcasts')
     }
   },
   data() {

@@ -21,7 +21,7 @@
         <router-link class="action action__main" to="/create">create</router-link>
         <router-link class="action action__main" to="/search"> search</router-link>
 
-        <a v-if="$root.$data.session.username" href="#" class="action action__main" @click.prevent="logout()">logout</a>
+        <a v-if="$root.$data.session.username" class="action action__main" href="#" @click.prevent="logout()">logout</a>
       </nav>
       <slot name="sidebar"></slot>
     </div>

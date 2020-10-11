@@ -1,23 +1,23 @@
 <template>
- <div>
-   <form @submit.prevent="loginAttempt">
-     <div class="form-group">
-       <label class="panel__prompt" for="emailField">Username:</label>
-       <input type="text" class="form-control"
-              v-model="input.username" id="emailField"/>
-     </div>
-     <div class="form-group">
-       <label class="panel__prompt" for="passwordField">Password:</label>
-       <input type="password" class="form-control"
-              v-model="input.password" id="passwordField"/>
-     </div>
-     <div class="hidden-submit"><input type="submit" tabindex="-1"/></div>
+  <div>
+    <form @submit.prevent="loginAttempt">
+      <div class="form-group">
+        <label class="panel__prompt" for="emailField">Username:</label>
+        <input id="emailField" v-model="input.username"
+               class="form-control" type="text"/>
+      </div>
+      <div class="form-group">
+        <label class="panel__prompt" for="passwordField">Password:</label>
+        <input id="passwordField" v-model="input.password"
+               class="form-control" type="password"/>
+      </div>
+      <div class="hidden-submit"><input tabindex="-1" type="submit"/></div>
 
-   </form>
-   <div class="buttons">
-     <a href="#" @click.prevent="loginAttempt"  class="action action__main">Submit</a>
-   </div>
- </div>
+    </form>
+    <div class="buttons">
+      <a class="action action__main" href="#" @click.prevent="loginAttempt">Submit</a>
+    </div>
+  </div>
 </template>
 <script>
 export default {
@@ -39,7 +39,6 @@ export default {
         this.$emit("authentication-attempt", {username: username, password: pw});
         return;
       }
-      console.log("The username and / or password are empty");
 
     }
   },

@@ -9,7 +9,7 @@
 </template>
 <script>
 export default {
-  name: 'Tip' ,
+  name: 'Tip',
   props: ['title']
 }
 </script>

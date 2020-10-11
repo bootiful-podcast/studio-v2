@@ -4,7 +4,6 @@ export default class LoginService {
 
   constructor(authUrl) {
     this.tokenUrl = authUrl;
-    console.info('the tokenUrl is', this.tokenUrl)
   }
 
   getUserToken() {
@@ -44,7 +43,6 @@ export default class LoginService {
     if (user.token) {
       localStorage.setItem('user', JSON.stringify(user));
     }
-    console.log('the user is ', user)
     return user.token
   }
 

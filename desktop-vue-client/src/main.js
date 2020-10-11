@@ -49,7 +49,6 @@ const store = {
     await loginService.logout()
     this.session.token = null
     this.session.username = null
-    console.log('logging out')
   },
 
   async restoreSession(token, username) {
@@ -101,7 +100,6 @@ router.beforeEach(async (to, from, next) => {
     }//
   }//
   else {
-    console.log('installing token', token)
     await store.restoreSession(token.token, token.username)
   }
   next()

@@ -51,20 +51,20 @@
         <div class="panel__section"> Details</div>
 
         <div class="form-group">
-          <label for="title" class="panel__prompt">
+          <label class="panel__prompt" for="title">
             Title
           </label>
-          <b-form-input class="form-control" id="title" v-model="title"
+          <b-form-input id="title" v-model="title" class="form-control"
                         placeholder="Enter the title for the new episode"></b-form-input>
         </div>
         <div class="form-group">
-          <label for="description" class="panel__prompt">
+          <label class="panel__prompt" for="description">
             Description
           </label>
           <b-form-textarea
+              id="description"
               v-model="description"
-              placeholder="Describe the episode. Feel free to use Markdown."
-              class="form-control" id="description"
+              class="form-control" placeholder="Describe the episode. Feel free to use Markdown."
           ></b-form-textarea>
 
         </div>
@@ -76,27 +76,27 @@
           <div class="audio-files">
 
             <div class="form-group">
-              <label for="introduction" class="panel__prompt">
+              <label class="panel__prompt" for="introduction">
                 Introduction Audio <span class="file-type">(.MP3)</span>
               </label>
 
 
-              <b-form-file class="  introduction-upload upload-drop-zone-audio"
-                           id="introduction"
+              <b-form-file id="introduction"
                            v-model="files.introduction"
-                           accept=".jpg, .png, .gif">
+                           accept=".jpg, .png, .gif"
+                           class="  introduction-upload upload-drop-zone-audio">
               </b-form-file>
 
             </div>
 
             <div class="form-group">
-              <label for="interview" class="panel__prompt">
+              <label class="panel__prompt" for="interview">
                 Interview Audio <span class="file-type">(.MP3)</span>
               </label>
-              <b-form-file class="introduction-upload upload-drop-zone-audio"
-                           id="interview"
+              <b-form-file id="interview"
                            v-model="files.interview"
-                           accept=".jpg, .png, .gif"></b-form-file>
+                           accept=".jpg, .png, .gif"
+                           class="introduction-upload upload-drop-zone-audio"></b-form-file>
 
 
             </div>
@@ -104,16 +104,16 @@
 
           <div class="profile-photo-file">
             <div class="form-group">
-              <label for="photo" class="panel__prompt profile-photo-file--prompt">
+              <label class="panel__prompt profile-photo-file--prompt" for="photo">
                 Profile Photo <span class="file-type">(.JPG)</span>
               </label>
               <b-form-file
-                  class="introduction-upload "
                   id="photo"
-
                   v-model="files.photo"
-                  @input="previewProfilePhoto"
+
                   accept=".jpg, .png, .gif"
+                  class="introduction-upload "
+                  @input="previewProfilePhoto"
               />
               <div class="profile-photo-file--upload-preview upload-drop-zone" v-bind:style="backgroundImageUrl"></div>
             </div>
@@ -121,8 +121,8 @@
         </div>
 
         <div class="buttons">
-          <a href="" class="action action__alternative">Cancel</a>
-          <a href="" @click.prevent="createEpisode" class="action action__main">Create</a>
+          <a class="action action__alternative" href="">Cancel</a>
+          <a class="action action__main" href="" @click.prevent="createEpisode">Create</a>
         </div>
       </form>
 
@@ -144,7 +144,7 @@ export default {
   mounted() {
   },
   created() {
-    console.log('starting ' + this.$options.name)
+    console.debug('starting ' + this.$options.name)
 
   },
   methods: {
@@ -179,7 +179,7 @@ export default {
       for (let fileKey in mapOfFileNamesToFiles) {
         let uploadedFile = mapOfFileNamesToFiles[fileKey];
         if (uploadedFile != null) {
-          console.log('the user provided ', fileKey, 'so were uploading that one')
+          console.debug(`The user provided  ${fileKey} so were uploading that one.`)
           const data = await this.readUploadedFileAsText(uploadedFile);
           zip.file(fileKey, data, {base64: true})
         }
@@ -188,14 +188,10 @@ export default {
 
     },
     async createEpisode() {
-
       const zipFile = await this.buildZipFile()
       const formData = new FormData()
       const uid = this.uuidV4()
-      console.log('the UUID is', uid)
       formData.append('file', zipFile)
-      console.log(formData)
-      console.log('TOKEN', this.$root.$data.session.token)
       const response = await fetch('http://localhost:8080/test-upload/' + uid, {
         method: 'POST',
         body: formData,

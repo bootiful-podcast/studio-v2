@@ -17,12 +17,10 @@ export default {
   },
 
   created() {
-    console.log('Launching BootifulPodcast.fm Studio')
+    console.info('Launching BootifulPodcast.fm Studio')
   },
 
-  methods: {
-
-  },
+  methods: {},
 
   data() {
     return {}
