@@ -5,7 +5,7 @@
   display: grid;
   grid-template-areas: "audio photo";
   grid-template-rows:  auto;
-  grid-template-columns: auto 200px;
+  grid-template-columns: auto 300px;
 }
 
 .audio-files {
@@ -27,9 +27,9 @@
 
 .profile-photo-file--upload-preview {
   margin-top: calc(var(--panel__margin) / 2);
-  width: 200px;
+  width: 300px;
   height: auto;
-  min-height: 200px;
+  min-height: 300px;
   z-index: 1;
   background-size: cover;
   background-position-x: center;
@@ -129,8 +129,10 @@
         </div>
 
         <div class="buttons">
-          <a :class="'action action__alternative ' + this.getDisabledStateClass() " href="" @click.prevent="cancelForm">Cancel</a>
-          <a :class="'action action__main ' +  this.getDisabledStateClass() " href="" @click.prevent="createEpisode">Create</a>
+          <a class=" action action__alternative   " href=""
+             @click.prevent="cancelForm">Cancel</a>
+          <a :class="'action action__main ' +    (( this.formIsValid) ? '' : 'disabled') " href=""
+             @click.prevent="createEpisode">Create</a>
         </div>
       </form>
 
@@ -163,7 +165,10 @@ export default {
       this.files.introduction = null
     },
     async createEpisode() {
-      await this.$root.$data.createEpisode(this.title, this.description, this.files.introduction, this.files.interview, this.files.photo)
+      if (this.formIsValid === true) {
+        await this.$root.$data.createEpisode(this.title, this.description, this.files.introduction, this.files.interview, this.files.photo)
+      }
+
     },
     async previewProfilePhoto() {
       if (this.files.photo == null) {
@@ -175,9 +180,7 @@ export default {
       })
       reader.readAsDataURL(this.files.photo)
     },
-    getDisabledStateClass() {
-      return (this.formIsValid) ? '' : 'disabled'
-    },
+
     isEmptyFile(f) {
       return f == null
     },
