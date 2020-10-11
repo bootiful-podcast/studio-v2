@@ -19,6 +19,11 @@
   display: grid;
 }
 
+.disabled {
+  color: var(--clr-gray-darker);
+  cursor: text;
+}
+
 
 .profile-photo-file--upload-preview {
   margin-top: calc(var(--panel__margin) / 2);
@@ -54,7 +59,7 @@
           <label class="panel__prompt" for="title">
             Title
           </label>
-          <b-form-input id="title" v-model="title" class="form-control"
+          <b-form-input id="title" :state=" isNotEmptyString(this.title)" v-model="title" class="form-control"
                         placeholder="Enter the title for the new episode"></b-form-input>
         </div>
         <div class="form-group">
@@ -62,7 +67,7 @@
             Description
           </label>
           <b-form-textarea
-              id="description"
+              id="description" :state=" isNotEmptyString(this.description)"
               v-model="description"
               class="form-control" placeholder="Describe the episode. Feel free to use Markdown."
           ></b-form-textarea>
@@ -82,9 +87,11 @@
 
 
               <b-form-file id="introduction"
+                           accept=".mp3"
+                           :state="isNotEmptyFile ( this.files.introduction)"
                            v-model="files.introduction"
                            class="  introduction-upload upload-drop-zone-audio">
-                           accept=".mp3"
+
               </b-form-file>
 
             </div>
@@ -96,6 +103,7 @@
               <b-form-file id="interview"
                            v-model="files.interview"
                            accept=".mp3"
+                           :state="isNotEmptyFile ( this.files.interview)"
                            class="introduction-upload upload-drop-zone-audio"></b-form-file>
 
 
@@ -113,6 +121,7 @@
                   accept=".jpg"
                   class="introduction-upload "
                   @input="previewProfilePhoto"
+                  :state="isNotEmptyFile ( this.files.photo)"
               />
               <div class="profile-photo-file--upload-preview upload-drop-zone" v-bind:style="backgroundImageUrl"></div>
             </div>
@@ -120,8 +129,8 @@
         </div>
 
         <div class="buttons">
-          <a class="action action__alternative" href="">Cancel</a>
-          <a class="action action__main" href="" @click.prevent="createEpisode">Create</a>
+          <a :class="'action action__alternative ' + this.getDisabledStateClass() " href="">Cancel</a>
+          <a :class="'action action__main ' +  this.getDisabledStateClass() " href="" @click.prevent="createEpisode">Create</a>
         </div>
       </form>
 
@@ -216,6 +225,13 @@ export default {
       return await zip.generateAsync({type: 'blob'})
 
     },
+    cancelForm (){
+      this.title = null
+      this.description = null
+      this.files.photo = null
+      this.files.interview = null
+      this.files.introduction = null
+    },
     async createEpisode() {
       const uid = this.uuidV4()
       const zipFile = await this.buildZipFile(uid)
@@ -245,6 +261,26 @@ export default {
         return v.toString(16);
       });
     },
+
+    getDisabledStateClass() {
+      return (this.formIsValid) ? '' : 'disabled'
+    },
+    isNotEmptyFile(f) {
+      return f !== null
+    },
+    isNotEmptyString(s) {
+      return s !== null && s.trim() !== ''
+    }
+  },
+  computed: {
+    formIsValid: function () {
+      return this.files.introduction !== null &&
+          this.files.interview !== null &&
+          this.files.photo !== null &&
+          this.description !== null &&
+          this.title !== null
+
+    }
   },
   data() {
     return {
