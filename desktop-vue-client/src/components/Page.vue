@@ -10,6 +10,10 @@
         <span class="username">
           {{ $root.$data.session.username }}
         </span>
+        <!--<router-link class="action action__main " to="/login" @click="logout">logout</router-link>-->
+        (
+        <a href="#" @click.prevent="logout()">logout</a>
+        )
       </span>
 
 
@@ -20,8 +24,6 @@
     </div>
 
     <div class="sidebar">
-
-
       <nav class="menu">
         <router-link class="action action__main" to="/create">create</router-link>
         <router-link class="action action__main" to="/search"> search</router-link>
@@ -49,10 +51,12 @@
 export default {
   name: 'Page',
   created() {
-
-
   },
   methods: {
+    logout (){
+      this.$root.$data.logout()
+      this.$router.push('/')
+    },
     buildPresentableUrl(url) {
       function stripPrefix(urlToStrip) {
         const prefixes = ['http://', 'https://']

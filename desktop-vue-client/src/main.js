@@ -45,6 +45,13 @@ const store = {
     username: null
   },
 
+  async logout() {
+    await loginService.logout()
+    this.session.token = null
+    this.session.username = null
+    console.log('logging out')
+  },
+
   async restoreSession(token, username) {
     this.session.token = token
     this.session.username = username
