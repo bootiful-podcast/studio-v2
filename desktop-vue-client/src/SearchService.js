@@ -1,6 +1,6 @@
 import requestUtils from "@/RequestUtils";
 
-export default class LoginService {
+export default class SearchService {
 
   constructor(podcastApiUriRoot, tokenProducer) {
     this.podcastApiUrl = podcastApiUriRoot

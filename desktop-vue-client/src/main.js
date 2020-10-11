@@ -9,17 +9,19 @@ import SearchPage from "@/pages/SearchEpisodePage";
 import App from "@/App";
 import LoginPage from "@/pages/LoginPage";
 import LoginService from "./LoginService"
-import PodcastService from "@/PodcastService";
+import SearchService from "@/SearchService";
+import EpisodeService from "@/EpisodeService";
 
 Vue.config.productionTip = false
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(VueRouter)
 
-
 const rootUrl = ((u) => (u.endsWith('/')) ? u : u + '/')(process.env.VUE_APP_SERVICE_ROOT)
+const tokenSupplier = () => loginService.getUserToken()
 const loginService = new LoginService(rootUrl + 'token')
-const podcastService = new PodcastService(rootUrl + 'podcasts', () => loginService.getUserToken())
+const episodeService = new EpisodeService(rootUrl, tokenSupplier)
+const searchService = new SearchService(rootUrl + 'podcasts', tokenSupplier)
 
 
 function sortPodcastsByDateMostRecentFirst(results) {
@@ -43,6 +45,11 @@ const store = {
     username: null
   },
 
+  async createEpisode(uid, title, description, intro, interview, photo) {
+    await episodeService.createEpisode(uid, title, description, intro, interview, photo)
+  },
+
+
   async logout() {
     await loginService.logout()
     this.session.token = null
@@ -62,11 +69,11 @@ const store = {
   },
 
   async getPodcasts() {
-    return sortPodcastsByDateMostRecentFirst(await podcastService.getPodcasts())
+    return sortPodcastsByDateMostRecentFirst(await searchService.getPodcasts())
   },
 
   async searchPodcasts(query) {
-    return sortPodcastsByDateMostRecentFirst(await podcastService.searchPodcasts(query))
+    return sortPodcastsByDateMostRecentFirst(await searchService.searchPodcasts(query))
   }
 
 }
