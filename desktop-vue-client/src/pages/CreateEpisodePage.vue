@@ -152,7 +152,6 @@ export default {
   },
   created() {
     console.debug('starting ' + this.$options.name)
-
   },
   methods: {
     cancelForm() {
@@ -160,6 +159,7 @@ export default {
       this.description = null
       this.files.photo = null
       this.files.interview = null
+      this.backgroundImageUrl = null
       this.files.introduction = null
     },
     async createEpisode() {
@@ -196,6 +196,7 @@ export default {
   },
   data() {
     return {
+      originalBackgroundImageUrl: null,
       files: {
         interview: null,
         introduction: null,
