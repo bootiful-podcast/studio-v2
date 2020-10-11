@@ -5,16 +5,9 @@
 
     <div class="user">
 
-      <span v-if="$root.$data.session.username">
-        hello,
-        <span class="username">
-          {{ $root.$data.session.username }}
-        </span>
-        <!--<router-link class="action action__main " to="/login" @click="logout">logout</router-link>-->
-        (
-        <a href="#" @click.prevent="logout()">logout</a>
-        )
-      </span>
+      <div v-if="$root.$data.session.username">
+        hello, <span class="username">{{ $root.$data.session.username }}</span>
+      </div>
 
 
     </div>
@@ -27,6 +20,8 @@
       <nav class="menu">
         <router-link class="action action__main" to="/create">create</router-link>
         <router-link class="action action__main" to="/search"> search</router-link>
+
+        <a v-if="$root.$data.session.username" href="#" class="action action__main" @click.prevent="logout()">logout</a>
       </nav>
       <slot name="sidebar"></slot>
     </div>
@@ -53,7 +48,7 @@ export default {
   created() {
   },
   methods: {
-    logout (){
+    logout() {
       this.$root.$data.logout()
       this.$router.push('/')
     },
@@ -67,6 +62,7 @@ export default {
           }
         }
       }
+
       const lowerCase = url.toString().toLowerCase();
       const stripped = stripPrefix(lowerCase)
       if (stripped.endsWith('/')) {

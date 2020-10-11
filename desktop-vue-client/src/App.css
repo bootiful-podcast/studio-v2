@@ -45,6 +45,9 @@ a:hover {
     font-size: 1.5em;
 }
 
+.user--session {
+}
+
 .user .server {
     text-transform: uppercase;
     letter-spacing: .1em;
