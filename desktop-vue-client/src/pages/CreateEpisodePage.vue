@@ -105,14 +105,7 @@
                            accept=".mp3"
                            :state="!isEmptyFile ( this.files.interview)"
                            class="introduction-upload upload-drop-zone-audio"></b-form-file>
-
-
             </div>
-
-
-<!--            -->
-
-
             <div class="profile-photo-file">
               <div class="form-group">
                 <label class="panel__prompt profile-photo-file--prompt" for="photo">
@@ -126,15 +119,11 @@
                     @input="previewProfilePhoto"
                     :state="!isEmptyFile ( this.files.photo)"
                 />
-
               </div>
             </div>
-
           </div>
-
           <div class="profile-photo-file">
             <div class="form-group">
-
               <div class="profile-photo-file--upload-preview upload-drop-zone" v-bind:style="backgroundImageUrl"></div>
             </div>
           </div>
@@ -158,7 +147,7 @@
 import Page from "@/components/Page";
 import Panel from "@/components/Panel";
 import Tip from "@/components/Tip";
-
+import readFileReaderData from "@/FileReaderUtils";
 
 export default {
   name: 'CreateEpisodePage',
@@ -186,11 +175,12 @@ export default {
       if (this.files.photo == null) {
         return
       }
-      const reader = new FileReader()
-      reader.addEventListener('load', (theFile) => {
-        this.backgroundImageUrl = `background-image: url("${theFile.target.result}")`
-      })
-      reader.readAsDataURL(this.files.photo)
+      const theFile = await readFileReaderData(this.files.photo, (fr) => {
+        return fr.readAsDataURL
+      });
+      if (theFile !== null) {
+        this.backgroundImageUrl = `background-image: url("${theFile}")`
+      }
     },
 
     isEmptyFile(f) {
