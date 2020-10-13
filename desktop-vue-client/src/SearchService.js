@@ -9,7 +9,10 @@ export default class SearchService {
 
   async searchPodcasts(query) {
     return await requestUtils.jsonRequest(this.podcastApiUrl + '/search?query=' + query, {
-      method: 'GET'
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json', 'Authorization': 'bearer ' + this.tokenProducer().token
+      }
     })
   }
 
@@ -17,7 +20,7 @@ export default class SearchService {
     const p = await requestUtils.jsonRequest(this.podcastApiUrl, {
       method: 'GET',
       headers: {
-        'Accept': 'application/json'
+        'Accept': 'application/json', 'Authorization': 'bearer ' + this.tokenProducer().token
       }
     })
     return p
