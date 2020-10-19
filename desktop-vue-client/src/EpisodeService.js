@@ -54,6 +54,9 @@ export default class EpisodeService {
     // todo we need to generate a manifest, i think?
     // todo go check the protocol/spec for the archive from the javafx code...
 
+    // todo what happens if the file i upload is not named photo.jpg?
+    // i saw some weirdness here
+
     const mapOfFileNamesToFiles = {
       'interview.mp3': interview,
       'introduction.mp3': intro,
@@ -76,7 +79,7 @@ export default class EpisodeService {
 
   }
 
-  async __doPollStatusEndpoint(uid, uri, cb) {
+  async __pollStatusEndpoint(uid, uri, cb) {
     console.log('__doPollStatusEndpoint: ', uid, ',', uri, ',', cb)
     const response = await fetch(uri, {
       method: 'GET',
@@ -92,9 +95,11 @@ export default class EpisodeService {
       const mediaUrl = json[mediaUrlJsonAttribute]
       console.log('FINISHED: podcast#', uid, ' is complete. The produced mediaUrl is', mediaUrl, '.')
       cb(mediaUrl)
+
       return false
     }
 
+    console.log('the podcast episode is not done. Will poll for the production status again in 10 seconds.')
     return true
   }
 
@@ -109,7 +114,7 @@ export default class EpisodeService {
     const token = this.tokenSupplier().token
     console.log('the publicationCallback is ', publicationCallback)
 
-    ///
+    //
     const uid = this.uuidV4()
     const zipFile = await this.buildZipFile(uid, title, description, intro, interview, photo)
     const formData = new FormData()
@@ -122,6 +127,8 @@ export default class EpisodeService {
         'Authorization': 'Bearer ' + token
       }
     })
+
+    //
     console.info(response, 'finished upload...', response.statusText, ':', response.status)
     if (response.status >= 200 && response.status < 300) {
       console.log('we got a response!')
@@ -136,7 +143,7 @@ export default class EpisodeService {
         do {
           await this.sleep(10000)
         }
-        while (await this.__doPollStatusEndpoint(uid, uri, publicationCallback))
+        while (await this.__pollStatusEndpoint(uid, uri, publicationCallback))
       }
     } //
     else {

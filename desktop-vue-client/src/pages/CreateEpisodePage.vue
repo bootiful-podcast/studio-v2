@@ -211,7 +211,6 @@ export default {
         this.backgroundImageUrl = `background-image: url("${theFile}")`
       }
     },
-
     isEmptyFile(f) {
       return f == null
     },

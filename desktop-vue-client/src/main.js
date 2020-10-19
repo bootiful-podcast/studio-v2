@@ -46,9 +46,7 @@ const store = {
   },
 
   async createEpisode(uid, title, description, intro, interview, photo, callbackOnCompletion) {
-
-     await episodeService.createEpisode(uid, title, description, intro, interview, photo , callbackOnCompletion)
-
+    await episodeService.createEpisode(uid, title, description, intro, interview, photo, callbackOnCompletion)
   },
 
 
