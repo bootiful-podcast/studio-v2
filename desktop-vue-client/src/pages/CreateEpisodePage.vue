@@ -141,7 +141,26 @@
     </Panel>
 
 
+    <b-modal ref="form-modal" hide-footer title="Your Episode Has Been Published!">
+      <div class="d-block text-center">
+        <p>
+          The episode "{{ this.title }}" has been published!
+          <!-- todo it would be nice to show a lot of information here like
+                    the UID of the episode, the mediaUrls, the podbean share markup,
+                    and the full Markdown description and title
+          -->
+        </p>
+      </div>
+      <div class="buttons">
+
+        <a class=" action     " href=""
+           @click.prevent="episodeHasBeenProducedCallback">OK </a>
+      </div>
+    </b-modal>
+
   </Page>
+
+
 </template>
 <script>
 import Page from "@/components/Page";
@@ -152,11 +171,17 @@ import readFileReaderData from "@/FileReaderUtils";
 export default {
   name: 'CreateEpisodePage',
   mounted() {
+    console.log('component mounted.')
+    // this.$refs['form-modal'].show()
   },
   created() {
     console.debug('starting ' + this.$options.name)
+
   },
   methods: {
+    episodeHasBeenProducedCallback() {
+      this.$router.push('/search')
+    },
     cancelForm() {
       this.title = null
       this.description = null
@@ -167,7 +192,11 @@ export default {
     },
     async createEpisode() {
       if (this.formIsValid === true) {
-        await this.$root.$data.createEpisode(this.title, this.description, this.files.introduction, this.files.interview, this.files.photo)
+        await this.$root.$data.createEpisode(this.title, this.description, this.files.introduction, this.files.interview, this.files.photo, async (mediaUri) => {
+          console.log('finished production. the mediaUri is', mediaUri)
+          this.cancelForm()
+          this.$refs['form-modal'].show()
+        })
       }
 
     },

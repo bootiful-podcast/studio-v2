@@ -57,7 +57,7 @@ export default class EpisodeService {
     const mapOfFileNamesToFiles = {
       'interview.mp3': interview,
       'introduction.mp3': intro,
-      'profile.jpg': photo
+      'photo.jpg': photo
     }
     const zip = new JSZip();
     for (let fileKey in mapOfFileNamesToFiles) {
@@ -76,22 +76,74 @@ export default class EpisodeService {
 
   }
 
-  async createEpisode(title, description, intro, interview, photo) {
-    const uid = this.uuidV4()
-    const zipFile = await this.buildZipFile(uid, title, description, intro, interview, photo)
-    const formData = new FormData()
-    formData.append('file', zipFile)
-    const response = await fetch(this.rootUrl + 'test-upload/' + uid, {
-      method: 'POST',
-      body: formData,
+  async __doPollStatusEndpoint(uid, uri, cb) {
+    console.log('__doPollStatusEndpoint: ', uid, ',', uri, ',', cb)
+    const response = await fetch(uri, {
+      method: 'GET',
       headers: {
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + this.tokenSupplier().token
       }
     })
-    console.info(response, 'finished upload...')
+    const json = await response.json()
+    const mediaUrlJsonAttribute = 'media-url'
+    const statusJsonAttribute = 'status'
+    if (mediaUrlJsonAttribute in json && statusJsonAttribute in json) {
+      const mediaUrl = json[mediaUrlJsonAttribute]
+      console.log('FINISHED: podcast#', uid, ' is complete. The produced mediaUrl is', mediaUrl, '.')
+      cb(mediaUrl)
+      return false
+    }
+
+    return true
   }
 
+  //
+  sleep(milliseconds) {
+    return new Promise(resolve => setTimeout(resolve, milliseconds))
+  }
+
+  async createEpisode(title, description, intro, interview, photo, publicationCallback) {
+
+
+    const token = this.tokenSupplier().token
+    console.log('the publicationCallback is ', publicationCallback)
+
+    ///
+    const uid = this.uuidV4()
+    const zipFile = await this.buildZipFile(uid, title, description, intro, interview, photo)
+    const formData = new FormData()
+    formData.append('file', zipFile)
+    const response = await fetch(this.rootUrl + 'podcasts/' + uid, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + token
+      }
+    })
+    console.info(response, 'finished upload...', response.statusText, ':', response.status)
+    if (response.status >= 200 && response.status < 300) {
+      console.log('we got a response!')
+      const json = await response.json()
+      const locationStatusJsonAttribute = 'status-url'
+      if (locationStatusJsonAttribute in json) {
+        const uriPath = this.rootUrl.endsWith('/') && json[locationStatusJsonAttribute].startsWith('/') ?
+          json[locationStatusJsonAttribute].substr(1) :
+          json[locationStatusJsonAttribute]
+        const uri = this.rootUrl + uriPath
+        console.log('uri', uri)
+        do {
+          await this.sleep(10000)
+        }
+        while (await this.__doPollStatusEndpoint(uid, uri, publicationCallback))
+      }
+    } //
+    else {
+      console.log(`the response from POST'ing the podcast was ${response.status} with text ${response.statusText}`)
+      throw new Error('could not get the podcast status!')
+    }
+  }
 
   uuidV4() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
