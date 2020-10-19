@@ -46,7 +46,9 @@ export default class EpisodeService {
     doc.getElementsByTagName('description').item(0).textContent = description
     doc.getElementsByTagName('interview').item(0).setAttribute('src', interviewFileName)
     doc.getElementsByTagName('introduction').item(0).setAttribute('src', interviewFileName)
-    return serializer.serializeToString(doc);
+    const newXmlManifestDescription = serializer.serializeToString(doc);
+    console.log(newXmlManifestDescription)
+    return newXmlManifestDescription
   }
 
   async buildZipFile(uid, title, description, intro, interview, photo) {
