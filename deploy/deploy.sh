@@ -6,6 +6,12 @@ root_dir=$(pwd)
 echo "the root dir is ${root_dir} " 
 cd $root_dir 
 
+
+## install Pack 
+(curl -sSL "https://github.com/buildpacks/pack/releases/download/v0.14.2/pack-v0.14.2-linux.tgz" | sudo tar -C /usr/local/bin/ --no-same-owner -xzv pack)
+
+
+
 rm -rf $root_dir/build
 rm -rf $root_dir/dist 
 
