@@ -19,7 +19,6 @@ jobs:
     steps:
 
       - uses: actions/checkout@v2
-      
 
       - uses: actions/setup-node@master
         with:
@@ -36,13 +35,6 @@ jobs:
 
       - run: |-
           gcloud container clusters get-credentials "$GKE_CLUSTER" --zone "$GKE_ZONE"
-
-      - name: Cache Maven packages
-        uses: actions/cache@v1
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-m2
-          restore-keys: ${{ runner.os }}-m2
 
       - name: Setup gcloud environment
         uses: GoogleCloudPlatform/github-actions@0.1.2
