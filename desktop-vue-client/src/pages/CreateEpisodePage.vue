@@ -132,29 +132,18 @@
         <div class="buttons">
           <a class=" action action__alternative   " href=""
              @click.prevent="cancelForm">Cancel</a>
-          <a :class="'action action__main ' +    (( this.formIsValid) ? '' : 'disabled') " href=""
+          <a :class="'action action__main ' + ( this.formIsValid ? '' : 'disabled' ) " href=""
              @click.prevent="createEpisode">Create</a>
         </div>
       </form>
-
-
     </Panel>
 
-
-    <b-modal ref="form-modal" hide-footer title="Your Episode Has Been Published!">
+    <b-modal ref="form-modal" hide-footer title="Publishing Episode...">
       <div class="d-block text-center">
-        <p>
-          The episode "{{ this.title }}" has been published!
-          <!-- todo it would be nice to show a lot of information here like
-                    the UID of the episode, the mediaUrls, the podbean share markup,
-                    and the full Markdown description and title
-          -->
-        </p>
+        <p> {{ publicationStatusMessage }} </p>
       </div>
       <div class="buttons">
-
-        <a class=" action     " href=""
-           @click.prevent="episodeHasBeenProducedCallback">OK </a>
+        <a :class="'action ' + ( this.published ? '' : 'disabled' ) " href="" @click.prevent="episodeHasBeenProducedCallback">OK</a>
       </div>
     </b-modal>
 
@@ -167,12 +156,18 @@ import Page from "@/components/Page";
 import Panel from "@/components/Panel";
 import Tip from "@/components/Tip";
 import readFileReaderData from "@/FileReaderUtils";
+/*
+
+const messages = {
+  'processing' : 'U'
+}
+*/
 
 export default {
   name: 'CreateEpisodePage',
   mounted() {
     console.log('component mounted.')
-    // this.$refs['form-modal'].show()
+    this.cancelForm()
   },
   created() {
     console.debug('starting ' + this.$options.name)
@@ -180,6 +175,7 @@ export default {
   },
   methods: {
     episodeHasBeenProducedCallback() {
+      this.cancelForm()
       this.$router.push('/search')
     },
     cancelForm() {
@@ -189,14 +185,19 @@ export default {
       this.files.interview = null
       this.backgroundImageUrl = null
       this.files.introduction = null
+      this.published = false
+      this.publicationStatusMessage = 'Uploading...'
+
     },
     async createEpisode() {
       if (this.formIsValid === true) {
-        await this.$root.$data.createEpisode(this.title, this.description, this.files.introduction, this.files.interview, this.files.photo, async (mediaUri) => {
-          console.log('finished production. the mediaUri is', mediaUri)
-          this.cancelForm()
-          this.$refs['form-modal'].show()
-        })
+        await this.$root.$data.createEpisode(this.title, this.description, this.files.introduction,
+            this.files.interview, this.files.photo, async (productionStatus) => {
+              console.log('production status:', productionStatus)
+              this.publicationStatusMessage = productionStatus.status
+              this.published = productionStatus.finished
+              this.$refs['form-modal'].show()
+            })
       }
 
     },
@@ -229,6 +230,8 @@ export default {
   },
   data() {
     return {
+      publicationStatusMessage: '',
+      published: false,
       originalBackgroundImageUrl: null,
       files: {
         interview: null,

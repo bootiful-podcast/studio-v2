@@ -90,19 +90,34 @@ export default class EpisodeService {
         'Authorization': 'Bearer ' + this.tokenSupplier().token
       }
     })
-    const json = await response.json()
-    const mediaUrlJsonAttribute = 'media-url'
-    const statusJsonAttribute = 'status'
-    if (mediaUrlJsonAttribute in json && statusJsonAttribute in json) {
-      const mediaUrl = json[mediaUrlJsonAttribute]
-      console.log('FINISHED: podcast#', uid, ' is complete. The produced mediaUrl is', mediaUrl, '.')
-      cb(mediaUrl)
 
-      return false
+    const json = await response.json()
+
+    const audioUrlJsonAttribute = 'audio-url'
+    const photoUrlJsonAttribute = 'photo-url'
+    const statusJsonAttribute = 'status'
+    const ps = new ProductionState()
+
+    if (statusJsonAttribute in json) {
+
+      ps.status = json[statusJsonAttribute]
+
+      if (audioUrlJsonAttribute in json) {
+        ps.mediaUrl = json[audioUrlJsonAttribute]
+      }
+
+      if (photoUrlJsonAttribute in json) {
+        ps.photoUrl = json[photoUrlJsonAttribute]
+        ps.finished = true
+      }
+
     }
 
-    console.log('the podcast episode is not done. Will poll for the production status again in 10 seconds.')
-    return true
+    cb(ps)
+
+    const shouldPollingContinue = !(ps.finished)
+    console.log('shouldPollingContinue: ', shouldPollingContinue)
+    return shouldPollingContinue
   }
 
   //
@@ -111,12 +126,9 @@ export default class EpisodeService {
   }
 
   async createEpisode(title, description, intro, interview, photo, publicationCallback) {
-
-
     const token = this.tokenSupplier().token
     console.log('the publicationCallback is ', publicationCallback)
-
-    //
+    publicationCallback( {'status': 'uploading...'})
     const uid = this.uuidV4()
     const zipFile = await this.buildZipFile(uid, title, description, intro, interview, photo)
     const formData = new FormData()
@@ -129,8 +141,6 @@ export default class EpisodeService {
         'Authorization': 'Bearer ' + token
       }
     })
-
-    //
     console.info(response, 'finished upload...', response.statusText, ':', response.status)
     if (response.status >= 200 && response.status < 300) {
       console.log('we got a response!')
@@ -141,11 +151,10 @@ export default class EpisodeService {
           json[locationStatusJsonAttribute].substr(1) :
           json[locationStatusJsonAttribute]
         const uri = this.rootUrl + uriPath
-        console.log('uri', uri)
-        do {
+        console.log('going to poll', uri, 'for UID ', uid)
+        while (await this.__pollStatusEndpoint(uid, uri, publicationCallback)) {
           await this.sleep(10000)
         }
-        while (await this.__pollStatusEndpoint(uid, uri, publicationCallback))
       }
     } //
     else {
@@ -161,4 +170,13 @@ export default class EpisodeService {
     });
   }
 
+}
+
+export class ProductionState {
+  constructor() {
+    this.status = null
+    this.photoUrl = null
+    this.mediaUrl = null
+    this.finished = false
+  }
 }
