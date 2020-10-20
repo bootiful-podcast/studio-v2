@@ -142,8 +142,9 @@
       <div class="d-block text-center">
         <p> {{ publicationStatusMessage }} </p>
       </div>
-      <div class="buttons">
-        <a :class="'action ' + ( this.published ? '' : 'disabled' ) " href="" @click.prevent="episodeHasBeenProducedCallback">OK</a>
+      <div class="buttons" v-if="published">
+        <a :class="'action__main ' + ( this.published ? '' : 'disabled' ) " href=""
+           @click.prevent="episodeHasBeenProducedCallback">OK</a>
       </div>
     </b-modal>
 
@@ -156,12 +157,16 @@ import Page from "@/components/Page";
 import Panel from "@/components/Panel";
 import Tip from "@/components/Tip";
 import readFileReaderData from "@/FileReaderUtils";
-/*
+
 
 const messages = {
-  'processing' : 'U'
+  'uploading': `Uploading audio files...`,
+  'processing' : `Processing audio files...`,
+  'audio-complete': `The audio files have been processed and an output podcast successfully  produced`,
+  'audio-upload-complete': `The audio files have been uploaded successfully`,
+  'podbean-complete': `The podcast has been published to Podbean.com`
 }
-*/
+
 
 export default {
   name: 'CreateEpisodePage',
@@ -186,7 +191,7 @@ export default {
       this.backgroundImageUrl = null
       this.files.introduction = null
       this.published = false
-      this.publicationStatusMessage = 'Uploading...'
+      this.publicationStatusMessage = messages ['uploading']
 
     },
     async createEpisode() {
@@ -194,7 +199,8 @@ export default {
         await this.$root.$data.createEpisode(this.title, this.description, this.files.introduction,
             this.files.interview, this.files.photo, async (productionStatus) => {
               console.log('production status:', productionStatus)
-              this.publicationStatusMessage = productionStatus.status
+              console.log('attempting to resolve status ', productionStatus.status, 'to a local message', messages [productionStatus.status])
+              this.publicationStatusMessage = messages [productionStatus.status]
               this.published = productionStatus.finished
               this.$refs['form-modal'].show()
             })

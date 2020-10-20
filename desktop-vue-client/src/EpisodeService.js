@@ -128,7 +128,11 @@ export default class EpisodeService {
   async createEpisode(title, description, intro, interview, photo, publicationCallback) {
     const token = this.tokenSupplier().token
     console.log('the publicationCallback is ', publicationCallback)
-    publicationCallback( {'status': 'uploading...'})
+
+    const ps = new ProductionState()
+    ps.status = 'uploading'
+    publicationCallback( ps )
+
     const uid = this.uuidV4()
     const zipFile = await this.buildZipFile(uid, title, description, intro, interview, photo)
     const formData = new FormData()
