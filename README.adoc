@@ -1,72 +1,76 @@
-# Desktop v2
+= Desktop v2
 
 
-## The Big Picture 
-I'm prototyping some of the designs for an HTML5 / Vue.js-based UI alternative to the JavaFX app. 
+== The Big Picture
+I'm prototyping some of the designs for an HTML5 / Vue.js-based UI alternative to the JavaFX app.
 
-First, I want to use as few third-party bits as possible for layout. No need for Bootstrap for the layouts. 
+First, I want to use as few third-party bits as possible for layout. No need for Bootstrap for the layouts.
 
 Second, I want to use as few third-party bits as possible for CSS in general. I'm not sure if my CSS-fu is strong enough to get me through a modern, responsive form without Bootstrap, however.
 
-Third, I want to support a more dynamic UI that lets me edit / update all the existing podcasts, and to see what was published and when. So this won't just be the Podcast inception as was done in the JavaFX `desktop` project.  
+Third, I want to support a more dynamic UI that lets me edit / update all the existing podcasts, and to see what was published and when. So this won't just be the Podcast inception as was done in the JavaFX `desktop` project.
 
-Fourth, it'd be nice to use Vue.js for this. I found that it provides a nice experience for building data-driven, form-driven user interfaces. But, then again, I haven't done anything particularly complicated with it so who knows? 
+Fourth, it'd be nice to use Vue.js for this. I found that it provides a nice experience for building data-driven, form-driven user interfaces. But, then again, I haven't done anything particularly complicated with it so who knows?
 
-Fifth, I've got a mock-api that i'm using to mock out the actual podcast publication API. I might check that into this repository for a while as well. The goal is to prototype out a few scenarios: 
+Fifth, I've got a mock-api that i'm using to mock out the actual podcast publication API. I might check that into this repository for a while as well. The goal is to prototype out a few scenarios:
 
-* uploading a new podcast with the complete data required. 
-* uploading a new file 
+* uploading a new podcast with the complete data required.
+* uploading a new file
 
-Sixth, will I need a custom domain or could I deploy this as an Electron.js application? It'd be easier, basically, to use https://www.electronjs.org/docs/tutorial/first-app#trying-this-example[Electron.js]. 
+Sixth, will I need a custom domain or could I deploy this as an Electron.js application? It'd be easier, basically, to use https://www.electronjs.org/docs/tutorial/first-app#trying-this-example[Electron.js].
 
 Once the mock design is working, it'll be time to integrate it with the API.
 
 
-
-.Here's the old JavaFX design for reference 
+.Here's the old JavaFX design for reference
 
 image::old-design-for-reference.png[The old design from the JavaFX-powered Desktop v1 application]
 
- 
-## Maintaing the Application 
+
+==	 Maintaing the Application
 
 ![CI](https://github.com/bootiful-podcast/desktop-v2/workflows/CI/badge.svg)
 
 
 This project supports editing podcasts. It's [based on Vue.js](https://vuejs.org/) and integrates with the Spring Boot-based backend in [`api-v2`](https://github.com/bootiful-podcast/api-v2).
 
-## Project setup
+== Project setup
+
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+=== Compiles and hot-reloads for development
+
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
+=== Compiles and minifies for production
+
 ```
 npm run build
 ```
 
-### Lints and fixes files
+=== Lints and fixes files
+
 ```
 npm run lint
 ```
 
-### Customize configuration
+=== Customize configuration
+
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
-### Environment-Specific Configuration
+=== Environment-Specific Configuration
 
-There are two `.env.*` properties each containing environment-specific environment varaibles that get interpolated into the build thanks to Webpack. If you run `npm run build`, it'll pull in the variables defined in `.env.production`, and otherwise it'll pull in the environment variables from `.env`. 
+There are two `.env.\*` properties each containing environment-specific environment varaibles that get interpolated into the build thanks to Webpack. If you run `npm run build`, it'll pull in the variables defined in `.env.production`, and otherwise it'll pull in the environment variables from `.env`.
 
-### Previewing the Production Application
+=== Previewing the Production Application
 
-It's important that you serve the static JavaScript assets as an HTTP service. You can't just open it in your local browser relative to the filesystem. 
+It's important that you serve the static JavaScript assets as an HTTP service. You can't just open it in your local browser relative to the filesystem.
 
-Build the application as usual (`npm run build`) and then serve it using any of a number of convenient utilities that serve static assets. 
+Build the application as usual (`npm run build`) and then serve it using any of a number of convenient utilities that serve static assets.
 
 I have a little Python script that serves the data from the application:
 
@@ -74,21 +78,21 @@ I have a little Python script that serves the data from the application:
 #!/bin/bash
 p=${1:-8020}
 d=${2:-$PWD}
-echo $d 
-cd $d 
-python -m SimpleHTTPServer $p 
+echo $d
+cd $d
+python -m SimpleHTTPServer $p
 ```
 
-Put that in a `.sh` script, remember to `chmod a+x` the script, and then run it like this: 
+Put that in a `.sh` script, remember to `chmod a+x` the script, and then run it like this:
 
 ```
 ./script.sh 8020 .
 ```
 
-I assume, in that incantation, that `.` points to the root of the application or the `dist` directory in which you've built the production assets. 
+I assume, in that incantation, that `.` points to the root of the application or the `dist` directory in which you've built the production assets.
 
 
-### Favicon.ico 
+=== Favicon.ico
 
-I used [this website](https://favicon.io/favicon-converter/) to take an [image](https://github.com/the-trump-dump/site-generator/blob/master/src/main/resources/static/Donald-GOP.png) and turn it into 
+I used [this website](https://favicon.io/favicon-converter/) to take an [image](https://github.com/the-trump-dump/site-generator/blob/master/src/main/resources/static/Donald-GOP.png) and turn it into
 the `favicon.ico` for the site.
