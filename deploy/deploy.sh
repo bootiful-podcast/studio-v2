@@ -11,19 +11,29 @@ rm -rf $root_dir/dist
 
 npm run build 
 
+
+kubectl delete $root_dir/deploy/deployment.yaml
+
 ## stage the build for containerization
 mkdir -p ${root_dir}/build/public
 cp $root_dir/deploy/nginx-buildpack-config/* ${root_dir}/build
 cp -r $root_dir/dist/* ${root_dir}/build/public
 cd $root_dir/build 
+
+# mkdir -p ${root_dir}/build/public
+# cp $root_dir/deploy/nginx-buildpack-config/* ${root_dir}/build
+# echo "<h1>Hello, world</h1>" > ${root_dir}/build/public/index.html 
+# cd $root_dir/build 
+
+
 pack build $APP_NAME --builder  paketobuildpacks/builder:full --buildpack gcr.io/paketo-buildpacks/nginx:latest  --env PORT=8080
 
 ## deploy the newly minted container to our K8s cluster
 image_id=$(docker images -q $APP_NAME)
 docker tag "${image_id}" gcr.io/${PROJECT_ID}/${APP_NAME}
 docker push gcr.io/${PROJECT_ID}/${APP_NAME}
-docker pull gcr.io/${PROJECT_ID}/${APP_NAME}:latest
+# docker pull gcr.io/${PROJECT_ID}/${APP_NAME}:latest
 kubectl apply -f ${root_dir}/deploy/deployment.yaml 
 # this works! 
 # docker run -p 9090:9090 -e PORT=9090 bp-view
-kubectl describe services $APP_NAME
+# kubectl describe services $APP_NAME
