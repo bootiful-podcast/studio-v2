@@ -1,5 +1,7 @@
 # Desktop v2
 
+
+## The Big Picture 
 I'm prototyping some of the designs for an HTML5 / Vue.js-based UI alternative to the JavaFX app. 
 
 First, I want to use as few third-party bits as possible for layout. No need for Bootstrap for the layouts. 
@@ -26,3 +28,67 @@ Once the mock design is working, it'll be time to integrate it with the API.
 image::old-design-for-reference.png[The old design from the JavaFX-powered Desktop v1 application]
 
  
+## Maintaing the Application 
+
+![CI](https://github.com/bootiful-podcast/desktop-v2/workflows/CI/badge.svg)
+
+
+This project supports editing podcasts. It's [based on Vue.js](https://vuejs.org/) and integrates with the Spring Boot-based backend in [`api-v2`](https://github.com/bootiful-podcast/api-v2).
+
+## Project setup
+```
+npm install
+```
+
+### Compiles and hot-reloads for development
+```
+npm run serve
+```
+
+### Compiles and minifies for production
+```
+npm run build
+```
+
+### Lints and fixes files
+```
+npm run lint
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).
+
+### Environment-Specific Configuration
+
+There are two `.env.*` properties each containing environment-specific environment varaibles that get interpolated into the build thanks to Webpack. If you run `npm run build`, it'll pull in the variables defined in `.env.production`, and otherwise it'll pull in the environment variables from `.env`. 
+
+### Previewing the Production Application
+
+It's important that you serve the static JavaScript assets as an HTTP service. You can't just open it in your local browser relative to the filesystem. 
+
+Build the application as usual (`npm run build`) and then serve it using any of a number of convenient utilities that serve static assets. 
+
+I have a little Python script that serves the data from the application:
+
+```
+#!/bin/bash
+p=${1:-8020}
+d=${2:-$PWD}
+echo $d 
+cd $d 
+python -m SimpleHTTPServer $p 
+```
+
+Put that in a `.sh` script, remember to `chmod a+x` the script, and then run it like this: 
+
+```
+./script.sh 8020 .
+```
+
+I assume, in that incantation, that `.` points to the root of the application or the `dist` directory in which you've built the production assets. 
+
+
+### Favicon.ico 
+
+I used [this website](https://favicon.io/favicon-converter/) to take an [image](https://github.com/the-trump-dump/site-generator/blob/master/src/main/resources/static/Donald-GOP.png) and turn it into 
+the `favicon.ico` for the site.
