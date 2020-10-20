@@ -9,6 +9,7 @@ cd $root_dir
 rm -rf $root_dir/build
 rm -rf $root_dir/dist 
 
+npm install
 npm run build 
 
 
