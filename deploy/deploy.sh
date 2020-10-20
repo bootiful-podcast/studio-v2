@@ -1,11 +1,27 @@
 #!/usr/bin/env bash
 
-export APP_NAME=hello-nginx
+export APP_NAME=bp-view
 export PROJECT_ID=${GKE_PROJECT:-pgtm-jlong}
+
+
+
 
 cd $(dirname $0)/..
 root_dir=$(pwd)
-  
+
+echo "the root dir is ${root_dir} " 
+
+
+cd $root_dir 
+
+npm run build 
+
+cd dist 
+
+
+cp $root_dir/deploy/nginx-buildpack-config/* ${root_dir}/dist/
+
+
 pack build $APP_NAME --builder  paketobuildpacks/builder:full --buildpack gcr.io/paketo-buildpacks/nginx:latest  --env PORT=8080
 
 image_id=$(docker images -q $APP_NAME)
