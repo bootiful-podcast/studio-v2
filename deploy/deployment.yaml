@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: bp-view
+  name: studio
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: bp-view.demo.bootifulpodcast.fm
+    external-dns.alpha.kubernetes.io/hostname: studio.demo.bootifulpodcast.fm
 spec:
   ports:
   - port: 80
