@@ -9,8 +9,11 @@ cd $root_dir
 ## install Pack 
 (curl -sSL "https://github.com/buildpacks/pack/releases/download/v0.14.2/pack-v0.14.2-linux.tgz" | sudo tar -C /usr/local/bin/ --no-same-owner -xzv pack)
 
+# pack -version  || echo "hi" 
+
 rm -rf $root_dir/build
 rm -rf $root_dir/dist 
+
 
 npm install
 npm run build 
