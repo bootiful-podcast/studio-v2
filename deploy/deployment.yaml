@@ -3,13 +3,13 @@ kind: Service
 metadata:
   name: studio
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: studio.demo.bootifulpodcast.fm
+    external-dns.alpha.kubernetes.io/hostname: studio.admin.bootifulpodcast.online
 spec:
   ports:
   - port: 80
     targetPort: 8080
   selector:
-    app: bp-view
+    app: bp-studio
   type: LoadBalancer
 
 ---
@@ -17,23 +17,23 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: bp-view
-  name: bp-view
+    app: bp-studio
+  name: studio
   namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: bp-view
+      app: bp-studio
   template:
     metadata:
       labels:
-        app: bp-view
+        app: bp-studio
     spec:
       containers:
-        - image: gcr.io/pgtm-jlong/bp-view
+        - image: gcr.io/pgtm-jlong/bp-studio
           imagePullPolicy: Always
-          name: bp-view
+          name: bp-studio
           env:
             - name: PORT
               value: "8080"
