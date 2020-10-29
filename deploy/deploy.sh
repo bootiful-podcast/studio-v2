@@ -20,6 +20,7 @@ cp $root_dir/deploy/nginx-buildpack-config/* ${root_dir}/build
 cp -r $root_dir/dist/* ${root_dir}/build/public
 cd $root_dir/build
 
+
 pack build $APP_NAME --builder  paketobuildpacks/builder:full --buildpack gcr.io/paketo-buildpacks/nginx:latest  --env PORT=8080
 image_id=$(docker images -q $APP_NAME)
 docker tag "${image_id}" gcr.io/${PROJECT_ID}/${APP_NAME}
