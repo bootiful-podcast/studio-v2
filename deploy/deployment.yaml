@@ -9,30 +9,30 @@ spec:
   - port: 80
     targetPort: 8080
   selector:
-    app: bp-studio
+    app: studio
   type: LoadBalancer
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: bp-studio
+    app: studio
   name: studio
   namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: bp-studio
+      app:  studio
   template:
     metadata:
       labels:
-        app: bp-studio
+        app: studio
     spec:
       containers:
-        - image: gcr.io/pgtm-jlong/bp-studio
+        - image: gcr.io/pgtm-jlong/studio
           imagePullPolicy: Always
-          name: bp-studio
+          name:  studio
           env:
             - name: PORT
               value: "8080"

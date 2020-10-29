@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-export APP_NAME=bp-studio
+export APP_NAME=studio
 export PROJECT_ID=${GKE_PROJECT:-pgtm-jlong}
 cd $(dirname $0)/..
 root_dir=$(pwd)
