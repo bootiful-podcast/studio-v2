@@ -10,8 +10,7 @@ cd $root_dir
 
 rm -rf $root_dir/build
 rm -rf $root_dir/dist
-npm install
-npm run build
+npm install && npm run build
 
 kubectl delete $root_dir/deploy/deployment.yaml
 
