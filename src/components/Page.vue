@@ -34,7 +34,7 @@
         <div class="server--url">
           {{ buildPresentableUrl($root.$data.service.url) }}
           <br/>
-      [    {{ gitHash }} ]
+          <span style="font-size: smaller"> {{ gitHash }}  </span>
         </div>
       </div>
     </div>
