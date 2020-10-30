@@ -15,7 +15,6 @@ echo "VUE_APP_GIT_HASH=${GITHUB_SHA}" >> $root_dir/.env.production
 
 npm install && npm run build
 
-kubectl delete $root_dir/deploy/deployment.yaml
 
 mkdir -p ${root_dir}/build/public
 cp $root_dir/deploy/nginx-buildpack-config/* ${root_dir}/build
@@ -31,3 +30,5 @@ docker push gcr.io/${PROJECT_ID}/${APP_NAME}
 
 kubectl delete -f ${root_dir}/deploy/deployment.yaml
 kubectl apply -f ${root_dir}/deploy/deployment.yaml
+kubectl get service $APP_NAME | grep $APP_NAME || kubectl apply -f ${root_dir}/deploy/deployment-service.yaml
+#kubectl get service | grep $APP_NAME || kubectl apply -f $API_SERVICE_YAML
