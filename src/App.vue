@@ -22,7 +22,9 @@ export default {
   methods: {},
 
   data() {
-    return {}
+    return {
+
+    }
   },
 
   components: {}

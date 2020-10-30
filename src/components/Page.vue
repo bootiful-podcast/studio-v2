@@ -30,12 +30,13 @@
       <slot></slot>
     </div>
     <div class="footer">
-
-
       <div class="server">
-        <span class="server--url"> {{ buildPresentableUrl($root.$data.service.url) }}  </span>
+        <div class="server--url">
+          {{ buildPresentableUrl($root.$data.service.url) }}
+          <br/>
+          {{ gitHash }}
+        </div>
       </div>
-
     </div>
 
   </div>
@@ -75,7 +76,9 @@ export default {
     }
   },
   data() {
-    return {}
+    return {
+      gitHash: process.env.GIT_HASH
+    }
   }
 }
 </script>

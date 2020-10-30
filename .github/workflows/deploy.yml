@@ -6,6 +6,7 @@ env:
   GKE_CLUSTER: ${{ secrets.GKE_CLUSTER }}
   GKE_PROJECT: ${{ secrets.GKE_PROJECT }}
   GKE_SA_KEY: ${{ secrets.GKE_SA_KEY }}
+  GITHUB_SHA: ${{ secrets.GITHUB_SHA }}
 
 on:
   create:
