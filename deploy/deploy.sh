@@ -27,4 +27,7 @@ pack build $APP_NAME --builder  paketobuildpacks/builder:full --buildpack gcr.io
 image_id=$(docker images -q $APP_NAME)
 docker tag "${image_id}" gcr.io/${PROJECT_ID}/${APP_NAME}
 docker push gcr.io/${PROJECT_ID}/${APP_NAME}
+
+
+kubectl delete -f ${root_dir}/deploy/deployment.yaml
 kubectl apply -f ${root_dir}/deploy/deployment.yaml
