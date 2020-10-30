@@ -11,7 +11,7 @@ cd $root_dir
 rm -rf $root_dir/build
 rm -rf $root_dir/dist
 
-echo "GIT_HASH=${GITHUB_SHA}" >> $root_dir/.env.production
+echo "VUE_APP_GIT_HASH=${GITHUB_SHA}" >> $root_dir/.env.production
 
 npm install && npm run build
 
