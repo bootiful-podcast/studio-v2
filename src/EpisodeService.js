@@ -31,7 +31,7 @@ export default class EpisodeService {
         <?xml version="1.0" encoding="UTF-8" standalone="no"?>
         <podcast title="this is the title" uid="9c88cd9c-d071-4a0e-bd6a-b6b96b3cc53b">
         <interview src="interview.mp3"/>
-        <introduction src="intro.mp3"/>
+        <introduction src="introduction.mp3"/>
         <photo src="photo.jpg"/>
         <description>
         <![CDATA[this is the description. _Now is the time_ for all things.]]>
@@ -42,10 +42,10 @@ export default class EpisodeService {
     const doc = parser.parseFromString(xmlString, 'application/xml')
     doc.getElementsByTagName('podcast').item(0).setAttribute('title', title)
     doc.getElementsByTagName('podcast').item(0).setAttribute('uid', uid)
-    doc.getElementsByTagName('photo').item(0).setAttribute('src', photoJpg)
+    // doc.getElementsByTagName('photo').item(0).setAttribute('src', photoJpg)
     doc.getElementsByTagName('description').item(0).textContent = description
-    doc.getElementsByTagName('interview').item(0).setAttribute('src', interviewFileName)
-    doc.getElementsByTagName('introduction').item(0).setAttribute('src', interviewFileName)
+    // doc.getElementsByTagName('interview').item(0).setAttribute('src', interviewFileName)
+    // doc.getElementsByTagName('introduction').item(0).setAttribute('src', interviewFileName)
     const newXmlManifestDescription = serializer.serializeToString(doc);
     console.log(newXmlManifestDescription)
     return newXmlManifestDescription
