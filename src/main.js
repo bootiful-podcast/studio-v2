@@ -23,6 +23,9 @@ const loginService = new LoginService(rootUrl + 'token')
 const episodeService = new EpisodeService(rootUrl, tokenSupplier)
 const searchService = new SearchService(rootUrl + 'podcasts', tokenSupplier)
 
+const gitHash = process.env.GIT_HASH
+
+console.log('the git revision is ', gitHash)
 
 function sortPodcastsByDateMostRecentFirst(results) {
   function dateIndex(dateStr) {
