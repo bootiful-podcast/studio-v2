@@ -3,7 +3,7 @@ process.env.VUE_APP_VERSION = require ('/package.json').version
 
 module.exports = {
 
-
+/*
  index: {
   // the source template
   template: 'public/index.html',
@@ -15,5 +15,5 @@ module.exports = {
   // chunks to include on this page, by default includes
   // extracted common chunks and vendor chunks.
   chunks: ['chunk-vendors', 'chunk-common', 'index']
- },
+ },*/
 }
