@@ -21,13 +21,11 @@ Sixth, will I need a custom domain or could I deploy this as an Electron.js appl
 
 Once the mock design is working, it'll be time to integrate it with the API.
 
-
 .Here's the old JavaFX design for reference
 
 image::old-design-for-reference.png[The old design from the JavaFX-powered Desktop v1 application]
 
-
-==	 Maintaing the Application
+== Maintaining the Application
 
 ![CI](https://github.com/bootiful-podcast/desktop-v2/workflows/CI/badge.svg)
 
