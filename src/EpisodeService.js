@@ -43,10 +43,10 @@ export default class EpisodeService {
     const doc = parser.parseFromString(xmlString, 'application/xml')
     doc.getElementsByTagName('podcast').item(0).setAttribute('title', title)
     doc.getElementsByTagName('podcast').item(0).setAttribute('uid', uid)
-    // doc.getElementsByTagName('photo').item(0).setAttribute('src', photoJpg)
+    doc.getElementsByTagName('photo').item(0).setAttribute('src', photoJpg)
     doc.getElementsByTagName('description').item(0).textContent = description
-    // doc.getElementsByTagName('interview').item(0).setAttribute('src', interviewFileName)
-    // doc.getElementsByTagName('introduction').item(0).setAttribute('src', interviewFileName)
+    doc.getElementsByTagName('interview').item(0).setAttribute('src', interviewFileName)
+    doc.getElementsByTagName('introduction').item(0).setAttribute('src', interviewFileName)
     const newXmlManifestDescription = serializer.serializeToString(doc);
     console.log(newXmlManifestDescription)
     return newXmlManifestDescription
@@ -75,7 +75,8 @@ export default class EpisodeService {
       }
     }
 
-    const xml = this.buildManifestXml(uid, title, description, intro.name, interview.name, photo.name)
+    const xml = this.buildManifestXml(uid, title, description, /*intro.name*/ 'introduction.mp3',
+      /*interview.name*/ 'interview.mp3', /* photo.name */'photo.jpg')
     zip.file('manifest.xml', xml)
 
     return await zip.generateAsync({type: 'blob'})
@@ -132,7 +133,7 @@ export default class EpisodeService {
 
     const ps = new ProductionState()
     ps.status = 'uploading'
-    publicationCallback( ps )
+    publicationCallback(ps)
 
     const uid = this.uuidV4()
     const zipFile = await this.buildZipFile(uid, title, description, intro, interview, photo)
