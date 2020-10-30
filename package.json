@@ -1,6 +1,7 @@
 {
   "name": "bootiful-podcast-desktop",
   "version": "0.1.0",
+  "description": "A Bootiful Podcast Studio",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
