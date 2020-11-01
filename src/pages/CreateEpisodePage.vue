@@ -59,17 +59,18 @@
           <label class="panel__prompt" for="title">
             Title
           </label>
-          <b-form-input id="title" :state="! isEmptyString(this.title)" v-model="title" class="form-control"
-                        placeholder="Enter the title for the new episode"></b-form-input>
+          <b-form-input id="title" :state="! isEmptyString(this.title) && isMinimumLengthString ( this.title ) "
+                        v-model="title" class="form-control"
+                        placeholder="Enter the title for the new episode (5 chars or more)"></b-form-input>
         </div>
         <div class="form-group">
           <label class="panel__prompt" for="description">
             Description
           </label>
           <b-form-textarea
-              id="description" :state=" !isEmptyString(this.description)"
+              id="description" :state=" !isEmptyString(this.description)  && isMinimumLengthString (this.description)"
               v-model="description"
-              class="form-control" placeholder="Describe the episode. Feel free to use Markdown."
+              class="form-control" placeholder="Describe the episode (5 chars or more). Feel free to use Markdown."
           ></b-form-textarea>
 
         </div>
@@ -161,10 +162,10 @@ import readFileReaderData from "@/FileReaderUtils";
 
 const messages = {
   'uploading': `Uploading audio files...`,
-  'processing' : `Processing audio files...`,
-  'audio-complete': `The audio files have been processed and an output podcast successfully  produced`,
-  'audio-upload-complete': `The audio files have been uploaded successfully`,
-  'podbean-complete': `The podcast has been published to Podbean.com`
+  'processing': `Processing audio files...`,
+  'audio-complete': `The audio files have been processed and an output podcast successfully produced...`,
+  'audio-upload-complete': `The audio files have been uploaded successfully...`,
+  'podbean-complete': `The podcast has been published to Podbean.com. Everything's finished!`
 }
 
 
@@ -223,6 +224,9 @@ export default {
     },
     isEmptyString(s) {
       return s == null || s.trim() === ''
+    },
+    isMinimumLengthString(s) {
+      return s.length >= 5
     }
   },
   computed: {
