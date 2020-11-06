@@ -10,7 +10,11 @@ cd $root_dir
 rm -rf $root_dir/build
 rm -rf $root_dir/dist
 
-echo "VUE_APP_GIT_HASH=${GITHUB_SHA}" >> $root_dir/.env.production
+PROD_ENV_FILE=${root_dir}/.env.production
+rm $PROD_ENV_FILE
+touch $PROD_ENV_FILE
+echo "VUE_APP_SERVICE_ROOT=http://api.${BP_MODE_LOWERCASE}.bootifulpodcast.online" >> ${PROD_ENV_FILE}
+echo "VUE_APP_GIT_HASH=${GITHUB_SHA}" >>  ${PROD_ENV_FILE}
 
 npm install && npm run build
 
