@@ -16,7 +16,7 @@ spec:
         app: studio
     spec:
       containers:
-        - image: gcr.io/pgtm-jlong/studio
+        - image: gcr.io/bootiful/studio
           imagePullPolicy: Always
           name:  studio
           env:
