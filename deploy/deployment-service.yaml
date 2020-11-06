@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: studio
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: studio.admin.bootifulpodcast.online.
+    external-dns.alpha.kubernetes.io/hostname: studio.development.bootifulpodcast.online.
 spec:
   ports:
   - port: 80

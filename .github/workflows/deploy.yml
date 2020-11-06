@@ -1,11 +1,13 @@
-name: build
+name: Deploy Desktop
 
 env:
-  GKE_ZONE: ${{ secrets.GKE_ZONE }}
-  GKE_CLUSTER: ${{ secrets.GKE_CLUSTER }}
-  GKE_PROJECT: ${{ secrets.GKE_PROJECT }}
-  GKE_SA_KEY: ${{ secrets.GKE_SA_KEY }}
-  GITHUB_SHA: ${{ secrets.GITHUB_SHA }}
+  GIT_PASSWORD: ${{ secrets.GIT_PASSWORD }}
+  GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
+  CONFIGURATION_SERVER_USERNAME: ${{ secrets.CONFIGURATION_SERVER_USERNAME }}
+  CONFIGURATION_SERVER_PASSWORD: ${{ secrets.CONFIGURATION_SERVER_PASSWORD }}
+  GCLOUD_ZONE_DEVELOPMENT: ${{ secrets.GCLOUD_ZONE_DEVELOPMENT }}
+  GCLOUD_PROJECT_DEVELOPMENT: ${{ secrets.GCLOUD_PROJECT_DEVELOPMENT }}
+  GCLOUD_SA_KEY: ${{ secrets.GCLOUD_SA_KEY }}
 
 on:
   create:
@@ -21,26 +23,42 @@ jobs:
 
       - uses: actions/checkout@v2
 
-      - uses: actions/setup-node@master
-        with:
-          node-version: '10.x'
+      - name: "Setup Initial Environment"
+        run: |
+          source $GITHUB_WORKSPACE/.github/workflows/bp_mode.sh
+          P="${GITHUB_WORKSPACE}/bin"
+          mkdir -p $P
+          echo "${P}" >> $GITHUB_PATH
+
+      - name: Setup GCP environment
+        uses: GoogleCloudPlatform/github-actions@0.1.2
 
       - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:
           version: '290.0.1'
-          service_account_key: ${{ secrets.GKE_SA_KEY }}
-          project_id: ${{ secrets.GKE_PROJECT }}
+          service_account_key: ${{ secrets.GCLOUD_SA_KEY }}
+          project_id: ${{ secrets.GCLOUD_PROJECT }}
 
-      - run: |-
+      - run: |
+          gcloud config set project $GCLOUD_PROJECT
           gcloud --quiet auth configure-docker
 
       - run: |-
-          gcloud container clusters get-credentials "$GKE_CLUSTER" --zone "$GKE_ZONE"
+          gcloud container clusters get-credentials $GKE_CLUSTER_NAME --zone "$GCLOUD_ZONE" --project $GCLOUD_PROJECT
 
-      - name: Setup gcloud environment
-        uses: GoogleCloudPlatform/github-actions@0.1.2
+      - name: Connect to Config Server for Configuration
+        run: |
+          source $GITHUB_WORKSPACE/.github/workflows/config_client.sh
+          install_config_client_cli
+          hydrate_environment_from_config_server
 
-      - name: Deploy to the cluster
+      - uses: actions/setup-node@master
+        with:
+          node-version: '10.x'
+
+      - name: Deploy Desktop
         run: |
           cd $GITHUB_WORKSPACE
+          (curl -sSL "https://github.com/buildpacks/pack/releases/download/v0.14.2/pack-v0.14.2-linux.tgz" | sudo tar -C $GITHUB_WORKSPACE/bin/ --no-same-owner -xzv pack)
+
           ./deploy/deploy.sh
