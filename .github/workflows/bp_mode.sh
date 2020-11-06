@@ -20,7 +20,6 @@ function resolve_variable_by_mode(){
   INDIRECT_VALUE=${!NV}
   echo $NV
   ASSIGNMENT="export ${1}=$INDIRECT_VALUE"
-  echo $ASSIGNMENT
   eval $ASSIGNMENT
 }
 

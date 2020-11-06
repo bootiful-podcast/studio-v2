@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+set -e
+set -o pipefail
+
+
 export APP_NAME=studio
 export PROJECT_ID=${GCLOUD_PROJECT}
 
@@ -25,9 +29,15 @@ cd $root_dir/build
 
 pack build $APP_NAME --builder  paketobuildpacks/builder:full --buildpack gcr.io/paketo-buildpacks/nginx:latest  --env PORT=8080
 image_id=$(docker images -q $APP_NAME)
+
+GCR_IMAGE_NAME=gcr.io/${PROJECT_ID}/${APP_NAME}
 echo "pushing ${image_id} to gcr.io/${PROJECT_ID}/${APP_NAME}"
-docker tag "${image_id}" gcr.io/${PROJECT_ID}/${APP_NAME}
-docker push gcr.io/${PROJECT_ID}/${APP_NAME}
+echo "tagging ${GCR_IMAGE_NAME}"
+docker tag "${image_id}"
+echo "finished tag"
+
+docker push ${GCR_IMAGE_NAME}
+echo "finished push"
 
 kubectl delete -f ${root_dir}/deploy/deployment.yaml
 kubectl apply -f ${root_dir}/deploy/deployment.yaml
