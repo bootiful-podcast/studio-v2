@@ -13,8 +13,6 @@ echo "BP_MODE_LOWERCASE=$BP_MODE_LOWERCASE"  >> $GITHUB_ENV
 echo "BP_MODE=${BP_MODE}" >> $GITHUB_ENV
 echo "the BP_MODE is '${BP_MODE}'"
 
-
-
 function resolve_variable_by_mode(){
   NV=${1}_${BP_MODE}
   INDIRECT_VALUE=${!NV}
@@ -22,8 +20,6 @@ function resolve_variable_by_mode(){
   ASSIGNMENT="export ${1}=$INDIRECT_VALUE"
   eval $ASSIGNMENT
 }
-
-
 
 resolve_variable_by_mode GCLOUD_ZONE
 resolve_variable_by_mode GCLOUD_PROJECT

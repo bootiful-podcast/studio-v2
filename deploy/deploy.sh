@@ -33,7 +33,7 @@ image_id=$(docker images -q $APP_NAME)
 GCR_IMAGE_NAME=gcr.io/${PROJECT_ID}/${APP_NAME}
 echo "pushing ${image_id} to gcr.io/${PROJECT_ID}/${APP_NAME}"
 echo "tagging ${GCR_IMAGE_NAME}"
-docker tag "${image_id}"
+docker tag "${image_id}" ${GCR_IMAGE_NAME}
 echo "finished tag"
 
 docker push ${GCR_IMAGE_NAME}
