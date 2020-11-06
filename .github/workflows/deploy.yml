@@ -37,14 +37,13 @@ jobs:
         with:
           version: '290.0.1'
           service_account_key: ${{ secrets.GCLOUD_SA_KEY }}
-          project_id: ${{ secrets.GCLOUD_PROJECT }}
+          project_id: ${{ env.GCLOUD_PROJECT }}
 
       - run: |
           gcloud config set project $GCLOUD_PROJECT
           gcloud --quiet auth configure-docker
 
-      - run: |-
-          gcloud container clusters get-credentials $GKE_CLUSTER_NAME --zone "$GCLOUD_ZONE" --project $GCLOUD_PROJECT
+      - run: gcloud container clusters get-credentials $GKE_CLUSTER_NAME --zone "$GCLOUD_ZONE" --project ${GCLOUD_PROJECT}
 
       - name: Connect to Config Server for Configuration
         run: |
