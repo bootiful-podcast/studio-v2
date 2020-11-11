@@ -148,7 +148,6 @@ export default {
 
       console.debug(`
         doSearch([ ${this.query}]).
-        in theory, we're signed in as ${this.$root.$data.session.token}
         There are ${this.podcasts.length} podcasts.
       `)
       if (this.query === '' || this.query === null) {

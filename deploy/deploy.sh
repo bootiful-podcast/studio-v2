@@ -3,6 +3,14 @@
 set -e
 set -o pipefail
 
+# In most of the system, the tenancy is on the cluster.
+# But DNS is by definition global, so we bifurcate based on which environment is chosen
+## Production: api.bootifulpodcast.online
+## Development: api.development.bootifulpodcast.online
+# etc
+
+export ENV_SUB_DOMAIN=$([ $BP_MODE_LOWERCASE = "production" ] && echo ""  || echo "${BP_MODE_LOWERCASE}.")
+
 
 export APP_NAME=studio
 export PROJECT_ID=${GCLOUD_PROJECT}
@@ -17,7 +25,7 @@ rm -rf $root_dir/dist
 PROD_ENV_FILE=${root_dir}/.env.production
 rm $PROD_ENV_FILE
 touch $PROD_ENV_FILE
-echo "VUE_APP_SERVICE_ROOT=https://api.${BP_MODE_LOWERCASE}.bootifulpodcast.online" >> ${PROD_ENV_FILE}
+echo "VUE_APP_SERVICE_ROOT=https://api.${ENV_SUB_DOMAIN}bootifulpodcast.online" >> ${PROD_ENV_FILE}
 echo "VUE_APP_GIT_HASH=${GITHUB_SHA}" >>  ${PROD_ENV_FILE}
 
 npm install && npm run build
