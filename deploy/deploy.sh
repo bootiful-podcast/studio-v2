@@ -39,6 +39,6 @@ echo "finished tag"
 docker push ${GCR_IMAGE_NAME}
 echo "finished push"
 
-kubectl delete -f ${root_dir}/deploy/deployment.yaml
+kubectl delete -f ${root_dir}/deploy/deployment.yaml || echo "could not delete existing deployment (maybe it doesn't exist?)"
 kubectl apply -f ${root_dir}/deploy/deployment.yaml
 kubectl get service $APP_NAME | grep $APP_NAME || kubectl apply -f ${root_dir}/deploy/deployment-service.yaml
