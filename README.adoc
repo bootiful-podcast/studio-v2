@@ -9,3 +9,4 @@ The new architecture is spelled out by examining all the projects on github.com/
 * `processor-v2` - a Python-based podcast audio production
 * `api-v2` - an API to which the Studio environment connects
 * `deployment` - this contains infrastructure that is common to the system, including RabbitMQ and PostgreSQL
+
