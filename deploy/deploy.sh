@@ -17,7 +17,7 @@ rm -rf $root_dir/dist
 PROD_ENV_FILE=${root_dir}/.env.production
 rm $PROD_ENV_FILE
 touch $PROD_ENV_FILE
-echo "VUE_APP_SERVICE_ROOT=http://api.${BP_MODE_LOWERCASE}.bootifulpodcast.online" >> ${PROD_ENV_FILE}
+echo "VUE_APP_SERVICE_ROOT=https://api.${BP_MODE_LOWERCASE}.bootifulpodcast.online" >> ${PROD_ENV_FILE}
 echo "VUE_APP_GIT_HASH=${GITHUB_SHA}" >>  ${PROD_ENV_FILE}
 
 npm install && npm run build
@@ -27,7 +27,7 @@ cp $root_dir/deploy/nginx-buildpack-config/* ${root_dir}/build
 cp -r $root_dir/dist/* ${root_dir}/build/public
 cd $root_dir/build
 
-pack build $APP_NAME --builder  paketobuildpacks/builder:full --buildpack gcr.io/paketo-buildpacks/nginx:latest  --env PORT=8080
+pack build $APP_NAME --builder paketobuildpacks/builder:full --buildpack gcr.io/paketo-buildpacks/nginx:latest  --env PORT=8080
 image_id=$(docker images -q $APP_NAME)
 
 GCR_IMAGE_NAME=gcr.io/${PROJECT_ID}/${APP_NAME}
