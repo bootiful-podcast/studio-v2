@@ -16,24 +16,25 @@ export APP_NAME=studio
 export PROJECT_ID=${GCLOUD_PROJECT}
 
 cd $(dirname $0)/..
-root_dir=$(pwd)
-cd $root_dir
+ROOT_DIR=$(pwd)
+cd $ROOT_DIR
 
-rm -rf $root_dir/build
-rm -rf $root_dir/dist
+rm -rf $ROOT_DIR/build
+rm -rf $ROOT_DIR/dist
 
-PROD_ENV_FILE=${root_dir}/.env.production
+PROD_ENV_FILE=${ROOT_DIR}/.env.production
 rm $PROD_ENV_FILE
 touch $PROD_ENV_FILE
 echo "VUE_APP_SERVICE_ROOT=https://api.${ENV_SUB_DOMAIN}bootifulpodcast.online" >> ${PROD_ENV_FILE}
 echo "VUE_APP_GIT_HASH=${GITHUB_SHA}" >>  ${PROD_ENV_FILE}
+echo "BP_MODE=${BP_MODE_LOWERCASE}" >>  ${PROD_ENV_FILE}
 
 npm install && npm run build
 
-mkdir -p ${root_dir}/build/public
-cp $root_dir/deploy/nginx-buildpack-config/* ${root_dir}/build
-cp -r $root_dir/dist/* ${root_dir}/build/public
-cd $root_dir/build
+mkdir -p ${ROOT_DIR}/build/public
+cp $ROOT_DIR/deploy/nginx-buildpack-config/* ${ROOT_DIR}/build
+cp -r $ROOT_DIR/dist/* ${ROOT_DIR}/build/public
+cd $ROOT_DIR/build
 
 pack build $APP_NAME --builder paketobuildpacks/builder:full --buildpack gcr.io/paketo-buildpacks/nginx:latest  --env PORT=8080
 image_id=$(docker images -q $APP_NAME)
@@ -47,6 +48,8 @@ echo "finished tag"
 docker push ${GCR_IMAGE_NAME}
 echo "finished push"
 
-kubectl delete -f ${root_dir}/deploy/deployment.yaml || echo "could not delete existing deployment (maybe it doesn't exist?)"
-kubectl apply -f ${root_dir}/deploy/deployment.yaml
-kubectl get service $APP_NAME | grep $APP_NAME || kubectl apply -f ${root_dir}/deploy/deployment-service.yaml
+#kubectl delete -f ${ROOT_DIR}/deploy/deployment.yaml || echo "could not delete existing deployment (maybe it doesn't exist?)"
+kubectl apply -f ${ROOT_DIR}/deploy/deployment.yaml
+kubectl patch deployment studio -p "{\"spec\": {\"template\": {\"metadata\": { \"labels\": {  \"redeploy\": \"$(date +%s)\"}}}}}"
+
+kubectl get service $APP_NAME | grep $APP_NAME || kubectl apply -f ${ROOT_DIR}/deploy/deployment-service.yaml

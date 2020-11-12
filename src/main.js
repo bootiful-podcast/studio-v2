@@ -17,15 +17,32 @@ Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(VueRouter)
 
+function isEmpty(comment) {
+  if (typeof comment === 'undefined') {
+    return true;
+  } else if (comment === null) {
+    return true;
+  }
+  return false;
+}
+
+const mode = isEmpty(process.env.BP_MODE) ? 'development' : process.env.BP_MODE
+// console.log('mode: ', mode)
+
 const rootUrl = ((u) => (u.endsWith('/')) ? u : u + '/')(process.env.VUE_APP_SERVICE_ROOT)
-const tokenSupplier = () => loginService.getUserToken()
-const loginService = new LoginService(rootUrl + 'token')
-const episodeService = new EpisodeService(rootUrl, tokenSupplier)
-const searchService = new SearchService(rootUrl + 'podcasts', tokenSupplier)
 
 const gitHash = process.env.VUE_APP_GIT_HASH
 
-console.log('the git revision is ', gitHash)
+const tokenSupplier = () => loginService.getUserToken()
+const loginService = new LoginService(rootUrl + 'token')
+const episodeService = new EpisodeService(rootUrl, tokenSupplier)
+
+const searchService = new SearchService(rootUrl + 'podcasts', tokenSupplier)
+
+console.log('the git revision is ', gitHash, 'and the mode is ', mode)
+
+// todo use the mode to add a style to the <body> element
+// todo change nginx to require https for all pages served
 
 function sortPodcastsByDateMostRecentFirst(results) {
   function dateIndex(dateStr) {
@@ -40,6 +57,7 @@ function sortPodcastsByDateMostRecentFirst(results) {
 const store = {
 
   service: {
+    environment: mode,
     url: rootUrl
   },
 
