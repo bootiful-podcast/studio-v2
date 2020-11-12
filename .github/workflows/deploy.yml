@@ -11,7 +11,7 @@ env:
 
 on:
   repository_dispatch:
-    types: update-event
+    types: deploy-event
   create:
   push:
     branches: [ master ]
