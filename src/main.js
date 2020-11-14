@@ -26,8 +26,8 @@ function isEmpty(comment) {
   return false;
 }
 
-const mode = isEmpty(process.env.BP_MODE) ? 'development' : process.env.BP_MODE
-// console.log('mode: ', mode)
+const mode = isEmpty(process.env.VUE_APP_BP_MODE) ? 'development' : process.env.VUE_APP_BP_MODE
+console.log('mode: ', mode)
 
 const rootUrl = ((u) => (u.endsWith('/')) ? u : u + '/')(process.env.VUE_APP_SERVICE_ROOT)
 
