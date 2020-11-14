@@ -3,14 +3,9 @@
 set -e
 set -o pipefail
 
-# In most of the system, the tenancy is on the cluster.
-# But DNS is by definition global, so we bifurcate based on which environment is chosen
-## Production: api.bootifulpodcast.online
-## Development: api.development.bootifulpodcast.online
-# etc
+export ENV_SUB_DOMAIN=$( [ $BP_MODE_LOWERCASE = "production" ] && echo ""  || echo "${BP_MODE_LOWERCASE}.")
 
-export ENV_SUB_DOMAIN=$([ $BP_MODE_LOWERCASE = "production" ] && echo ""  || echo "${BP_MODE_LOWERCASE}.")
-
+echo "The ENV_SUB_DOMAIN=$ENV_SUB_DOMAIN"
 
 export APP_NAME=studio
 export PROJECT_ID=${GCLOUD_PROJECT}

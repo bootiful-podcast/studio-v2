@@ -13,18 +13,16 @@ fi
 
 if [ "$GITHUB_EVENT_NAME" = "repository_dispatch" ]; then
 
-  EVENT=$(  cat $GITHUB_EVENT_PATH | jq '.action' -r )
+  EVENT=$( cat $GITHUB_EVENT_PATH | jq '.action' -r )
   if  [ "$EVENT" = "deploy-production-event" ]; then
     BP_MODE="PRODUCTION"
-    echo "I'm on the hiighway to the danger zone!"
+    echo "Building for production..."
   fi
-
-
 fi
 
-echo $GITHUB_EVENT_NAME
-echo $GITHUB_EVENT_PATH
-cat $GITHUB_EVENT_PATH
+#echo $GITHUB_EVENT_NAME
+#echo $GITHUB_EVENT_PATH
+#cat $GITHUB_EVENT_PATH
 
 
 BP_MODE_LOWERCASE=$(echo "${BP_MODE}" | tr '[:upper:]' '[:lower:]')
