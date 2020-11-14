@@ -53,7 +53,6 @@ echo "finished tag"
 docker push ${GCR_IMAGE_NAME}
 echo "finished push"
 
-#kubectl delete -f ${ROOT_DIR}/deploy/deployment.yaml || echo "could not delete existing deployment (maybe it doesn't exist?)"
 kubectl apply -f ${ROOT_DIR}/deploy/deployment.yaml
 kubectl patch deployment studio -p "{\"spec\": {\"template\": {\"metadata\": { \"labels\": {  \"redeploy\": \"$(date +%s)\"}}}}}"
 
