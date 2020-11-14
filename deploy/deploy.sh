@@ -29,6 +29,11 @@ echo "VUE_APP_SERVICE_ROOT=https://api.${ENV_SUB_DOMAIN}bootifulpodcast.online" 
 echo "VUE_APP_GIT_HASH=${GITHUB_SHA}" >>  ${PROD_ENV_FILE}
 echo "BP_MODE=${BP_MODE_LOWERCASE}" >>  ${PROD_ENV_FILE}
 
+echo "--------------------------"
+echo "The production environment file contains: "
+cat $PROD_ENV_FILE
+echo "--------------------------"
+
 npm install && npm run build
 
 mkdir -p ${ROOT_DIR}/build/public
