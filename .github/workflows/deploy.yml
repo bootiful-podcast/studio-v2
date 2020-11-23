@@ -37,9 +37,6 @@ jobs:
           mkdir -p $P
           echo "${P}" >> $GITHUB_PATH
 
-#      - name: Setup GCP environment
-#        uses: GoogleCloudPlatform/github-actions@0.1.2
-
       - uses: google-github-actions/setup-gcloud@master
         with:
           version: '290.0.1'

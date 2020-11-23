@@ -20,7 +20,7 @@ rm -rf $ROOT_DIR/dist
 PROD_ENV_FILE=${ROOT_DIR}/.env.production
 rm $PROD_ENV_FILE
 touch $PROD_ENV_FILE
-echo "VUE_APP_SERVICE_ROOT=https://api.${ENV_SUB_DOMAIN}bootifulpodcast.online" >> ${PROD_ENV_FILE}
+echo "VUE_APP_SERVICE_ROOT=https://api.${ENV_SUB_DOMAIN}bootifulpodcast.fm" >> ${PROD_ENV_FILE}
 echo "VUE_APP_GIT_HASH=${GITHUB_SHA}" >>  ${PROD_ENV_FILE}
 echo "VUE_APP_BP_MODE=${BP_MODE_LOWERCASE}" >>  ${PROD_ENV_FILE}
 
