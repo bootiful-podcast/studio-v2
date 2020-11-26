@@ -48,13 +48,13 @@ jobs:
           gcloud --quiet auth configure-docker
           gcloud container clusters get-credentials $GKE_CLUSTER_NAME --zone "$GCLOUD_ZONE" --project ${GCLOUD_PROJECT}
 
-      - uses: joshlong/config-client-github-action@v29
-        with:
-          config-server-uri: http://${CONFIGURATION_SERVER_HOST}
-          config-server-username: ${{ secrets.CONFIGURATION_SERVER_USERNAME  }}
-          config-server-password: ${{ secrets.CONFIGURATION_SERVER_PASSWORD  }}
-          config-server-application-id: deployment
-          config-server-profile: ${{ env.BP_MODE_LOWERCASE }}
+#      - uses: joshlong/config-client-github-action@v29
+#        with:
+#          config-server-uri: http://${CONFIGURATION_SERVER_HOST}
+#          config-server-username: ${{ secrets.CONFIGURATION_SERVER_USERNAME  }}
+#          config-server-password: ${{ secrets.CONFIGURATION_SERVER_PASSWORD  }}
+#          config-server-application-id: deployment
+#          config-server-profile: ${{ env.BP_MODE_LOWERCASE }}
 
       - uses: actions/setup-node@master
         with:
