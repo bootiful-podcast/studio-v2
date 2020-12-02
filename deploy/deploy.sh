@@ -19,7 +19,7 @@ rm -rf $ROOT_DIR/build
 rm -rf $ROOT_DIR/dist
 
 PROD_ENV_FILE=${ROOT_DIR}/.env.production
-rm $PROD_ENV_FILE
+rm -rf  $PROD_ENV_FILE || echo "no file to delete.."
 touch $PROD_ENV_FILE
 echo "VUE_APP_SERVICE_ROOT=https://api.${ENV_SUB_DOMAIN}bootifulpodcast.fm" >> ${PROD_ENV_FILE}
 echo "VUE_APP_GIT_HASH=${GITHUB_SHA}" >>  ${PROD_ENV_FILE}
