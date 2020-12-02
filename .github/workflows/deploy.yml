@@ -14,8 +14,8 @@ env:
   ACTIONS_ALLOW_UNSECURE_COMMANDS: true
   CONFIGURATION_SERVER_URI_PRODUCTION: https://configuration.bootifulpodcast.fm
   CONFIGURATION_SERVER_URI_DEVELOPMENT: https://configuration.development.bootifulpodcast.fm
-  GKE_CLUSTER_NAME_PRODUCTION: bootiful-podcast-production
-  GKE_CLUSTER_NAME_DEVELOPMENT: bootiful-podcast-development
+  GKE_CLUSTER_NAME_PRODUCTION: ${{ secrets.GKE_CLUSTER_NAME_PRODUCTION }}
+  GKE_CLUSTER_NAME_DEVELOPMENT: ${{ secrets.GKE_CLUSTER_NAME_DEVELOPMENT }}
 
 
 on:
