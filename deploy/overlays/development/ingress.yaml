@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    ingress.kubernetes.io/force-ssl-redirect: "true"
+    networking.gke.io/managed-certificates: "site-development-certificate"
+    kubernetes.io/ingress.global-static-ip-name: "site-development-ip"
+  name: site-ingress
+spec:
+  rules:
+  - host: development.bootifulpodcast.fm
+    http:
+      paths:
+      - backend:
+          serviceName: site
+          servicePort: 80

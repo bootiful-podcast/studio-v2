@@ -3,15 +3,16 @@
 set -e
 set -o pipefail
 
+export BP_MODE_LOWERCASE=${BP_MODE_LOWERCASE:-development}
 export ENV_SUB_DOMAIN=$( [ $BP_MODE_LOWERCASE = "production" ] && echo ""  || echo "${BP_MODE_LOWERCASE}.")
+export APP_NAME=studio
+export PROJECT_ID=${GCLOUD_PROJECT}
+export ROOT_DIR=$(cd $(dirname $0) && pwd)
+export OD=${ROOT_DIR}/overlays/${BP_MODE_LOWERCASE}
+export GCR_IMAGE_NAME=gcr.io/${PROJECT_ID}/${APP_NAME}
 
 echo "The ENV_SUB_DOMAIN=$ENV_SUB_DOMAIN"
 
-export APP_NAME=studio
-export PROJECT_ID=${GCLOUD_PROJECT}
-
-cd $(dirname $0)/..
-ROOT_DIR=$(pwd)
 cd $ROOT_DIR
 
 rm -rf $ROOT_DIR/build
@@ -39,7 +40,6 @@ cd $ROOT_DIR/build
 pack build $APP_NAME --builder paketobuildpacks/builder:full --buildpack gcr.io/paketo-buildpacks/nginx:latest  --env PORT=8080
 image_id=$(docker images -q $APP_NAME)
 
-GCR_IMAGE_NAME=gcr.io/${PROJECT_ID}/${APP_NAME}
 echo "pushing ${image_id} to gcr.io/${PROJECT_ID}/${APP_NAME}"
 echo "tagging ${GCR_IMAGE_NAME}"
 docker tag "${image_id}" ${GCR_IMAGE_NAME}
@@ -48,7 +48,4 @@ echo "finished tag"
 docker push ${GCR_IMAGE_NAME}
 echo "finished push"
 
-kubectl apply -f ${ROOT_DIR}/deploy/deployment.yaml
-kubectl patch deployment studio -p "{\"spec\": {\"template\": {\"metadata\": { \"labels\": {  \"redeploy\": \"$(date +%s)\"}}}}}"
-
-kubectl get service $APP_NAME | grep $APP_NAME || kubectl apply -f ${ROOT_DIR}/deploy/deployment-service.yaml
+kubectl apply -k ${OD}
