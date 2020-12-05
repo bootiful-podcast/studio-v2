@@ -1,5 +1,8 @@
-= Desktop v2
+= Studio v2
 
+== Mission Statement
+
+This module serves as the admin console, in which a podcaster can publish new episodes and finesse those that have already been published.
 
 == A Big Rewrite
 
