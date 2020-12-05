@@ -1,4 +1,4 @@
-name: Deploy Desktop
+name: Deploy
 
 env:
   GIT_PASSWORD: ${{ secrets.GIT_PASSWORD }}
