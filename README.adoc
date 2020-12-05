@@ -1,5 +1,9 @@
 = Studio v2
 
+
+image::https://github.com/bootiful-podcast/studio-v2/workflows/Deploy/badge.svg[Status]
+
+
 == Mission Statement
 
 This module serves as the admin console, in which a podcaster can publish new episodes and finesse those that have already been published.
