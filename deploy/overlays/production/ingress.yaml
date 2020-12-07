@@ -14,3 +14,5 @@ spec:
       - backend:
           serviceName: studio
           servicePort: 80
+
+
