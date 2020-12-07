@@ -1,0 +1,12 @@
+---
+bases:
+  - ../development/
+
+resources:
+  - certificate.yaml
+  - ingress.yaml
+
+commonLabels:
+  env: production
+
+namespace: production
