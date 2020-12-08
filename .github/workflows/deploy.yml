@@ -16,6 +16,8 @@ env:
   CONFIGURATION_SERVER_URI_DEVELOPMENT: https://configuration.development.bootifulpodcast.fm
   GKE_CLUSTER_NAME_PRODUCTION: ${{ secrets.GKE_CLUSTER_NAME_PRODUCTION }}
   GKE_CLUSTER_NAME_DEVELOPMENT: ${{ secrets.GKE_CLUSTER_NAME_DEVELOPMENT }}
+  API_ROOT_DEVELOPMENT: https://api.development.bootifulpodcast.fm
+  API_ROOT_PRODUCTION: https://api.bootifulpodcast.fm
 
 
 on:
@@ -48,13 +50,6 @@ jobs:
           gcloud --quiet auth configure-docker
           gcloud container clusters get-credentials $GKE_CLUSTER_NAME --zone "$GCLOUD_ZONE" --project ${GCLOUD_PROJECT}
 
-#      - uses: joshlong/config-client-github-action@v29
-#        with:
-#          config-server-uri: http://${CONFIGURATION_SERVER_HOST}
-#          config-server-username: ${{ secrets.CONFIGURATION_SERVER_USERNAME  }}
-#          config-server-password: ${{ secrets.CONFIGURATION_SERVER_PASSWORD  }}
-#          config-server-application-id: deployment
-#          config-server-profile: ${{ env.BP_MODE_LOWERCASE }}
 
       - uses: actions/setup-node@master
         with:
