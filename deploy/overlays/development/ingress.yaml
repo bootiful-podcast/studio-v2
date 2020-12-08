@@ -3,7 +3,7 @@ kind: Ingress
 metadata:
   annotations:
     ingress.kubernetes.io/force-ssl-redirect: "true"
-    networking.gke.io/managed-certificates: "studio-development-certificate"
+    networking.gke.io/managed-certificates: "studio-certificate"
     kubernetes.io/ingress.global-static-ip-name: "studio-development-ip"
   name: studio-ingress
 spec:
