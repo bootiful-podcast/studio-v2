@@ -51,4 +51,4 @@ export RESERVED_IP_NAME=${APP_NAME}-${BP_MODE_LOWERCASE}-ip
 gcloud compute addresses list --format json | jq '.[].name' -r | grep $RESERVED_IP_NAME ||
   gcloud compute addresses create $RESERVED_IP_NAME --global
 kubectl apply -k ${OD}
-kubectl patch deployment $APP_NAME -p "{\"spec\": {\"template\": {\"metadata\": { \"labels\": { \"redeploy\": \"$(date +%s)\"}}}}}"
+#kubectl patch deployment $APP_NAME -p "{\"spec\": {\"template\": {\"metadata\": { \"labels\": { \"redeploy\": \"$(date +%s)\"}}}}}"
