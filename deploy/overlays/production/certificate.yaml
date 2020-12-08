@@ -1,7 +1,7 @@
 apiVersion: networking.gke.io/v1beta2
 kind: ManagedCertificate
 metadata:
-  name: studio-development-certificate
+  name: studio-production-certificate
 spec:
   domains:
-    - studio.development.bootifulpodcast.fm
+    - studio.bootifulpodcast.fm
