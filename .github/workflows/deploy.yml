@@ -23,11 +23,11 @@ env:
 on:
   repository_dispatch:
     types: [ deploy-production-event, deploy-development-event ]
-#  create:
-#  push:
-#    branches: [ master ]
-#  pull_request:
-#    branches: [ master ]
+  create:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
 jobs:
   build:
