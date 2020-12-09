@@ -2,7 +2,7 @@
 bases:
   - ../development/
 
-resources:
+patchesStrategicMerge:
   - certificate.yaml
   - ingress.yaml
 
