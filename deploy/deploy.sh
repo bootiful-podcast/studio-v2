@@ -5,7 +5,6 @@ set -o pipefail
 
 export APP_NAME=studio
 
-
 export BP_MODE_LOWERCASE=${BP_MODE_LOWERCASE:-development}
 export ENV_SUB_DOMAIN=$( [ "${BP_MODE_LOWERCASE}" = "production" ] && echo ""  || echo "${BP_MODE_LOWERCASE}.")
 export ROOT_DIR=$(cd $(dirname $0) && pwd)
