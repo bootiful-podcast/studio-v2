@@ -9,11 +9,11 @@ export ENV_SUB_DOMAIN=$( [ "${BP_MODE_LOWERCASE}" = "production" ] && echo ""  |
 export ROOT_DIR=$(cd $(dirname $0) && pwd)
 export OD=${ROOT_DIR}/overlays/${BP_MODE_LOWERCASE}
 export PROJECT_ID=${GCLOUD_PROJECT}
+export IMG_TAG="${GITHUB_SHA:-}${GITHUB_EVENT_NAME:-}"
 export GCR_IMAGE_NAME=gcr.io/${PROJECT_ID}/${APP_NAME}
 export IMAGE_NAME=${GCR_IMAGE_NAME}:${IMG_TAG}
 echo "OD=$OD"
 echo "BP_MODE_LOWERCASE=$BP_MODE_LOWERCASE"
-export IMG_TAG="${GITHUB_SHA:-}${GITHUB_EVENT_NAME:-}"
 echo "The GCR_IMAGE_NAME=$GCR_IMAGE_NAME"
 echo "The IMG_TAG=$IMG_TAG"
 cd $(dirname $0)/..
