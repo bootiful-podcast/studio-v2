@@ -53,3 +53,5 @@ gcloud compute addresses list --format json | jq '.[].name' -r | grep $RESERVED_
   gcloud compute addresses create $RESERVED_IP_NAME --global
 kubectl apply -k ${OD}
 #kubectl patch deployment $APP_NAME -p "{\"spec\": {\"template\": {\"metadata\": { \"labels\": { \"redeploy\": \"$(date +%s)\"}}}}}"
+sleep 5
+kubectl rollout restart deployment $APP_NAME

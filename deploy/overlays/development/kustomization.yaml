@@ -10,3 +10,4 @@ namespace: development
 commonLabels:
   env: development
   app: studio
+

@@ -61,3 +61,4 @@ jobs:
           export PATH=$GITHUB_WORKSPACE/bin/:$PATH
           (curl -sSL "https://github.com/buildpacks/pack/releases/download/v0.14.2/pack-v0.14.2-linux.tgz" | sudo tar -C $GITHUB_WORKSPACE/bin/ --no-same-owner -xzv pack)
           ./deploy/deploy.sh
+
