@@ -6,20 +6,20 @@ set -o pipefail
 export APP_NAME=studio
 
 
-
 export BP_MODE_LOWERCASE=${BP_MODE_LOWERCASE:-development}
 export ENV_SUB_DOMAIN=$( [ "${BP_MODE_LOWERCASE}" = "production" ] && echo ""  || echo "${BP_MODE_LOWERCASE}.")
 export ROOT_DIR=$(cd $(dirname $0) && pwd)
 export OD=${ROOT_DIR}/overlays/${BP_MODE_LOWERCASE}
 export PROJECT_ID=${GCLOUD_PROJECT}
-export IMAGE_TAG="${GITHUB_SHA:-}${GITHUB_EVENT_NAME:-}"
+export IMAGE_TAG="${BP_MODE_LOWERCASE}${GITHUB_SHA:-}"
 export GCR_IMAGE_NAME=gcr.io/${PROJECT_ID}/${APP_NAME}
 export IMAGE_NAME=${GCR_IMAGE_NAME}:${IMAGE_TAG}
 echo "OD=$OD"
 echo "BP_MODE_LOWERCASE=$BP_MODE_LOWERCASE"
-echo "The GCR_IMAGE_NAME=$GCR_IMAGE_NAME"
-echo "The IMAGE_NAME=$IMAGE_NAME"
-echo "The IMAGE_TAG=$IMAGE_TAG"
+echo "GCR_IMAGE_NAME=$GCR_IMAGE_NAME"
+echo "IMAGE_NAME=$IMAGE_NAME"
+echo "IMAGE_TAG=$IMAGE_TAG"
+
 cd $(dirname $0)/..
 ROOT_DIR=$(pwd)
 cd $ROOT_DIR
@@ -58,12 +58,6 @@ echo "tagging ${GCR_IMAGE_NAME}"
 export RESERVED_IP_NAME=${APP_NAME}-${BP_MODE_LOWERCASE}-ip
 gcloud compute addresses list --format json | jq '.[].name' -r | grep $RESERVED_IP_NAME ||  gcloud compute addresses create $RESERVED_IP_NAME --global
 
-## Configure the GITHUB_HASH
 cd $OD
 kustomize edit set image $GCR_IMAGE_NAME=$IMAGE_NAME
 kustomize build ${OD} | kubectl apply -f -
-
-#kustomize build ${OD} | kubectl apply -f -
-#kubectl patch deployment $APP_NAME -p "{\"spec\": {\"template\": {\"metadata\": { \"labels\": { \"redeploy\": \"$(date +%s)\"}}}}}"
-#sleep 5
-#kubectl rollout restart deployment $APP_NAME
