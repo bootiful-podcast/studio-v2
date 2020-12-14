@@ -10,9 +10,10 @@ export ROOT_DIR=$(cd $(dirname $0) && pwd)
 export OD=${ROOT_DIR}/overlays/${BP_MODE_LOWERCASE}
 export PROJECT_ID=${GCLOUD_PROJECT}
 export GCR_IMAGE_NAME=gcr.io/${PROJECT_ID}/${APP_NAME}
+export IMAGE_NAME=${GCR_IMAGE_NAME}:${IMG_TAG}
 echo "OD=$OD"
 echo "BP_MODE_LOWERCASE=$BP_MODE_LOWERCASE"
-export IMG_TAG="${GITHUB_SHA:-}${GITHUB_EVENT_NAME:-}${GITHUB_REF:-}"
+export IMG_TAG="${GITHUB_SHA:-}${GITHUB_EVENT_NAME:-}"
 echo "The GCR_IMAGE_NAME=$GCR_IMAGE_NAME"
 echo "The IMG_TAG=$IMG_TAG"
 cd $(dirname $0)/..
@@ -45,9 +46,9 @@ cd $ROOT_DIR/build
 pack build $APP_NAME --builder paketobuildpacks/builder:full --buildpack gcr.io/paketo-buildpacks/nginx:latest  --env PORT=8080
 image_id=$(docker images -q $APP_NAME)
 
-docker tag "${image_id}" ${GCR_IMAGE_NAME}
-docker push ${GCR_IMAGE_NAME}
-echo "pushing ${image_id} to gcr.io/${PROJECT_ID}/${APP_NAME}"
+docker tag "${image_id}" $IMAGE_NAME
+docker push $IMAGE_NAME
+echo "pushing ${image_id} to $IMAGE_NAME "
 echo "tagging ${GCR_IMAGE_NAME}"
 
 export RESERVED_IP_NAME=${APP_NAME}-${BP_MODE_LOWERCASE}-ip
@@ -55,7 +56,7 @@ gcloud compute addresses list --format json | jq '.[].name' -r | grep $RESERVED_
 
 ## Configure the GITHUB_HASH
 cd $OD
-kustomize edit set image $GCR_IMAGE_NAME=$GCR_IMAGE_NAME:$IMG_TAG
+kustomize edit set image $GCR_IMAGE_NAME=$IMAGE_NAME
 kustomize build ${OD} | kubectl apply -f -
 
 #kustomize build ${OD} | kubectl apply -f -
