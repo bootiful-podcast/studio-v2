@@ -12,7 +12,9 @@ export PROJECT_ID=${GCLOUD_PROJECT}
 export GCR_IMAGE_NAME=gcr.io/${PROJECT_ID}/${APP_NAME}
 echo "OD=$OD"
 echo "BP_MODE_LOWERCASE=$BP_MODE_LOWERCASE"
-
+export IMG_TAG="${GITHUB_SHA:-}${GITHUB_EVENT_NAME:-}${GITHUB_REF:-}"
+echo "The GCR_IMAGE_NAME=$GCR_IMAGE_NAME"
+echo "The IMG_TAG=$IMG_TAG"
 cd $(dirname $0)/..
 ROOT_DIR=$(pwd)
 cd $ROOT_DIR
@@ -49,9 +51,15 @@ echo "pushing ${image_id} to gcr.io/${PROJECT_ID}/${APP_NAME}"
 echo "tagging ${GCR_IMAGE_NAME}"
 
 export RESERVED_IP_NAME=${APP_NAME}-${BP_MODE_LOWERCASE}-ip
-gcloud compute addresses list --format json | jq '.[].name' -r | grep $RESERVED_IP_NAME ||
-  gcloud compute addresses create $RESERVED_IP_NAME --global
-kubectl apply -k ${OD}
+gcloud compute addresses list --format json | jq '.[].name' -r | grep $RESERVED_IP_NAME ||  gcloud compute addresses create $RESERVED_IP_NAME --global
+
+## Configure the GITHUB_HASH
+cd $OD
+kustomize edit set image $GCR_IMAGE_NAME=$GCR_IMAGE_NAME:$IMG_TAG
+kustomize build ${OD} | kubectl apply -f -
+
+#kustomize build ${OD} | kubectl apply -f -
+
 #kubectl patch deployment $APP_NAME -p "{\"spec\": {\"template\": {\"metadata\": { \"labels\": { \"redeploy\": \"$(date +%s)\"}}}}}"
-sleep 5
-kubectl rollout restart deployment $APP_NAME
+#sleep 5
+#kubectl rollout restart deployment $APP_NAME

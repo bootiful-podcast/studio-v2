@@ -1,13 +1,17 @@
----
-bases:
-  - ../development/
 
 patchesStrategicMerge:
-  - certificate.yaml
-  - ingress.yaml
+- certificate.yaml
+- ingress.yaml
 
 commonLabels:
   env: production
 
 namespace: production
-
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- ../development/
+images:
+- name: gcr.io/bootiful/studio
+  newName: gcr.io/bootiful/studio
+  newTag: c49c1ace31876cb859ffee95f383bd98077dcb07
