@@ -48,7 +48,6 @@ cd $ROOT_DIR/build
 
 pack build $APP_NAME --builder paketobuildpacks/builder:full --buildpack gcr.io/paketo-buildpacks/nginx:latest  --env PORT=8080
 image_id=$(docker images -q $APP_NAME)
-
 docker tag "${image_id}" $IMAGE_NAME
 docker push $IMAGE_NAME
 echo "pushing ${image_id} to $IMAGE_NAME "
