@@ -24,7 +24,6 @@ export default class EpisodeService {
     });
   }
 
-  // eslint-disable-next-line no-unused-vars
   buildManifestXml(uid, title, description, introductionFileName, interviewFileName, photoJpg) {
     const parser = new DOMParser();
     const xmlString =
