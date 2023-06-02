@@ -1,8 +1,6 @@
 = Studio v2
 
-
 image::https://github.com/bootiful-podcast/studio-v2/workflows/Deploy/badge.svg[Status]
-
 
 == Mission Statement
 
