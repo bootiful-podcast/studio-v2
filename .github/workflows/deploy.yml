@@ -1,25 +1,22 @@
 name: Deploy
 
 env:
+  ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+  APP_NAME: studio
   GIT_PASSWORD: ${{ secrets.GIT_PASSWORD }}
   GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
+  BP_MODE_LOWERCASE: production
+  BP_MODE : PRODUCTION
   CONFIGURATION_SERVER_USERNAME: ${{ secrets.CONFIGURATION_SERVER_USERNAME }}
   CONFIGURATION_SERVER_PASSWORD: ${{ secrets.CONFIGURATION_SERVER_PASSWORD }}
-  GCLOUD_ZONE_DEVELOPMENT: ${{ secrets.GCLOUD_ZONE_DEVELOPMENT }}
-  GCLOUD_ZONE_PRODUCTION: ${{ secrets.GCLOUD_ZONE_DEVELOPMENT }}
-  GCLOUD_PROJECT_DEVELOPMENT: ${{ secrets.GCLOUD_PROJECT_DEVELOPMENT }}
-  GCLOUD_PROJECT_PRODUCTION: ${{ secrets.GCLOUD_PROJECT_DEVELOPMENT }}
-  GCLOUD_SA_KEY: ${{ secrets.GCLOUD_SA_KEY }}
   GH_PERSONAL_ACCESS_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
-  ACTIONS_ALLOW_UNSECURE_COMMANDS: true
-  CONFIGURATION_SERVER_URI_PRODUCTION: https://configuration.bootifulpodcast.fm
-  CONFIGURATION_SERVER_URI_DEVELOPMENT: https://configuration.development.bootifulpodcast.fm
-  GKE_CLUSTER_NAME_PRODUCTION: ${{ secrets.GKE_CLUSTER_NAME_PRODUCTION }}
-  GKE_CLUSTER_NAME_DEVELOPMENT: ${{ secrets.GKE_CLUSTER_NAME_DEVELOPMENT }}
-  API_ROOT_DEVELOPMENT: https://api.development.bootifulpodcast.fm
-  API_ROOT_PRODUCTION: https://api.bootifulpodcast.fm
+  CONFIGURATION_SERVER_URI: https://configuration.bootifulpodcast.fm
+  GKE_CLUSTER:   ${{ secrets.GKE_CLUSTER }}
+  GCLOUD_ZONE:  ${{ secrets.GCLOUD_ZONE }}
+  NS_NAME:  ${{ secrets.NS_NAME }}
+  GCLOUD_SA_KEY:  ${{ secrets.GCLOUD_SA_KEY }}
+  API_ROOT : https://api.bootifulpodcast.fm
 
-## todo restore the create push pull request etc
 on:
   repository_dispatch:
     types: [ deploy-production-event, deploy-development-event ]
@@ -34,31 +31,43 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - uses: bootiful-podcast/bp-mode-github-action@v34
+      - name: "Setup PATH"
+        run: |
+          P="${GITHUB_WORKSPACE}/bin"
+          mkdir -p $P
+          echo "${P}" >> $GITHUB_PATH
 
-      - uses: google-github-actions/setup-gcloud@master
+
+      - uses: 'google-github-actions/auth@v0'
         with:
-          version: '290.0.1'
-          service_account_key: ${{ secrets.GCLOUD_SA_KEY }}
-          project_id: ${{ env.GCLOUD_PROJECT }}
-          export_default_credentials: true
+          credentials_json: '${{ secrets.GCLOUD_SA_KEY }}'
+
+
+      - id: 'get-credentials'
+        uses: 'google-github-actions/get-gke-credentials@v1'
+        with:
+          cluster_name: '${{ env.GKE_CLUSTER  }}'
+          location: '${{ env.GCLOUD_ZONE }}'
 
       - run: |
-          gcloud config set project $GCLOUD_PROJECT
+          gcloud config set project $GCLOUD_PROJECT 
           gcloud --quiet auth configure-docker
-          gcloud container clusters get-credentials $GKE_CLUSTER_NAME --zone "$GCLOUD_ZONE" --project ${GCLOUD_PROJECT}
+          kubectl get pods
 
 
-      - uses: actions/setup-node@master
+      - uses: actions/setup-node@v3
         with:
-          node-version: '10.x'
+          node-version: '12.x'
 
       - name: Deploy Desktop
         run: |
+          kubectl get ns/$NS_NAME || kubectl create ns $NS_NAME 
+          kubectl config set-context --current --namespace=$NS_NAME
+          kubectl config view --minify | grep namespace: && echo "found the namespace.."
           cd $GITHUB_WORKSPACE
           export PATH=$GITHUB_WORKSPACE/bin/:$PATH
-          (curl -sSL "https://github.com/buildpacks/pack/releases/download/v0.14.2/pack-v0.14.2-linux.tgz" | sudo tar -C $GITHUB_WORKSPACE/bin/ --no-same-owner -xzv pack)
+          mkdir -p $GITHUB_WORKSPACE/bin/
+          (curl -sSL "https://github.com/buildpacks/pack/releases/download/v0.29.0/pack-v0.29.0-linux.tgz" | sudo tar -C  $GITHUB_WORKSPACE/bin/ --no-same-owner -xzv pack)
           ./deploy/deploy.sh
-

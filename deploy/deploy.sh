@@ -4,20 +4,16 @@ set -e
 set -o pipefail
 
 export APP_NAME=studio
-
-export BP_MODE_LOWERCASE=${BP_MODE_LOWERCASE:-development}
+export BP_MODE=PRODUCTION
+export BP_MODE_LOWERCASE=production
 export ENV_SUB_DOMAIN=$( [ "${BP_MODE_LOWERCASE}" = "production" ] && echo ""  || echo "${BP_MODE_LOWERCASE}.")
 export ROOT_DIR=$(cd $(dirname $0) && pwd)
 export OD=${ROOT_DIR}/overlays/${BP_MODE_LOWERCASE}
 export PROJECT_ID=${GCLOUD_PROJECT}
-export IMAGE_TAG="${BP_MODE_LOWERCASE}${GITHUB_SHA:-}"
-export GCR_IMAGE_NAME=gcr.io/${PROJECT_ID}/${APP_NAME}
-export IMAGE_NAME=${GCR_IMAGE_NAME}:${IMAGE_TAG}
+export IMAGE_NAME=gcr.io/${PROJECT_ID}/${APP_NAME}
 echo "OD=$OD"
 echo "BP_MODE_LOWERCASE=$BP_MODE_LOWERCASE"
-echo "GCR_IMAGE_NAME=$GCR_IMAGE_NAME"
 echo "IMAGE_NAME=$IMAGE_NAME"
-echo "IMAGE_TAG=$IMAGE_TAG"
 
 cd $(dirname $0)/..
 ROOT_DIR=$(pwd)
@@ -46,16 +42,15 @@ cp $ROOT_DIR/deploy/nginx-buildpack-config/* ${ROOT_DIR}/build
 cp -r $ROOT_DIR/dist/* ${ROOT_DIR}/build/public
 cd $ROOT_DIR/build
 
-pack build $APP_NAME --builder paketobuildpacks/builder:full --buildpack gcr.io/paketo-buildpacks/nginx:latest  --env PORT=8080
-image_id=$(docker images -q $APP_NAME)
-docker tag "${image_id}" $IMAGE_NAME
-docker push $IMAGE_NAME
-echo "pushing ${image_id} to $IMAGE_NAME "
-echo "tagging ${GCR_IMAGE_NAME}"
+docker images -q $IMAGE_NAME | while read  l ; do docker rmi $l -f ; done
 
-export RESERVED_IP_NAME=${APP_NAME}-${BP_MODE_LOWERCASE}-ip
+pack build $IMAGE_NAME --builder paketobuildpacks/builder:full --buildpack gcr.io/paketo-buildpacks/nginx:latest  --env PORT=8080
+
+docker push $IMAGE_NAME
+
+export RESERVED_IP_NAME=bootiful-podcast-${APP_NAME}-ip
 gcloud compute addresses list --format json | jq '.[].name' -r | grep $RESERVED_IP_NAME ||  gcloud compute addresses create $RESERVED_IP_NAME --global
 
-cd $OD
-kustomize edit set image $GCR_IMAGE_NAME=$IMAGE_NAME
-kustomize build ${OD} | kubectl apply -f -
+cd $GITHUB_WORKSPACE
+kubectl delete -f deploy/k8s/deployment.yaml || echo "could not find the deployment to delete..."
+kubectl apply -f deploy/k8s
