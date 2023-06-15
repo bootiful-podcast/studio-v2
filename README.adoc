@@ -10,7 +10,7 @@ This module serves as the admin console, in which a podcaster can publish new ep
 
 The new architecture is spelled out by examining all the projects on github.com/bootiful-podcast that are suffixd with `-v2`:
 
-* `desktop-v2` - a Vue.js powered Studio environment for uploading and editing episodes
+* `studio-v2` - a Vue.js powered Studio environment for uploading and editing episodes
 * `processor-v2` - a Python-based podcast audio production
 * `api-v2` - an API to which the Studio environment connects
 * `deployment` - this contains infrastructure that is common to the system, including RabbitMQ and PostgreSQL
