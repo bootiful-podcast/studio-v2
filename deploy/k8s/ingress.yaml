@@ -5,6 +5,7 @@ metadata:
     ingress.kubernetes.io/force-ssl-redirect: "true"
     networking.gke.io/managed-certificates: "studio-certificate"
     kubernetes.io/ingress.global-static-ip-name: "bootiful-podcast-studio-ip"
+    kubernetes.io/ingress.class: "gce"
   name: studio-ingress
 spec:
   defaultBackend:
