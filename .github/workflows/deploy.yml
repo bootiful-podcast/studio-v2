@@ -31,7 +31,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - uses: actions/checkout@v3
+
+      - uses: actions/checkout@v4
 
       - name: "Setup PATH"
         run: |
@@ -40,10 +41,9 @@ jobs:
           echo "${P}" >> $GITHUB_PATH
 
 
-      - uses: 'google-github-actions/auth@v0'
+      - uses: 'google-github-actions/auth@v2'
         with:
           credentials_json: '${{ secrets.GCLOUD_SA_KEY }}'
-
 
       - id: 'get-credentials'
         uses: 'google-github-actions/get-gke-credentials@v1'
@@ -56,12 +56,11 @@ jobs:
           gcloud --quiet auth configure-docker
           kubectl get pods
 
-
       - uses: actions/setup-node@v3
         with:
           node-version: '12.x'
 
-      - name: Deploy Desktop
+      - name: Deploy Studio
         run: |
           kubectl get ns/$NS_NAME || kubectl create ns $NS_NAME 
           kubectl config set-context --current --namespace=$NS_NAME
