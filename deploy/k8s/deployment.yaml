@@ -17,9 +17,29 @@ spec:
         app: studio
     spec:
       containers:
+
         - image: gcr.io/joshlong/studio
           imagePullPolicy: Always
           name:  studio
+
+          ports:
+            - containerPort: 8080
+
           env:
             - name: PORT
               value: "8080"
+
+
+          readinessProbe:
+            initialDelaySeconds: 60
+            periodSeconds: 60
+            httpGet:
+              port: 8080
+              path: /
+
+          livenessProbe:
+            initialDelaySeconds: 60
+            periodSeconds: 60
+            httpGet:
+              port: 8080
+              path: /
